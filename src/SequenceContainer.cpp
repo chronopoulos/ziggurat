@@ -14,8 +14,7 @@ SequenceContainer::SequenceContainer(int nsteps, QString name) {
                         this, SLOT(select(void)));
 
     // trig requests
-    QObject::connect(canv, SIGNAL(trigRequested(TrigRequest*)),
-                        seq, SLOT(handleTrigRequest(TrigRequest*)));
+    QObject::connect(canv, SIGNAL(trigRequested(TrigRequest*)), seq, SLOT(handleTrigRequest(TrigRequest*)));
     QObject::connect(seq, SIGNAL(trigRequestAccepted(TrigRequest*)),
                         canv, SLOT(registerTrigRequest(TrigRequest*)));
     QObject::connect(seq, SIGNAL(stepActivationChanged(int, bool)),
@@ -58,6 +57,8 @@ SequenceContainer::SequenceContainer(int nsteps, QString name) {
     // name change
     QObject::connect(page, SIGNAL(nameChanged(QString)),
                         thumb, SLOT(setName(QString)));
+    QObject::connect(page, SIGNAL(nameChanged(QString)),
+                        seq, SLOT(setName(QString)));
 
     // delete
     QObject::connect(thumb, SIGNAL(deleteRequested(void)),
