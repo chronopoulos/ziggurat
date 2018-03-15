@@ -39,6 +39,12 @@ Sequence::Sequence(int nsteps) {
 
 }
 
+Sequence::~Sequence(void) {
+
+    delete midiout;
+
+}
+
 void Sequence::setName(QString name) {
 
     m_name = name;

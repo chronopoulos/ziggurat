@@ -15,6 +15,7 @@ class Sequence : public QObject
 
     public:
         Sequence(int);
+        ~Sequence();
 
         static int Forward;
         static int Backward;
