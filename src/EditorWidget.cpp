@@ -29,8 +29,6 @@ void EditorWidget::setCanvas(Canvas* canv) {
 
 void EditorWidget::setDefaultCanvas(void) {
 
-    qDebug() << "editor :: set default canvas";
-    
     graphicsView->setScene(defaultCanvas);
 
 }
