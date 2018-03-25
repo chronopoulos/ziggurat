@@ -48,7 +48,7 @@ Sequence::~Sequence(void) {
 void Sequence::setName(QString name) {
 
     m_name = name;
-    midiout->setClientName(name.toStdString());
+    //midiout->setClientName(name.toStdString());
 }
 
 void Sequence::setEnabling(bool enabled) {
