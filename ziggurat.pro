@@ -19,8 +19,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 # Directory structure
-VPATH += src include
-INCLUDEPATH += include
+VPATH += src include rtmidi
+INCLUDEPATH += include rtmidi
 OBJECTS_DIR = build
 MOC_DIR = build
 DESTDIR = bin
