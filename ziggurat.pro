@@ -50,6 +50,9 @@ SOURCES += ConfigPage.cpp
 SOURCES += SequenceContainer.cpp
 SOURCES += ClickLabel.cpp
 SOURCES += Dialogs.cpp
+SOURCES += ButtonRow.cpp
+SOURCES += ButtonCell.cpp
+SOURCES += RowEditor.cpp
 SOURCES += RtMidi.cpp
 
 HEADERS += MainWindow.h
@@ -68,6 +71,9 @@ HEADERS += ConfigPage.h
 HEADERS += SequenceContainer.h
 HEADERS += ClickLabel.h
 HEADERS += Dialogs.h
+HEADERS += ButtonRow.h
+HEADERS += ButtonCell.h
+HEADERS += RowEditor.h
 HEADERS += RtMidi.h
 
 # vim:syntax=sh
