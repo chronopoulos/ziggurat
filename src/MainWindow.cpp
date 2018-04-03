@@ -15,7 +15,8 @@ MainWindow::MainWindow(void) : QWidget() {
 
     layout = new QGridLayout();
 
-    manager = new ManagerWidget(); editor = new EditorWidget();
+    manager = new ManagerWidget();
+    editor = new EditorWidget();
     transport = new TransportWidget();
     config = new Configurator();
 
