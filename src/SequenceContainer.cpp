@@ -8,6 +8,7 @@ SequenceContainer::SequenceContainer(int nsteps, QString name) {
     thumb = new Thumbnail(nsteps);
     canv = new Canvas(nsteps);
     page = new ConfigPage(nsteps);
+    row = new ButtonRow(nsteps);
 
     // interest
     QObject::connect(thumb, SIGNAL(interestRequested(void)),
@@ -41,6 +42,8 @@ SequenceContainer::SequenceContainer(int nsteps, QString name) {
                         thumb, SLOT(updatePlayhead(int)));
     QObject::connect(seq, SIGNAL(playheadUpdated(int)),
                         canv, SLOT(updatePlayhead(int)));
+    QObject::connect(seq, SIGNAL(playheadUpdated(int)),
+                        row, SLOT(updatePlayhead(int)));
 
     // subloops
     QObject::connect(canv->lBracket, SIGNAL(stepChanged(int)),
@@ -75,6 +78,7 @@ SequenceContainer::~SequenceContainer(void) {
     delete thumb;
     delete canv;
     delete page;
+    delete row;
 
 }
 
@@ -83,6 +87,7 @@ void SequenceContainer::select(void) {
     emit canvasSelected(canv);
     emit pageSelected(page);
     emit thumbnailSelected(thumb);
+    emit rowSelected(row);
 
 }
 

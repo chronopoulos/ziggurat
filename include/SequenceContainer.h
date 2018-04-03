@@ -5,6 +5,7 @@
 #include "Thumbnail.h"
 #include "Canvas.h"
 #include "ConfigPage.h"
+#include "ButtonRow.h"
 
 class SequenceContainer : public QObject
 {
@@ -18,6 +19,7 @@ class SequenceContainer : public QObject
         Thumbnail *thumb;
         Canvas *canv;
         ConfigPage *page;
+        ButtonRow *row;
 
         bool selected(void);
 
@@ -25,6 +27,7 @@ class SequenceContainer : public QObject
         void canvasSelected(Canvas*);
         void pageSelected(ConfigPage*);
         void thumbnailSelected(Thumbnail*);
+        void rowSelected(ButtonRow*);
         void deleteRequested(SequenceContainer*);
 
     public slots:
