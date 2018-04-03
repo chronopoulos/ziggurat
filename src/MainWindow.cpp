@@ -19,6 +19,7 @@ MainWindow::MainWindow(void) : QWidget() {
     editor = new EditorWidget();
     transport = new TransportWidget();
     config = new Configurator();
+    rowEditor = new RowEditor();
 
     QObject::connect(manager, SIGNAL(newSequenceRequested(void)),
                         this, SLOT(addSequence(void)));
@@ -29,6 +30,7 @@ MainWindow::MainWindow(void) : QWidget() {
     layout->addWidget(editor, 0,1, 5,5);
     layout->addWidget(transport, 5,0, 1,1);
     layout->addWidget(config, 5,1, 1,5);
+    layout->addWidget(rowEditor, 6,0, 1,6);
 
     this->setLayout(layout);
     this->setWindowTitle("z i g g u r a t");
@@ -41,7 +43,7 @@ MainWindow::MainWindow(void) : QWidget() {
         addSequence(16, QString("sequence %1").arg(i));
     }
 
-    resize(700,500);
+    resize(700,700);
 
 }
 
@@ -75,6 +77,7 @@ void MainWindow::addSequence(int nsteps, QString name) {
     QObject::connect(scont, SIGNAL(canvasSelected(Canvas*)), editor, SLOT(setCanvas(Canvas*)));
     QObject::connect(scont, SIGNAL(pageSelected(ConfigPage*)), config, SLOT(setPage(ConfigPage*)));
     QObject::connect(scont, SIGNAL(thumbnailSelected(Thumbnail*)), manager, SLOT(selectThumbnail(Thumbnail*)));
+    QObject::connect(scont, SIGNAL(rowSelected(ButtonRow*)), rowEditor, SLOT(setRow(ButtonRow*)));
 
     QObject::connect(scont, SIGNAL(deleteRequested(SequenceContainer*)),
                         this, SLOT(deleteSequence(SequenceContainer*)));
@@ -109,6 +112,7 @@ void MainWindow::deleteSequence(SequenceContainer* scont) {
         } else {
             editor->setDefaultCanvas();
             config->setDefaultPage();
+            rowEditor->setDefaultRow();
         }
     }
 

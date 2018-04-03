@@ -6,6 +6,7 @@
 #include "EditorWidget.h"
 #include "TransportWidget.h"
 #include "Configurator.h"
+#include "RowEditor.h"
 #include "Dialogs.h"
 
 #include "SequenceContainer.h"
@@ -25,6 +26,7 @@ class MainWindow : public QWidget
         EditorWidget *editor;
         TransportWidget *transport;
         Configurator *config;
+        RowEditor *rowEditor;
         ////
         std::vector<SequenceContainer*> sconts;
         std::vector<SequenceContainer*>::iterator scontIter;
