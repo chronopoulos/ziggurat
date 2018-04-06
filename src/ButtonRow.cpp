@@ -12,6 +12,8 @@ ButtonRow::ButtonRow(int nsteps) : QWidget() {
     if (m_nsteps > 0) {
         for (int i=0; i<m_nsteps; i++) {
             tmpCell = new ButtonCell();
+            if (i==0) tmpCell->setLBracket(true);
+            if (i==(m_nsteps-1)) tmpCell->setRBracket(true);
             cells.push_back(tmpCell);
             layout->addWidget(tmpCell);
         }

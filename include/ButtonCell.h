@@ -23,9 +23,13 @@ class Indicator : public QWidget
     public:
         Indicator();
         void setPlayhead(bool);
+        void setLBracket(bool);
+        void setRBracket(bool);
 
     private:
         bool m_hasPlayhead;
+        bool m_hasLBracket;
+        bool m_hasRBracket;
 
     protected:
         void paintEvent(QPaintEvent*);
@@ -39,6 +43,8 @@ class ButtonCell : public QWidget
     public:
         ButtonCell(bool dummy=false);
         void setPlayhead(bool);
+        void setLBracket(bool);
+        void setRBracket(bool);
 
     private:
         Button *button;
