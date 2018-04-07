@@ -27,7 +27,9 @@ Sequence::Sequence(int nsteps) {
     subloop_start = 0;
     subloop_stop = m_nsteps - 1;
 
-    trigVecs = std::vector< std::vector<Trigger> >(m_nsteps);
+    for (int i=0; i < m_nsteps; i++) {
+        trigs.push_back(Trigger(i));
+    }
 
     try {
         midiout = new RtMidiOut(MIDI_API, "ziggurat");
@@ -58,32 +60,9 @@ void Sequence::setEnabling(bool enabled) {
 
 }
 
-void Sequence::handleTrigRequest(TrigRequest *tr) {
+void Sequence::setTrig(int step, Trigger *trig) {
 
-    int step = tr->trig().step();
-    std::vector<Trigger> *trigVec = &(trigVecs[step]);
-    std::vector<Trigger>::iterator trigIter;
-
-    trigIter = std::find(trigVec->begin(), trigVec->end(), tr->trig());
-    bool exists = (trigIter != trigVec->end());
-
-    if (tr->request() == TrigRequest::Add) {
-
-        if (!exists) {
-            trigVec->push_back(tr->trig());
-            emit trigRequestAccepted(tr);
-            if (trigVec->size() == 1) emit stepActivationChanged(step, true);
-        }
-
-    } else if (tr->request() == TrigRequest::Remove) {
-
-        if (exists) {
-            trigVec->erase(trigIter);
-            emit trigRequestAccepted(tr);
-            if (trigVec->empty()) emit stepActivationChanged(step, false);
-        }
-
-    }
+    trigs[step] = *trig;
 
 }
 
@@ -93,10 +72,8 @@ void Sequence::tick(void) {
 
         // only output MIDI if enabled
         if (m_enabled) {
-            for (trigIter = trigVecs[playhead].begin(); trigIter != trigVecs[playhead].end(); trigIter++) {
-                if (trigIter->type() == Trigger::Type_Note) {
-                    sendNoteOn(60 + trigIter->note() + m_transpose);
-                }
+            if (trigs[playhead].type() == Trigger::Type_Note) {
+                sendNoteOn(trigs[playhead].note() + m_transpose);
             }
         }
 
@@ -175,17 +152,6 @@ void Sequence::setSubloop_stop(int step) {
 
     subloop_stop = step;
 
-}
-
-void Sequence::setLength(int length) {
-
-    trigVecs.resize(length);
-
-    if ((length-1) < subloop_start) subloop_start = 0;
-    if ((length-1) < subloop_stop) subloop_stop = length - 1;
-    emit subloopChanged(subloop_start, subloop_stop);
-
-    m_nsteps = length;
 }
 
 void Sequence::setClockDiv(int div) {

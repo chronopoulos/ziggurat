@@ -32,8 +32,7 @@ class Sequence : public QObject
         int m_direction;
         bool m_bounceForward;
 
-        std::vector< std::vector<Trigger> > trigVecs;
-        std::vector<Trigger>::iterator trigIter;
+        std::vector<Trigger> trigs;
 
         RtMidiOut *midiout;
         void sendNoteOn(int);
@@ -41,13 +40,12 @@ class Sequence : public QObject
         int subloop_start, subloop_stop;
 
     public slots:
-        void handleTrigRequest(TrigRequest*);
+        void setTrig(int, Trigger*);
         void tick(void);
         void setName(QString);
         void setSubloop_start(int);
         void setSubloop_stop(int);
         void setEnabling(bool);
-        void setLength(int);
         void setClockDiv(int);
         void setTranspose(int);
         void setMidiChan(int);
