@@ -32,6 +32,9 @@ QMAKE_CXXFLAGS += -D__UNIX_JACK__ # needed for RtMidi "dummy" error
 LIBS += -ljack
 QMAKE_CXXFLAGS += -std=gnu++0x # needed for RtMidi "dummy" error
 
+# GDB
+#QMAKE_CXXFLAGS += -ggdb
+
 # Input
 SOURCES += main.cpp
 SOURCES += MainWindow.cpp
