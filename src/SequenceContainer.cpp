@@ -15,26 +15,32 @@ SequenceContainer::SequenceContainer(int nsteps, QString name) {
                         this, SLOT(select(void)));
 
     // trig requests
-    QObject::connect(canv, SIGNAL(trigRequested(TrigRequest*)), seq, SLOT(handleTrigRequest(TrigRequest*)));
-    QObject::connect(seq, SIGNAL(trigRequestAccepted(TrigRequest*)),
-                        canv, SLOT(registerTrigRequest(TrigRequest*)));
+    QObject::connect(row, SIGNAL(trigSet(int, Trigger*)), seq, SLOT(setTrig(int, Trigger*)));
     QObject::connect(seq, SIGNAL(stepActivationChanged(int, bool)),
                         thumb, SLOT(setActivation(int,bool)));
 
     // clock divide
     QObject::connect(page, SIGNAL(clockDivChanged(int)),
                         seq, SLOT(setClockDiv(int)));
+    QObject::connect(row, SIGNAL(clockDivChanged(int)),
+                        seq, SLOT(setClockDiv(int)));
 
     // transpose
     QObject::connect(page, SIGNAL(transposeChanged(int)),
+                        seq, SLOT(setTranspose(int)));
+    QObject::connect(row, SIGNAL(transposeChanged(int)),
                         seq, SLOT(setTranspose(int)));
 
     // MIDI Channel 
     QObject::connect(page, SIGNAL(midiChanChanged(int)),
                         seq, SLOT(setMidiChan(int)));
+    QObject::connect(row, SIGNAL(midiChanChanged(int)),
+                        seq, SLOT(setMidiChan(int)));
 
     // Direction
     QObject::connect(page, SIGNAL(directionChanged(QString)),
+                        seq, SLOT(setDirection(QString)));
+    QObject::connect(row, SIGNAL(directionChanged(QString)),
                         seq, SLOT(setDirection(QString)));
 
     // ticks
@@ -62,12 +68,17 @@ SequenceContainer::SequenceContainer(int nsteps, QString name) {
                         thumb, SLOT(setName(QString)));
     QObject::connect(page, SIGNAL(nameChanged(QString)),
                         seq, SLOT(setName(QString)));
+    QObject::connect(row, SIGNAL(nameChanged(QString)),
+                        thumb, SLOT(setName(QString)));
+    QObject::connect(row, SIGNAL(nameChanged(QString)),
+                        seq, SLOT(setName(QString)));
 
     // delete
     QObject::connect(thumb, SIGNAL(deleteRequested(void)),
                         this, SLOT(routeDelete(void)));
 
     page->setName(name); // propagates to thumbnail
+    row->setName(name); // propagates to thumbnail
     seq->reset(); // call this to set the thumbnail playhead
 
 }
