@@ -54,7 +54,7 @@ SOURCES += SequenceContainer.cpp
 SOURCES += ClickLabel.cpp
 SOURCES += Dialogs.cpp
 SOURCES += ButtonRow.cpp
-SOURCES += ButtonCell.cpp
+SOURCES += Button.cpp
 SOURCES += RowEditor.cpp
 SOURCES += RtMidi.cpp
 
@@ -75,7 +75,7 @@ HEADERS += SequenceContainer.h
 HEADERS += ClickLabel.h
 HEADERS += Dialogs.h
 HEADERS += ButtonRow.h
-HEADERS += ButtonCell.h
+HEADERS += Button.h
 HEADERS += RowEditor.h
 HEADERS += RtMidi.h
 

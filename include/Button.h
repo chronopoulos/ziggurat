@@ -2,17 +2,30 @@
 #define BUTTONCELL_H
 
 #include <QWidget>
-#include <QPushButton>
 #include <QVBoxLayout>
 #include <QPaintEvent>
 #include <QPainter>
 
-class Button : public QPushButton
+#include "Trigger.h"
+
+class Button : public QWidget
 {
     Q_OBJECT
 
     public:
-        Button(bool dummy=false);
+        Button(int);
+
+    private:
+        bool m_isActive;
+        int m_step;
+        Trigger *m_trig;
+
+    protected:
+        void mousePressEvent(QMouseEvent*);
+        void paintEvent(QPaintEvent*);
+
+    signals:
+        void trigSet(int, Trigger*);
 
 };
 
@@ -33,22 +46,6 @@ class Indicator : public QWidget
 
     protected:
         void paintEvent(QPaintEvent*);
-
-};
-
-class ButtonCell : public QWidget
-{
-    Q_OBJECT
-
-    public:
-        ButtonCell(bool dummy=false);
-        void setPlayhead(bool);
-        void setLBracket(bool);
-        void setRBracket(bool);
-
-    private:
-        Button *button;
-        Indicator *indicator;
 
 };
 

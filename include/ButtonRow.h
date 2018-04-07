@@ -6,7 +6,7 @@
 #include <QHBoxLayout>
 
 #include "ClickLabel.h"
-#include "ButtonCell.h"
+#include "Button.h"
 
 class ButtonRow : public QWidget
 {
