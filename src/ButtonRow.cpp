@@ -6,35 +6,101 @@ ButtonRow::ButtonRow(int nsteps) : QWidget() {
 
     m_nsteps = nsteps;
 
-    QHBoxLayout *layout = new QHBoxLayout();
+    QVBoxLayout *layout = new QVBoxLayout();
 
-    ButtonCell *tmpCell;
     if (m_nsteps > 0) {
-        for (int i=0; i<m_nsteps; i++) {
-            tmpCell = new ButtonCell();
-            if (i==0) tmpCell->setLBracket(true);
-            if (i==(m_nsteps-1)) tmpCell->setRBracket(true);
-            cells.push_back(tmpCell);
-            layout->addWidget(tmpCell);
+
+        QGridLayout *topLayout = new QGridLayout();
+        QHBoxLayout *middleLayout = new QHBoxLayout();
+        QHBoxLayout *bottomLayout = new QHBoxLayout();
+
+        nameLabel = new ClickLabel("Name: %1", ClickLabel::Type_QString);
+        QObject::connect(nameLabel, SIGNAL(valueChanged(QString)),
+                            this, SIGNAL(nameChanged(QString)));
+
+        lengthLabel = new ClickLabel("Length: %1", ClickLabel::Type_Int);
+        lengthLabel->setValue(m_nsteps);
+        lengthLabel->setHardwired(true); // hardwired for now
+
+        clockDivLabel = new ClickLabel("Clock Divide: %1", ClickLabel::Type_Int);
+        clockDivLabel->setMin(1);
+        clockDivLabel->setValue(1);
+        QObject::connect(clockDivLabel, SIGNAL(valueChanged(int)),
+                            this, SIGNAL(clockDivChanged(int)));
+
+        transposeLabel = new ClickLabel("Transpose: %1", ClickLabel::Type_Int);
+        transposeLabel->setValue(0);
+        QObject::connect(transposeLabel, SIGNAL(valueChanged(int)),
+                            this, SIGNAL(transposeChanged(int)));
+
+        midiChanLabel = new ClickLabel("MIDI Channel: %1", ClickLabel::Type_Int);
+        midiChanLabel->setMin(1);
+        midiChanLabel->setMax(16);
+        midiChanLabel->setValue(1);
+        QObject::connect(midiChanLabel, SIGNAL(valueChanged(int)),
+                            this, SIGNAL(midiChanChanged(int)));
+
+        directionLabel = new ClickLabel("Direction: %1", ClickLabel::Type_Item);
+        QStringList items;
+        items << "Forward" << "Backward" << "Bounce";
+        directionLabel->setItems(items);
+        directionLabel->setValue("Forward");
+        QObject::connect(directionLabel, SIGNAL(valueChanged(QString)),
+                            this, SIGNAL(directionChanged(QString)));
+
+        topLayout->addWidget(nameLabel, 0,0, 1,1);
+        topLayout->addWidget(lengthLabel, 0,1, 1,1);
+        topLayout->addWidget(transposeLabel, 1,0, 1,1);
+        topLayout->addWidget(midiChanLabel, 1,1, 1,1);
+        topLayout->addWidget(clockDivLabel, 2,0, 1,1);
+        topLayout->addWidget(directionLabel, 2,1, 1,1);
+
+        Button *tmpButton;
+        Indicator *tmpIndicator;
+        for (int i=0; i < m_nsteps; i++) {
+
+            tmpButton = new Button(i);
+            connect(tmpButton, SIGNAL(trigSet(int, Trigger*)), this, SIGNAL(trigSet(int, Trigger*)));
+            middleLayout->addWidget(tmpButton);
+
+            tmpIndicator = new Indicator();
+            if (i==0) tmpIndicator->setLBracket(true);
+            if (i==(m_nsteps-1)) tmpIndicator->setRBracket(true);
+            indicators.push_back(tmpIndicator);
+            bottomLayout->addWidget(tmpIndicator);
+
         }
-    } else { // dummy/default row indicated
-        for (int i=0; i<16; i++) {
-            tmpCell = new ButtonCell(true);
-            cells.push_back(tmpCell);
-            layout->addWidget(tmpCell);
-        }
+
+        layout->addLayout(topLayout);
+        layout->addLayout(middleLayout);
+        layout->addLayout(bottomLayout);
+
+        playheadIndicator = nullptr;
+
+    } else {
+
+        QLabel *dummyLabel = new QLabel("No Sequence Selected");
+        dummyLabel->setAlignment(Qt::AlignCenter);
+        dummyLabel->setFont(QFont("Helvetica", 20));
+        layout->addWidget(dummyLabel);
+
     }
 
     setLayout(layout);
 
-    playheadCell = nullptr;
 
 }
 
 void ButtonRow::updatePlayhead(int step) {
 
-    if (playheadCell) playheadCell->setPlayhead(false);
-    playheadCell = cells[step];
-    playheadCell->setPlayhead(true);
+    if (playheadIndicator) playheadIndicator->setPlayhead(false);
+    playheadIndicator = indicators[step];
+    playheadIndicator->setPlayhead(true);
+
+}
+
+void ButtonRow::setName(QString name) {
+
+    nameLabel->setValue(name);
 
 }
