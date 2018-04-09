@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QVBoxLayout>
 #include <QPaintEvent>
+#include <QMouseEvent>
 #include <QPainter>
 
 #include "Trigger.h"
@@ -34,7 +35,7 @@ class Indicator : public QWidget
     Q_OBJECT
 
     public:
-        Indicator();
+        Indicator(void);
         void setPlayhead(bool);
         void setLBracket(bool);
         void setRBracket(bool);
@@ -43,9 +44,15 @@ class Indicator : public QWidget
         bool m_hasPlayhead;
         bool m_hasLBracket;
         bool m_hasRBracket;
+        bool m_hasLBracketGhost;
+        bool m_hasRBracketGhost;
 
     protected:
         void paintEvent(QPaintEvent*);
+        void mouseMoveEvent(QMouseEvent*);
+        void dragEnterEvent(QDragEnterEvent*);
+        void dragLeaveEvent(QDragLeaveEvent*);
+        void dropEvent(QDropEvent*);
 
 };
 
