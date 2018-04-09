@@ -55,6 +55,10 @@ ButtonRow::ButtonRow(int nsteps) : QWidget() {
         topLayout->addWidget(clockDivLabel, 2,0, 1,1);
         topLayout->addWidget(directionLabel, 2,1, 1,1);
 
+        playheadIndicator = nullptr;
+        lBracketIndicator = nullptr;
+        rBracketIndicator = nullptr;
+
         Button *tmpButton;
         Indicator *tmpIndicator;
         for (int i=0; i < m_nsteps; i++) {
@@ -63,10 +67,12 @@ ButtonRow::ButtonRow(int nsteps) : QWidget() {
             connect(tmpButton, SIGNAL(trigSet(int, Trigger*)), this, SIGNAL(trigSet(int, Trigger*)));
             middleLayout->addWidget(tmpButton);
 
-            tmpIndicator = new Indicator();
+            tmpIndicator = new Indicator(i);
+            indicators.push_back(tmpIndicator);
+            connect(tmpIndicator, SIGNAL(lBracketSet(int)), this, SLOT(updateLBracket(int)));
+            connect(tmpIndicator, SIGNAL(rBracketSet(int)), this, SLOT(updateRBracket(int)));
             if (i==0) tmpIndicator->setLBracket(true);
             if (i==(m_nsteps-1)) tmpIndicator->setRBracket(true);
-            indicators.push_back(tmpIndicator);
             bottomLayout->addWidget(tmpIndicator);
 
         }
@@ -74,8 +80,6 @@ ButtonRow::ButtonRow(int nsteps) : QWidget() {
         layout->addLayout(topLayout);
         layout->addLayout(middleLayout);
         layout->addLayout(bottomLayout);
-
-        playheadIndicator = nullptr;
 
     } else {
 
@@ -88,7 +92,6 @@ ButtonRow::ButtonRow(int nsteps) : QWidget() {
 
     setLayout(layout);
 
-
 }
 
 void ButtonRow::updatePlayhead(int step) {
@@ -99,8 +102,26 @@ void ButtonRow::updatePlayhead(int step) {
 
 }
 
+void ButtonRow::updateLBracket(int step) {
+
+
+    if (lBracketIndicator) lBracketIndicator->setLBracket(false);
+    lBracketIndicator = indicators[step];
+    emit lBracketChanged(step);
+
+}
+
+void ButtonRow::updateRBracket(int step) {
+
+    if (rBracketIndicator) rBracketIndicator->setRBracket(false);
+    rBracketIndicator = indicators[step];
+    emit rBracketChanged(step);
+
+}
+
 void ButtonRow::setName(QString name) {
 
     nameLabel->setValue(name);
 
 }
+

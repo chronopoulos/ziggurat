@@ -34,18 +34,24 @@ class Indicator : public QWidget
     Q_OBJECT
 
     public:
-        Indicator();
+        Indicator(int);
         void setPlayhead(bool);
         void setLBracket(bool);
         void setRBracket(bool);
 
     private:
+        int m_step;
         bool m_hasPlayhead;
         bool m_hasLBracket;
         bool m_hasRBracket;
 
     protected:
         void paintEvent(QPaintEvent*);
+        void mousePressEvent(QMouseEvent*);
+
+    signals:
+        void lBracketSet(int);
+        void rBracketSet(int);
 
 };
 

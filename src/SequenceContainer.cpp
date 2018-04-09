@@ -52,12 +52,10 @@ SequenceContainer::SequenceContainer(int nsteps, QString name) {
                         row, SLOT(updatePlayhead(int)));
 
     // subloops
-    QObject::connect(canv->lBracket, SIGNAL(stepChanged(int)),
+    QObject::connect(row, SIGNAL(lBracketChanged(int)),
                         seq, SLOT(setSubloop_start(int)));
-    QObject::connect(canv->rBracket, SIGNAL(stepChanged(int)),
+    QObject::connect(row, SIGNAL(rBracketChanged(int)),
                         seq, SLOT(setSubloop_stop(int)));
-    QObject::connect(seq, SIGNAL(subloopChanged(int, int)),
-                        canv, SLOT(setBrackets(int,int)));
 
     // enabling
     QObject::connect(thumb, SIGNAL(enablingChanged(bool)),

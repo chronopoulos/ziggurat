@@ -25,10 +25,15 @@ class ButtonRow : public QWidget
         ClickLabel *midiChanLabel;
         ClickLabel *directionLabel;
         std::vector<Indicator*> indicators;
+
         Indicator *playheadIndicator;
+        Indicator *lBracketIndicator;
+        Indicator *rBracketIndicator;
 
     public slots:
         void updatePlayhead(int);
+        void updateLBracket(int);
+        void updateRBracket(int);
 
     signals:
         void trigSet(int, Trigger*);
@@ -37,6 +42,8 @@ class ButtonRow : public QWidget
         void transposeChanged(int);
         void midiChanChanged(int);
         void directionChanged(QString);
+        void lBracketChanged(int);
+        void rBracketChanged(int);
 
 };
 

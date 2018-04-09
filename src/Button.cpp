@@ -57,7 +57,9 @@ void Button::paintEvent(QPaintEvent*) {
 }
 
 
-Indicator::Indicator() {
+Indicator::Indicator(int step) {
+
+    m_step = step;
 
     m_hasPlayhead = false;
     m_hasLBracket= false;
@@ -77,15 +79,23 @@ void Indicator::setPlayhead(bool hasPlayhead) {
 
 void Indicator::setLBracket(bool hasLBracket) {
 
+    if (hasLBracket == m_hasLBracket) return;
+
     m_hasLBracket = hasLBracket;
     update();
+
+    if (m_hasLBracket) emit lBracketSet(m_step);
 
 }
 
 void Indicator::setRBracket(bool hasRBracket) {
 
+    if (hasRBracket == m_hasRBracket) return;
+
     m_hasRBracket = hasRBracket;
     update();
+
+    if (m_hasRBracket) emit rBracketSet(m_step);
 
 }
 
@@ -126,3 +136,12 @@ void Indicator::paintEvent(QPaintEvent*) {
 
 }
 
+void Indicator::mousePressEvent(QMouseEvent *e) {
+
+    if (e->buttons() == Qt::LeftButton) {
+        setLBracket(true);
+    } else if (e->buttons() == Qt::RightButton) {
+        setRBracket(true);
+    }
+
+}
