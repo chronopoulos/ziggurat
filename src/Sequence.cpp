@@ -38,7 +38,6 @@ Sequence::Sequence(int nsteps) {
         qDebug() << "oy: " << e.what();
     }
 
-
 }
 
 Sequence::~Sequence(void) {
@@ -61,6 +60,15 @@ void Sequence::setEnabling(bool enabled) {
 }
 
 void Sequence::setTrig(int step, Trigger *trig) {
+
+    // only emit a signal if the activation state has changed
+    // i.e. from Null to Note, Note to Null, CC to Null, etc.
+    if ((trigs[step].type()==Trigger::Type_Null)
+            != (trig->type()==Trigger::Type_Null)) {
+
+        emit stepActivationChanged(step, (trig->type() != Trigger::Type_Null));
+
+    }
 
     trigs[step] = *trig;
 
