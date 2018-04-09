@@ -23,6 +23,7 @@ class Button : public QWidget
     protected:
         void mousePressEvent(QMouseEvent*);
         void paintEvent(QPaintEvent*);
+        void wheelEvent(QWheelEvent*);
 
     signals:
         void trigSet(int, Trigger*);
