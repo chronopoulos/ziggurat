@@ -21,9 +21,9 @@ Button::Button(int step) {
 
 }
 
-void Button::mousePressEvent(QMouseEvent*) {
+void Button::mousePressEvent(QMouseEvent *e) {
 
-    m_isActive = !m_isActive;
+    if (e->buttons() == Qt::LeftButton) m_isActive = !m_isActive;
 
     if (m_isActive) {
         m_trig->setNote(60); // temporary default
@@ -34,6 +34,7 @@ void Button::mousePressEvent(QMouseEvent*) {
     emit trigSet(m_step, m_trig);
 
     update();
+
 }
 
 void Button::paintEvent(QPaintEvent*) {
