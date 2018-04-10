@@ -1,7 +1,7 @@
 # ziggurat
 a standalone MIDI sequencer
 
-![Ziggurat Screenshot](https://static1.squarespace.com/static/54d8093fe4b02ef1156307b5/t/5aaa1adfe4966b47162a5bb1/1521097480359/ziggurat_screenshot.png)
+![Ziggurat Screenshot](https://static1.squarespace.com/static/54d8093fe4b02ef1156307b5/t/5acc625e758d46742aad01cd/1523343990852/ziggurat_20180410.png)
 
 ## Build Instructions
 
