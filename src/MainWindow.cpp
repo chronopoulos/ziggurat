@@ -16,7 +16,6 @@ MainWindow::MainWindow(void) : QWidget() {
     layout = new QGridLayout();
 
     manager = new ManagerWidget();
-    editor = new EditorWidget();
     transport = new TransportWidget();
     config = new Configurator();
     rowEditor = new RowEditor();
@@ -26,8 +25,7 @@ MainWindow::MainWindow(void) : QWidget() {
     QObject::connect(transport, SIGNAL(stopped(void)),
                         this, SLOT(resetAll(void)));
 
-    layout->addWidget(manager, 0,0, 5,1);
-    layout->addWidget(editor, 0,1, 5,5);
+    layout->addWidget(manager, 0,0, 5,6);
     layout->addWidget(transport, 5,0, 1,1);
     layout->addWidget(config, 5,1, 1,5);
     layout->addWidget(rowEditor, 6,0, 1,6);
@@ -74,7 +72,6 @@ void MainWindow::addSequence(int nsteps, QString name) {
     sconts.push_back(scont);
     manager->addThumbnail(scont->thumb);
 
-    QObject::connect(scont, SIGNAL(canvasSelected(Canvas*)), editor, SLOT(setCanvas(Canvas*)));
     QObject::connect(scont, SIGNAL(pageSelected(ConfigPage*)), config, SLOT(setPage(ConfigPage*)));
     QObject::connect(scont, SIGNAL(thumbnailSelected(Thumbnail*)), manager, SLOT(selectThumbnail(Thumbnail*)));
     QObject::connect(scont, SIGNAL(rowSelected(ButtonRow*)), rowEditor, SLOT(setRow(ButtonRow*)));
@@ -110,7 +107,6 @@ void MainWindow::deleteSequence(SequenceContainer* scont) {
             scontIter = sconts.begin();
             (*scontIter)->select();
         } else {
-            editor->setDefaultCanvas();
             config->setDefaultPage();
             rowEditor->setDefaultRow();
         }

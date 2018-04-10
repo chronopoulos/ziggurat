@@ -39,10 +39,8 @@ QMAKE_CXXFLAGS += -std=gnu++0x # needed for RtMidi "dummy" error
 SOURCES += main.cpp
 SOURCES += MainWindow.cpp
 SOURCES += ManagerWidget.cpp
-SOURCES += EditorWidget.cpp
 SOURCES += Sequence.cpp
 SOURCES += Thumbnail.cpp
-SOURCES += Canvas.cpp
 SOURCES += Led.cpp
 SOURCES += Trigger.cpp
 SOURCES += TrigRequest.cpp
@@ -60,10 +58,8 @@ SOURCES += RtMidi.cpp
 
 HEADERS += MainWindow.h
 HEADERS += ManagerWidget.h
-HEADERS += EditorWidget.h
 HEADERS += Sequence.h
 HEADERS += Thumbnail.h
-HEADERS += Canvas.h
 HEADERS += Led.h
 HEADERS += Trigger.h
 HEADERS += TrigRequest.h

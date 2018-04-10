@@ -6,7 +6,6 @@ SequenceContainer::SequenceContainer(int nsteps, QString name) {
 
     seq = new Sequence(nsteps);
     thumb = new Thumbnail(nsteps);
-    canv = new Canvas(nsteps);
     page = new ConfigPage(nsteps);
     row = new ButtonRow(nsteps);
 
@@ -39,8 +38,6 @@ SequenceContainer::SequenceContainer(int nsteps, QString name) {
     QObject::connect(seq, SIGNAL(playheadUpdated(int)),
                         thumb, SLOT(updatePlayhead(int)));
     QObject::connect(seq, SIGNAL(playheadUpdated(int)),
-                        canv, SLOT(updatePlayhead(int)));
-    QObject::connect(seq, SIGNAL(playheadUpdated(int)),
                         row, SLOT(updatePlayhead(int)));
 
     // subloops
@@ -72,7 +69,6 @@ SequenceContainer::~SequenceContainer(void) {
 
     delete seq;
     delete thumb;
-    delete canv;
     delete page;
     delete row;
 
@@ -80,7 +76,6 @@ SequenceContainer::~SequenceContainer(void) {
 
 void SequenceContainer::select(void) {
 
-    emit canvasSelected(canv);
     emit pageSelected(page);
     emit thumbnailSelected(thumb);
     emit rowSelected(row);

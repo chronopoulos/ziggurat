@@ -3,7 +3,6 @@
 
 #include "Sequence.h"
 #include "Thumbnail.h"
-#include "Canvas.h"
 #include "ConfigPage.h"
 #include "ButtonRow.h"
 
@@ -17,14 +16,12 @@ class SequenceContainer : public QObject
 
         Sequence *seq;
         Thumbnail *thumb;
-        Canvas *canv;
         ConfigPage *page;
         ButtonRow *row;
 
         bool selected(void);
 
     signals:
-        void canvasSelected(Canvas*);
         void pageSelected(ConfigPage*);
         void thumbnailSelected(Thumbnail*);
         void rowSelected(ButtonRow*);

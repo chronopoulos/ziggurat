@@ -3,7 +3,6 @@
 #include <QString>
 
 #include "ManagerWidget.h"
-#include "EditorWidget.h"
 #include "TransportWidget.h"
 #include "Configurator.h"
 #include "RowEditor.h"
@@ -23,11 +22,10 @@ class MainWindow : public QWidget
         int state;
         QGridLayout *layout;
         ManagerWidget *manager;
-        EditorWidget *editor;
         TransportWidget *transport;
         Configurator *config;
         RowEditor *rowEditor;
-        ////
+
         std::vector<SequenceContainer*> sconts;
         std::vector<SequenceContainer*>::iterator scontIter;
         void addSequence(int, QString);
