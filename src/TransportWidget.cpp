@@ -10,7 +10,7 @@ TransportWidget::TransportWidget() {
 
     // qobjects
 
-    tempoLabel = new ClickLabel("Tempo: %1 BPM", ClickLabel::Type_Double);
+    tempoLabel = new ClickLabel("Tempo: %1 BPM", ClickLabel::Type_Double, "Ziggurat", "Tempo");
     QObject::connect(tempoLabel, SIGNAL(valueChanged(double)), this, SLOT(setTempo(double)));
     
 

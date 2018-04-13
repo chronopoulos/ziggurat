@@ -6,7 +6,7 @@ const int ClickLabel::Type_QString = 1;
 const int ClickLabel::Type_Double = 2;
 const int ClickLabel::Type_Item = 3;
 
-ClickLabel::ClickLabel(QString baseText, int type) {
+ClickLabel::ClickLabel(QString baseText, int type, QString title, QString label) {
 
     m_baseText = baseText;
     m_type = type;
@@ -22,6 +22,9 @@ ClickLabel::ClickLabel(QString baseText, int type) {
     m_max_int =  2147483647;
     m_min_double = -2147483647;
     m_max_double =  2147483647;
+
+    m_title = title;
+    m_label = label;
 
 }
 
@@ -86,19 +89,19 @@ void ClickLabel::mousePressEvent(QMouseEvent*) {
         bool ok = false;
 
         if (m_type == ClickLabel::Type_Int) {
-            int result = QInputDialog::getInt(this, "Title", "Label",
+            int result = QInputDialog::getInt(this, m_title, m_label,
                                                 m_val_int, m_min_int, m_max_int, 1, &ok);
             if (ok) setValue(result);
         } else if (m_type == ClickLabel::Type_QString) {
-            QString result = QInputDialog::getText(this, "Title", "Label", QLineEdit::Normal,
+            QString result = QInputDialog::getText(this, m_title, m_label, QLineEdit::Normal,
                                                     m_val_qstring, &ok);
             if (ok) setValue(result);
         } else if (m_type == ClickLabel::Type_Double) {
-            double result = QInputDialog::getDouble(this, "Title", "Label",
+            double result = QInputDialog::getDouble(this, m_title, m_label,
                                                         m_val_double, m_min_double, m_max_double, 2, &ok);
             if (ok) setValue(result);
         } else if (m_type == ClickLabel::Type_Item) {
-            QString result = QInputDialog::getItem(this, "Title", "Label", m_items, 0, false, &ok);
+            QString result = QInputDialog::getItem(this, m_title, m_label, m_items, 0, false, &ok);
             if (ok) setValue(result);
         }
     }
@@ -111,4 +114,14 @@ void ClickLabel::setHardwired(bool hardwired) {
 
 }
 
+void ClickLabel::setTitle(QString title) {
 
+    m_title = title;
+
+}
+
+void ClickLabel::setLabel(QString label) {
+
+    m_label = label;
+
+}

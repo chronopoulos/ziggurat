@@ -12,7 +12,7 @@ class ClickLabel: public QLabel
     Q_OBJECT
 
     public:
-        ClickLabel(QString, int);
+        ClickLabel(QString, int, QString, QString);
 
         void setMin(int);
         void setMax(int);
@@ -24,7 +24,10 @@ class ClickLabel: public QLabel
         void setValue(double);
         void setHardwired(bool);
         void setItems(const QStringList&);
+
         int m_type;
+        QString m_title;
+        QString m_label;
 
         static const int Type_Int;
         static const int Type_QString;
@@ -52,6 +55,11 @@ class ClickLabel: public QLabel
         void valueChanged(int);
         void valueChanged(QString);
         void valueChanged(double);
+
+    public slots:
+        void setTitle(QString);
+        void setLabel(QString);
+
 
 };
 
