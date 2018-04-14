@@ -7,9 +7,8 @@
 #include "TransportWidget.h"
 #include "Configurator.h"
 #include "RowEditor.h"
-#include "Dialogs.h"
 
-#include "SequenceContainer.h"
+#include "Group.h"
 
 class MainWindow : public QWidget
 {

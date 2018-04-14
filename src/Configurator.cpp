@@ -18,6 +18,8 @@ Configurator::Configurator(void) {
 
 void Configurator::setPage(ConfigPage *newPage) {
 
+    if (!newPage) newPage = defaultPage;
+
     if (currentPage != newPage) {
         if (currentPage) {
             layout->replaceWidget(currentPage, newPage);

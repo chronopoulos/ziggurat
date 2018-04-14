@@ -59,15 +59,19 @@ void MainWindow::togglePlayState(void) {
 
 }
 
+// TODO delete
 void MainWindow::addSequence(void) {
 
+    /*
     NewSequenceDialog dlg;
     if (dlg.exec() == QDialog::Accepted) {
         addSequence(dlg.length(), dlg.name());
     }
+    */
 
 }
 
+// TODO delete
 void MainWindow::addSequence(int nsteps, QString name) {
 
     SequenceContainer *scont = new SequenceContainer(nsteps, name);
@@ -96,6 +100,7 @@ void MainWindow::resetAll(void) {
 
 }
 
+// TODO delete
 void MainWindow::deleteSequence(SequenceContainer* scont) {
 
     manager->removeThumbnail(scont->thumb);

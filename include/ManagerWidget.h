@@ -1,3 +1,6 @@
+#ifndef MANAGERWIDGET_H
+#define MANAGERWIDGET_H
+
 #include <QFrame>
 #include <QFocusEvent>
 #include <QVBoxLayout>
@@ -35,3 +38,5 @@ class ManagerWidget : public QFrame
         void newSequenceRequested(void);
 
 };
+
+#endif

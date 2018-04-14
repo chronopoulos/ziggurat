@@ -1,3 +1,6 @@
+#ifndef SEQUENCECONTAINER_H
+#define SEQUENCECONTAINER_H
+
 #include <QObject>
 #include <QString>
 
@@ -33,3 +36,5 @@ class SequenceContainer : public QObject
 
 
 };
+
+#endif

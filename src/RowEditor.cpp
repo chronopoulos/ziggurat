@@ -16,6 +16,8 @@ RowEditor::RowEditor(void) {
 
 void RowEditor::setRow(ButtonRow *newRow) {
 
+    if (!newRow) newRow = defaultRow;
+
     if (currentRow != newRow) {
         if (currentRow) {
             layout->replaceWidget(currentRow, newRow);
