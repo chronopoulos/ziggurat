@@ -33,7 +33,7 @@ LIBS += -ljack
 QMAKE_CXXFLAGS += -std=gnu++0x # needed for RtMidi "dummy" error
 
 # GDB
-#QMAKE_CXXFLAGS += -ggdb
+QMAKE_CXXFLAGS += -ggdb
 
 # Input
 SOURCES += main.cpp
@@ -54,6 +54,8 @@ SOURCES += Dialogs.cpp
 SOURCES += ButtonRow.cpp
 SOURCES += Button.cpp
 SOURCES += RowEditor.cpp
+SOURCES += GroupWidget.cpp
+SOURCES += GroupManager.cpp
 SOURCES += RtMidi.cpp
 
 HEADERS += MainWindow.h
@@ -73,6 +75,8 @@ HEADERS += Dialogs.h
 HEADERS += ButtonRow.h
 HEADERS += Button.h
 HEADERS += RowEditor.h
+HEADERS += GroupWidget.h
+HEADERS += GroupManager.h
 HEADERS += RtMidi.h
 
 # vim:syntax=sh

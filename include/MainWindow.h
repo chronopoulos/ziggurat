@@ -3,6 +3,7 @@
 #include <QString>
 
 #include "ManagerWidget.h"
+#include "GroupManager.h"
 #include "TransportWidget.h"
 #include "Configurator.h"
 #include "RowEditor.h"
@@ -22,6 +23,7 @@ class MainWindow : public QWidget
         int state;
         QGridLayout *layout;
         ManagerWidget *manager;
+        GroupManager *groupManager;
         TransportWidget *transport;
         Configurator *config;
         RowEditor *rowEditor;

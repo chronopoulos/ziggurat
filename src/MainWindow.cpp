@@ -15,7 +15,9 @@ MainWindow::MainWindow(void) : QWidget() {
 
     layout = new QGridLayout();
 
-    manager = new ManagerWidget();
+    manager = new ManagerWidget(); // TODO remove
+
+    groupManager = new GroupManager();
     transport = new TransportWidget();
     config = new Configurator();
     rowEditor = new RowEditor();
@@ -25,7 +27,8 @@ MainWindow::MainWindow(void) : QWidget() {
     QObject::connect(transport, SIGNAL(stopped(void)),
                         this, SLOT(resetAll(void)));
 
-    layout->addWidget(manager, 0,0, 5,6);
+    //layout->addWidget(manager, 0,0, 5,6);
+    layout->addWidget(groupManager, 0,0, 5,6);
     layout->addWidget(transport, 5,0, 1,1);
     layout->addWidget(config, 5,1, 1,5);
     layout->addWidget(rowEditor, 6,0, 1,6);
