@@ -46,9 +46,11 @@ SequenceContainer::SequenceContainer(int nsteps, QString name) {
     QObject::connect(row, SIGNAL(rBracketChanged(int)),
                         seq, SLOT(setSubloop_stop(int)));
 
-    // enabling
-    QObject::connect(thumb, SIGNAL(enablingChanged(bool)),
-                        seq, SLOT(setEnabling(bool)));
+    // mute and queue 
+    connect(thumb, SIGNAL(muteChanged(bool)), seq, SLOT(setMute(bool)));
+    connect(thumb, SIGNAL(queueChanged(bool)), seq, SLOT(setQueue(bool)));
+    connect(seq, SIGNAL(muteChanged(bool)), thumb, SLOT(setMute(bool)));
+    connect(seq, SIGNAL(queueChanged(bool)), thumb, SLOT(setQueue(bool)));
 
     // name change
     QObject::connect(page, SIGNAL(nameChanged(QString)),

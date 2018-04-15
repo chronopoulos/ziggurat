@@ -26,7 +26,8 @@ class Sequence : public QObject
         QString m_name;
         int playhead;
         int m_div, idiv;
-        bool m_enabled;
+        bool m_mute;
+        bool m_queue;
         int m_transpose;
         int m_midiChan;
         int m_direction;
@@ -40,12 +41,13 @@ class Sequence : public QObject
         int subloop_start, subloop_stop;
 
     public slots:
-        void setTrig(int, Trigger*);
         void tick(void);
+        void setTrig(int, Trigger*);
+        void setMute(bool);
+        void setQueue(bool);
         void setName(QString);
         void setSubloop_start(int);
         void setSubloop_stop(int);
-        void setEnabling(bool);
         void setClockDiv(int);
         void setTranspose(int);
         void setMidiChan(int);
@@ -53,10 +55,11 @@ class Sequence : public QObject
         void reset(void);
 
     signals:
-        void trigRequestAccepted(TrigRequest*);
         void playheadUpdated(int);
-        void subloopChanged(int, int);
         void stepActivationChanged(int, bool);
+
+        void muteChanged(bool);
+        void queueChanged(bool);
 
 };
 

@@ -3,6 +3,7 @@
 
 #include <QFrame>
 #include <QLabel>
+#include <QPushButton>
 #include <QMouseEvent>
 #include <QPalette>
 #include <QHBoxLayout>
@@ -26,11 +27,11 @@ class Thumbnail : public QFrame
     private:
         bool interest, m_enabled;
         QLabel *label;
+        QPushButton *muteButton, *queueButton;
         QPalette palette_light, palette_dark;
         std::vector<Led*> leds;
         Led *playheadLed;
         QString m_name;
-        void toggleEnabling(void);
 
     protected:
         void mousePressEvent(QMouseEvent*);
@@ -41,10 +42,19 @@ class Thumbnail : public QFrame
         void setActivation(int, bool);
         void setName(QString);
 
+        void setMute(bool);
+        void setQueue(bool);
+
+    private slots:
+        void handleMuteClick(bool);
+        void handleQueueClick(bool);
+
     signals:
         void interestRequested(void);
         void deleteRequested(void);
-        void enablingChanged(bool);
+
+        void muteChanged(bool);
+        void queueChanged(bool);
 
 };
 

@@ -27,9 +27,11 @@ class GroupWidget : public QWidget
     public slots:
         void addSequence(void);
         void deleteSequence(SequenceContainer*);
+        void resetAll(void);
 
     signals:
         void pageSelected(ConfigPage*);
         void rowSelected(ButtonRow*);
+        void tick_passthrough(void);
 
 };

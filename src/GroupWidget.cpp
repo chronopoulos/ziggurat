@@ -28,7 +28,7 @@ GroupWidget::GroupWidget(void) {
     mainLayout->addWidget(seqManager);
     setLayout(mainLayout);
 
-    setMinimumWidth(320);
+    setMinimumWidth(340);
 
     group = Group();
 
@@ -54,12 +54,10 @@ void GroupWidget::addSequence(int nsteps, QString name) {
     connect(scont, SIGNAL(thumbnailSelected(Thumbnail*)), seqManager, SLOT(selectThumbnail(Thumbnail*)));
     connect(scont, SIGNAL(rowSelected(ButtonRow*)), this, SIGNAL(rowSelected(ButtonRow*)));
 
+    connect(this, SIGNAL(tick_passthrough(void)), scont->seq, SLOT(tick(void)));
+
     connect(scont, SIGNAL(deleteRequested(SequenceContainer*)),
             this, SLOT(deleteSequence(SequenceContainer*)));
-
-    /*
-    connect(transport, SIGNAL(ticked(void)), scont->seq, SLOT(tick(void)));
-    */
 
     if (sconts.size() == 1) scont->select();
 
@@ -85,5 +83,13 @@ void GroupWidget::deleteSequence(SequenceContainer* scont) {
     }
 
     delete scont;
+
+}
+
+void GroupWidget::resetAll(void) {
+
+    for (scontIter = sconts.begin(); scontIter != sconts.end(); scontIter++) {
+        (*scontIter)->seq->reset();
+    }
 
 }

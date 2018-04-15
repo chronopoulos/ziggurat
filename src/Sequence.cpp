@@ -14,12 +14,16 @@ int Sequence::Bounce = 2;
 Sequence::Sequence(int nsteps) {
 
     m_nsteps = nsteps;
+
+    // initialize sequence parameters
     playhead = 0;
     m_div = 1;
     idiv = 0;
     m_transpose = 0;
     m_midiChan = 1;
-    m_enabled = true;
+
+    m_mute = false;
+    m_queue = false;
 
     m_direction = Sequence::Forward;
     m_bounceForward = true;
@@ -27,10 +31,12 @@ Sequence::Sequence(int nsteps) {
     subloop_start = 0;
     subloop_stop = m_nsteps - 1;
 
+    // fill will null-type Trigs
     for (int i=0; i < m_nsteps; i++) {
         trigs.push_back(Trigger(i));
     }
 
+    // RtMidi config
     try {
         midiout = new RtMidiOut(MIDI_API, "ziggurat");
         midiout->openPort(0, "default");
@@ -53,9 +59,15 @@ void Sequence::setName(QString name) {
 
 }
 
-void Sequence::setEnabling(bool enabled) {
+void Sequence::setMute(bool mute) {
 
-    m_enabled = enabled;
+    m_mute = mute;
+
+}
+
+void Sequence::setQueue(bool queue) {
+
+    m_queue = queue;
 
 }
 
@@ -78,8 +90,19 @@ void Sequence::tick(void) {
 
     if (idiv == 0) {
 
-        // only output MIDI if enabled
-        if (m_enabled) {
+        // handle queue, if applicable
+        if (m_queue && (playhead == subloop_start)) {
+
+            m_mute = !m_mute;
+            emit muteChanged(m_mute);
+
+            m_queue = false;
+            emit queueChanged(m_queue);
+
+        }
+
+        // only output MIDI if not muted
+        if (!m_mute) {
             if (trigs[playhead].type() == Trigger::Type_Note) {
                 sendNoteOn(trigs[playhead].note() + m_transpose);
             }

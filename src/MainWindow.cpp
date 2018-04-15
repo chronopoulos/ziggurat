@@ -9,25 +9,23 @@
 #define STATE_PLAYING 1
 #define STATE_PAUSED 2
 
-#define NSEQS_INIT 4
-
 MainWindow::MainWindow(void) : QWidget() {
 
     layout = new QGridLayout();
 
-    manager = new ManagerWidget(); // TODO remove
+    //manager = new ManagerWidget(); // TODO remove
 
     groupManager = new GroupManager();
     transport = new TransportWidget();
     config = new Configurator();
     rowEditor = new RowEditor();
 
-    QObject::connect(manager, SIGNAL(newSequenceRequested(void)),
-                        this, SLOT(addSequence(void)));
-    QObject::connect(transport, SIGNAL(stopped(void)),
-                        this, SLOT(resetAll(void)));
+    connect(groupManager, SIGNAL(pageSelected(ConfigPage*)), config, SLOT(setPage(ConfigPage*)));
+    connect(groupManager, SIGNAL(rowSelected(ButtonRow*)), rowEditor, SLOT(setRow(ButtonRow*)));
 
-    //layout->addWidget(manager, 0,0, 5,6);
+    connect(transport, SIGNAL(ticked(void)), groupManager, SIGNAL(tick_passthrough(void)));
+    connect(transport, SIGNAL(stopped(void)), groupManager, SIGNAL(resetAll_passthrough(void)));
+
     layout->addWidget(groupManager, 0,0, 5,6);
     layout->addWidget(transport, 5,0, 1,1);
     layout->addWidget(config, 5,1, 1,5);
@@ -39,9 +37,9 @@ MainWindow::MainWindow(void) : QWidget() {
 
     state = STATE_STOPPED;
 
-    // initialize with 16-step sequences
-    for (int i=0; i<NSEQS_INIT; i++) {
-        addSequence(16, QString("sequence %1").arg(i));
+    // initialize with 3 groups
+    for (int i=0; i<3; i++) {
+        groupManager->addGroup();
     }
 
     resize(700,700);
@@ -77,10 +75,10 @@ void MainWindow::addSequence(int nsteps, QString name) {
     SequenceContainer *scont = new SequenceContainer(nsteps, name);
 
     sconts.push_back(scont);
-    manager->addThumbnail(scont->thumb);
+    //manager->addThumbnail(scont->thumb);
 
     QObject::connect(scont, SIGNAL(pageSelected(ConfigPage*)), config, SLOT(setPage(ConfigPage*)));
-    QObject::connect(scont, SIGNAL(thumbnailSelected(Thumbnail*)), manager, SLOT(selectThumbnail(Thumbnail*)));
+    //QObject::connect(scont, SIGNAL(thumbnailSelected(Thumbnail*)), manager, SLOT(selectThumbnail(Thumbnail*)));
     QObject::connect(scont, SIGNAL(rowSelected(ButtonRow*)), rowEditor, SLOT(setRow(ButtonRow*)));
 
     QObject::connect(scont, SIGNAL(deleteRequested(SequenceContainer*)),
@@ -92,6 +90,7 @@ void MainWindow::addSequence(int nsteps, QString name) {
                         scont->seq, SLOT(tick(void)));
 }
 
+// TODO delete
 void MainWindow::resetAll(void) {
 
     for (scontIter = sconts.begin(); scontIter != sconts.end(); scontIter++) {
@@ -103,7 +102,7 @@ void MainWindow::resetAll(void) {
 // TODO delete
 void MainWindow::deleteSequence(SequenceContainer* scont) {
 
-    manager->removeThumbnail(scont->thumb);
+    //manager->removeThumbnail(scont->thumb);
 
     scontIter = std::find(sconts.begin(), sconts.end(), scont);
     sconts.erase(scontIter);

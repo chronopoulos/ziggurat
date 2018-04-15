@@ -12,17 +12,19 @@ GroupManager::GroupManager(void) {
     setFrameStyle(QFrame::Box | QFrame::Plain);
     setLineWidth(1);
 
-    for (int i=0; i<2; i++) {
-        addGroup();
-    }
-
 }
 
 void GroupManager::addGroup(void) {
 
-    GroupWidget *group = new GroupWidget();
-    layout->addWidget(group);
-    groups.push_back(group);
+    GroupWidget *groupWidget = new GroupWidget();
+    layout->addWidget(groupWidget);
+    connect(groupWidget, SIGNAL(pageSelected(ConfigPage*)), this, SIGNAL(pageSelected(ConfigPage*)));
+    connect(groupWidget, SIGNAL(rowSelected(ButtonRow*)), this, SIGNAL(rowSelected(ButtonRow*)));
+
+    connect(this, SIGNAL(tick_passthrough(void)), groupWidget, SIGNAL(tick_passthrough(void)));
+    connect(this, SIGNAL(resetAll_passthrough(void)), groupWidget, SLOT(resetAll(void)));
+
+    groupWidgets.push_back(groupWidget);
 
 }
 

@@ -6,16 +6,42 @@ Thumbnail::Thumbnail(int nsteps) : QFrame() {
 
     this->nsteps = nsteps;
 
-    QGridLayout *layout = new QGridLayout();
+    QVBoxLayout *mainLayout = new QVBoxLayout();
+    QHBoxLayout *topLayout = new QHBoxLayout();
+    QHBoxLayout *bottomLayout = new QHBoxLayout();
+
     label = new QLabel();
-    layout->addWidget(label, 0,0, 1,nsteps);
+
+    muteButton = new QPushButton("M");
+    muteButton->setMaximumWidth(30);
+    muteButton->setFocusPolicy(Qt::NoFocus);
+    muteButton->setCheckable(true);
+    muteButton->setStyleSheet("QPushButton:checked {background-color: red}");
+    connect(muteButton, SIGNAL(clicked(bool)), this, SLOT(handleMuteClick(bool)));
+
+    queueButton = new QPushButton("Q");
+    queueButton->setMaximumWidth(30);
+    queueButton->setFocusPolicy(Qt::NoFocus);
+    queueButton->setCheckable(true);
+    queueButton->setStyleSheet("QPushButton:checked {background-color: blue}");
+    connect(queueButton, SIGNAL(clicked(bool)), this, SLOT(handleQueueClick(bool)));
+
+    topLayout->addWidget(label);
+    topLayout->addWidget(muteButton);
+    topLayout->addWidget(queueButton);
+
     Led *led;
     for (int i=0; i<nsteps; i++) {
         led = new Led();
-        layout->addWidget(led, 1,i, 1,1);
+        //layout->addWidget(led, 1,i, 1,1);
+        bottomLayout->addWidget(led);
         leds.push_back(led);
     }
-    setLayout(layout);
+
+    mainLayout->addLayout(topLayout);
+    mainLayout->addLayout(bottomLayout);
+
+    setLayout(mainLayout);
 
     playheadLed = nullptr;
 
@@ -82,15 +108,27 @@ void Thumbnail::contextMenuEvent(QContextMenuEvent*) {
 
 }
 
-void Thumbnail::toggleEnabling(void) {
+void Thumbnail::handleMuteClick(bool mute) {
 
-    m_enabled = !m_enabled;
-    if (m_enabled) {
-        setPalette(palette_dark);
-    } else {
-        setPalette(palette_light);
-    }
-    emit enablingChanged(m_enabled);
+    emit muteChanged(mute);
+
+}
+
+void Thumbnail::handleQueueClick(bool queue) {
+
+    emit queueChanged(queue);
+
+}
+
+void Thumbnail::setMute(bool mute) {
+
+    muteButton->setChecked(mute);
+
+}
+
+void Thumbnail::setQueue(bool queue) {
+
+    queueButton->setChecked(queue);
 
 }
 
