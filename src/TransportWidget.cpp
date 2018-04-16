@@ -11,26 +11,26 @@ TransportWidget::TransportWidget() {
     // qobjects
 
     tempoLabel = new ClickLabel("Tempo: %1 BPM", ClickLabel::Type_Double, "Ziggurat", "Tempo");
-    QObject::connect(tempoLabel, SIGNAL(valueChanged(double)), this, SLOT(setTempo(double)));
+    connect(tempoLabel, SIGNAL(valueChanged(double)), this, SLOT(setTempo(double)));
     
 
     stopButton = new QPushButton();
     stopButton->setIcon(QIcon("img/stop.png"));
     stopButton->setCheckable(true);
     stopButton->setFocusPolicy(Qt::NoFocus);
-    QObject::connect(stopButton, SIGNAL(pressed(void)), this, SLOT(stop(void)));
+    connect(stopButton, SIGNAL(pressed(void)), this, SLOT(stop(void)));
 
     pauseButton = new QPushButton();
     pauseButton->setIcon(QIcon("img/pause.png"));
     pauseButton->setCheckable(true);
     pauseButton->setFocusPolicy(Qt::NoFocus);
-    QObject::connect(pauseButton, SIGNAL(pressed(void)), this, SLOT(pause(void)));
+    connect(pauseButton, SIGNAL(pressed(void)), this, SLOT(pause(void)));
 
     playButton = new QPushButton();
     playButton->setIcon(QIcon("img/play.png"));
     playButton->setCheckable(true);
     playButton->setFocusPolicy(Qt::NoFocus);
-    QObject::connect(playButton, SIGNAL(pressed(void)), this, SLOT(play(void)));
+    connect(playButton, SIGNAL(pressed(void)), this, SLOT(play(void)));
 
     buttonGroup = new QButtonGroup();
     buttonGroup->addButton(stopButton);
@@ -40,7 +40,7 @@ TransportWidget::TransportWidget() {
     masterClock = new QTimer(this);
     masterClock->setTimerType(Qt::PreciseTimer);
 
-    QObject::connect(masterClock, SIGNAL(timeout(void)), this, SIGNAL(ticked(void)));
+    connect(masterClock, SIGNAL(timeout(void)), this, SIGNAL(ticked(void)));
 
     // ui
 

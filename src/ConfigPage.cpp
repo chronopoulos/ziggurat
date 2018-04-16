@@ -11,8 +11,7 @@ ConfigPage::ConfigPage(int nsteps) : m_nsteps(nsteps) {
 
         nameLabel = new ClickLabel("Name: %1", ClickLabel::Type_QString,
                                     "Ziggurat", "Name");
-        QObject::connect(nameLabel, SIGNAL(valueChanged(QString)),
-                            this, SIGNAL(nameChanged(QString)));
+        connect(nameLabel, SIGNAL(valueChanged(QString)), this, SIGNAL(nameChanged(QString)));
 
         lengthLabel = new ClickLabel("Length: %1", ClickLabel::Type_Int,
                                         "Ziggurat", "Length");
@@ -23,22 +22,19 @@ ConfigPage::ConfigPage(int nsteps) : m_nsteps(nsteps) {
                                         "Ziggurat", "Clock Divide");
         clockDivLabel->setMin(1);
         clockDivLabel->setValue(1);
-        QObject::connect(clockDivLabel, SIGNAL(valueChanged(int)),
-                            this, SIGNAL(clockDivChanged(int)));
+        connect(clockDivLabel, SIGNAL(valueChanged(int)), this, SIGNAL(clockDivChanged(int)));
 
         transposeLabel = new ClickLabel("Transpose: %1", ClickLabel::Type_Int,
                                         "Ziggurat", "Transpose");
         transposeLabel->setValue(0);
-        QObject::connect(transposeLabel, SIGNAL(valueChanged(int)),
-                            this, SIGNAL(transposeChanged(int)));
+        connect(transposeLabel, SIGNAL(valueChanged(int)), this, SIGNAL(transposeChanged(int)));
 
         midiChanLabel = new ClickLabel("MIDI Channel: %1", ClickLabel::Type_Int,
                                         "Ziggurat", "MIDI Channel");
         midiChanLabel->setMin(1);
         midiChanLabel->setMax(16);
         midiChanLabel->setValue(1);
-        QObject::connect(midiChanLabel, SIGNAL(valueChanged(int)),
-                            this, SIGNAL(midiChanChanged(int)));
+        connect(midiChanLabel, SIGNAL(valueChanged(int)), this, SIGNAL(midiChanChanged(int)));
 
         directionLabel = new ClickLabel("Direction: %1", ClickLabel::Type_Item,
                                         "Ziggurat", "Direction");
@@ -46,8 +42,7 @@ ConfigPage::ConfigPage(int nsteps) : m_nsteps(nsteps) {
         items << "Forward" << "Backward" << "Bounce";
         directionLabel->setItems(items);
         directionLabel->setValue("Forward");
-        QObject::connect(directionLabel, SIGNAL(valueChanged(QString)),
-                            this, SIGNAL(directionChanged(QString)));
+        connect(directionLabel, SIGNAL(valueChanged(QString)), this, SIGNAL(directionChanged(QString)));
 
         connect(nameLabel, SIGNAL(valueChanged(QString)), nameLabel, SLOT(setTitle(QString)));
         connect(nameLabel, SIGNAL(valueChanged(QString)), lengthLabel, SLOT(setTitle(QString)));

@@ -10,41 +10,32 @@ SequenceContainer::SequenceContainer(int nsteps, QString name) {
     row = new ButtonRow(nsteps);
 
     // interest
-    QObject::connect(thumb, SIGNAL(interestRequested(void)),
-                        this, SLOT(select(void)));
+    connect(thumb, SIGNAL(interestRequested(void)), this, SLOT(select(void)));
 
     // trig requests
-    QObject::connect(row, SIGNAL(trigSet(int, Trigger*)), seq, SLOT(setTrig(int, Trigger*)));
-    QObject::connect(seq, SIGNAL(stepActivationChanged(int, bool)),
-                        thumb, SLOT(setActivation(int,bool)));
+    connect(row, SIGNAL(trigSet(int, Trigger*)), seq, SLOT(setTrig(int, Trigger*)));
+    connect(seq, SIGNAL(stepActivationChanged(int, bool)), thumb, SLOT(setActivation(int,bool)));
 
     // clock divide
-    QObject::connect(page, SIGNAL(clockDivChanged(int)),
-                        seq, SLOT(setClockDiv(int)));
+    connect(page, SIGNAL(clockDivChanged(int)), seq, SLOT(setClockDiv(int)));
 
     // transpose
-    QObject::connect(page, SIGNAL(transposeChanged(int)),
+    connect(page, SIGNAL(transposeChanged(int)),
                         seq, SLOT(setTranspose(int)));
 
     // MIDI Channel 
-    QObject::connect(page, SIGNAL(midiChanChanged(int)),
-                        seq, SLOT(setMidiChan(int)));
+    connect(page, SIGNAL(midiChanChanged(int)), seq, SLOT(setMidiChan(int)));
 
     // Direction
-    QObject::connect(page, SIGNAL(directionChanged(QString)),
-                        seq, SLOT(setDirection(QString)));
+    connect(page, SIGNAL(directionChanged(QString)), seq, SLOT(setDirection(QString)));
 
     // ticks
-    QObject::connect(seq, SIGNAL(playheadUpdated(int)),
-                        thumb, SLOT(updatePlayhead(int)));
-    QObject::connect(seq, SIGNAL(playheadUpdated(int)),
-                        row, SLOT(updatePlayhead(int)));
+    connect(seq, SIGNAL(playheadUpdated(int)), thumb, SLOT(updatePlayhead(int)));
+    connect(seq, SIGNAL(playheadUpdated(int)), row, SLOT(updatePlayhead(int)));
 
     // subloops
-    QObject::connect(row, SIGNAL(lBracketChanged(int)),
-                        seq, SLOT(setSubloop_start(int)));
-    QObject::connect(row, SIGNAL(rBracketChanged(int)),
-                        seq, SLOT(setSubloop_stop(int)));
+    connect(row, SIGNAL(lBracketChanged(int)), seq, SLOT(setSubloop_start(int)));
+    connect(row, SIGNAL(rBracketChanged(int)), seq, SLOT(setSubloop_stop(int)));
 
     // mute and queue 
     connect(thumb, SIGNAL(muteChanged(bool)), seq, SLOT(setMute(bool)));
@@ -59,14 +50,11 @@ SequenceContainer::SequenceContainer(int nsteps, QString name) {
     
 
     // name change
-    QObject::connect(page, SIGNAL(nameChanged(QString)),
-                        thumb, SLOT(setName(QString)));
-    QObject::connect(page, SIGNAL(nameChanged(QString)),
-                        seq, SLOT(setName(QString)));
+    connect(page, SIGNAL(nameChanged(QString)), thumb, SLOT(setName(QString)));
+    connect(page, SIGNAL(nameChanged(QString)), seq, SLOT(setName(QString)));
 
     // delete
-    QObject::connect(thumb, SIGNAL(deleteRequested(void)),
-                        this, SLOT(routeDelete(void)));
+    connect(thumb, SIGNAL(deleteRequested(void)), this, SLOT(routeDelete(void)));
 
     page->setName(name); // propagates to thumbnail
     seq->reset(); // call this to set the thumbnail playhead
