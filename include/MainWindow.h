@@ -27,15 +27,7 @@ class MainWindow : public QWidget
         Configurator *config;
         RowEditor *rowEditor;
 
-        std::vector<SequenceContainer*> sconts;
-        std::vector<SequenceContainer*>::iterator scontIter;
-        void addSequence(int, QString);
-        void deleteSequenceOfInterest(void);
-
     public slots:
         void keyPressEvent(QKeyEvent*);
-        void resetAll(void);
-        void addSequence(void);
-        void deleteSequence(SequenceContainer*);
 
 };

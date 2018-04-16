@@ -3,7 +3,6 @@
 
 #include <QWidget>
 #include <QPainter>
-#include <QPaintEngine> // todo remove
 #include <QPaintEvent>
 
 #define LED_RADIUS 3
