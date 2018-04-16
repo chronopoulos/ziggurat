@@ -26,14 +26,12 @@ MOC_DIR = build
 DESTDIR = bin
 
 # Extra flags
-QMAKE_CXXFLAGS += -D__LINUX_ALSA__ # needed for RtMidi "dummy" error
-LIBS += -lasound
-QMAKE_CXXFLAGS += -D__UNIX_JACK__ # needed for RtMidi "dummy" error
-LIBS += -ljack
-QMAKE_CXXFLAGS += -std=gnu++0x # needed for RtMidi "dummy" error
+QMAKE_CXXFLAGS += -D__LINUX_ALSA__ -D__UNIX_JACK__ -DJACK_HAS_PORT_RENAME
+LIBS += -lasound -ljack
+QMAKE_CXXFLAGS += -std=gnu++0x
 
 # GDB
-QMAKE_CXXFLAGS += -ggdb
+#QMAKE_CXXFLAGS += -ggdb
 
 # Input
 SOURCES += main.cpp
