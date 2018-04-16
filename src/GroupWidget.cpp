@@ -12,7 +12,7 @@ GroupWidget::GroupWidget(void) {
     typeSelector = new QComboBox();
     typeSelector->addItem("Free");
     typeSelector->addItem("Scene");
-    typeSelector->addItem("Exclusive");
+    typeSelector->addItem("Mutex");
     typeSelector->addItem("Chain");
     typeSelector->setFocusPolicy(Qt::NoFocus);
 
@@ -30,7 +30,8 @@ GroupWidget::GroupWidget(void) {
 
     setMinimumWidth(340);
 
-    group = Group();
+    group = new Group();
+    connect(typeSelector, SIGNAL(currentIndexChanged(int)), group, SLOT(setType(int)));
 
 }
 
@@ -49,6 +50,7 @@ void GroupWidget::addSequence(int nsteps, QString name) {
 
     sconts.push_back(scont);
     seqManager->addThumbnail(scont->thumb);
+    group->addScont(scont);
 
     connect(scont, SIGNAL(pageSelected(ConfigPage*)), this, SIGNAL(pageSelected(ConfigPage*)));
     connect(scont, SIGNAL(thumbnailSelected(Thumbnail*)), seqManager, SLOT(selectThumbnail(Thumbnail*)));
@@ -58,6 +60,9 @@ void GroupWidget::addSequence(int nsteps, QString name) {
 
     connect(scont, SIGNAL(deleteRequested(SequenceContainer*)),
             this, SLOT(deleteSequence(SequenceContainer*)));
+
+    connect(scont, SIGNAL(muteChanged_passthrough(bool)), group, SLOT(handleMuteChange(bool)));
+    connect(scont, SIGNAL(subloopCompleted_passthrough(void)), group, SLOT(handleSubloopCompleted(void)));
 
     if (sconts.size() == 1) scont->select();
 

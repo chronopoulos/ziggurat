@@ -16,14 +16,16 @@ Thumbnail::Thumbnail(int nsteps) : QFrame() {
     muteButton->setMaximumWidth(30);
     muteButton->setFocusPolicy(Qt::NoFocus);
     muteButton->setCheckable(true);
-    muteButton->setStyleSheet("QPushButton:checked {background-color: red}");
+    muteButton->setStyleSheet("QPushButton {background-color:rgba(255,0,0,255)} "
+                                "QPushButton:checked {background-color:rgba(127,0,0,255)}");
     connect(muteButton, SIGNAL(clicked(bool)), this, SLOT(handleMuteClick(bool)));
 
     queueButton = new QPushButton("Q");
     queueButton->setMaximumWidth(30);
     queueButton->setFocusPolicy(Qt::NoFocus);
     queueButton->setCheckable(true);
-    queueButton->setStyleSheet("QPushButton:checked {background-color: blue}");
+    queueButton->setStyleSheet("QPushButton {background-color:rgba(0,0,255,255)} "
+                                "QPushButton:checked {background-color:rgb(0,0,127,255)}");
     connect(queueButton, SIGNAL(clicked(bool)), this, SLOT(handleQueueClick(bool)));
 
     topLayout->addWidget(label);

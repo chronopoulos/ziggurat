@@ -19,7 +19,7 @@ class GroupWidget : public QWidget
         QComboBox *typeSelector;
         QVBoxLayout *seqLayout;
         ManagerWidget* seqManager;
-        Group group;
+        Group *group;
 
         std::vector<SequenceContainer*> sconts;
         std::vector<SequenceContainer*>::iterator scontIter;

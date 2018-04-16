@@ -12,6 +12,8 @@ RowEditor::RowEditor(void) {
 
     defaultRow = new ButtonRow(0);
 
+    setDefaultRow();
+
 }
 
 void RowEditor::setRow(ButtonRow *newRow) {

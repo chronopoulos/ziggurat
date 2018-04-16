@@ -102,10 +102,15 @@ void Sequence::tick(void) {
         }
 
         // only output MIDI if not muted
+        // emit subloopCompleted signal for chaining
         if (!m_mute) {
+
             if (trigs[playhead].type() == Trigger::Type_Note) {
                 sendNoteOn(trigs[playhead].note() + m_transpose);
             }
+
+            if (playhead == subloop_stop) emit subloopCompleted();
+
         }
 
         // advance playhead according to direction mode
@@ -220,5 +225,11 @@ void Sequence::reset(void) {
     playhead = subloop_start;
     idiv = 0;
     emit playheadUpdated(playhead);    
+
+}
+
+bool Sequence::isMuted(void) {
+
+    return m_mute;
 
 }

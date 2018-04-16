@@ -16,6 +16,7 @@ class Sequence : public QObject
     public:
         Sequence(int);
         ~Sequence();
+        bool isMuted(void);
 
         static int Forward;
         static int Backward;
@@ -57,7 +58,7 @@ class Sequence : public QObject
     signals:
         void playheadUpdated(int);
         void stepActivationChanged(int, bool);
-
+        void subloopCompleted(void);
         void muteChanged(bool);
         void queueChanged(bool);
 

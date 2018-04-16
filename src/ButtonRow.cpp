@@ -40,10 +40,10 @@ ButtonRow::ButtonRow(int nsteps) : QWidget() {
 
     } else {
 
-        QLabel *dummyLabel = new QLabel("No Sequence Selected");
-        dummyLabel->setAlignment(Qt::AlignCenter);
-        dummyLabel->setFont(QFont("Helvetica", 20));
-        layout->addWidget(dummyLabel);
+        QLabel *defaultLabel = new QLabel("No Sequence Selected");
+        defaultLabel->setAlignment(Qt::AlignCenter);
+        defaultLabel->setFont(QFont("Helvetica", 14));
+        layout->addWidget(defaultLabel);
 
     }
 

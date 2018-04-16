@@ -52,6 +52,12 @@ SequenceContainer::SequenceContainer(int nsteps, QString name) {
     connect(seq, SIGNAL(muteChanged(bool)), thumb, SLOT(setMute(bool)));
     connect(seq, SIGNAL(queueChanged(bool)), thumb, SLOT(setQueue(bool)));
 
+    // group hacks
+    connect(seq, SIGNAL(muteChanged(bool)), this, SIGNAL(muteChanged_passthrough(bool)));
+    connect(thumb, SIGNAL(muteChanged(bool)), this, SIGNAL(muteChanged_passthrough(bool)));
+    connect(seq, SIGNAL(subloopCompleted(void)), this, SIGNAL(subloopCompleted_passthrough(void)));
+    
+
     // name change
     QObject::connect(page, SIGNAL(nameChanged(QString)),
                         thumb, SLOT(setName(QString)));
@@ -93,5 +99,12 @@ bool SequenceContainer::selected(void) {
 void SequenceContainer::routeDelete(void) {
 
     emit deleteRequested(this);
+
+}
+
+void SequenceContainer::setMute(bool mute) {
+
+    thumb->setMute(mute);
+    seq->setMute(mute);
 
 }

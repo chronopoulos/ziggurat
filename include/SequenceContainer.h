@@ -24,11 +24,16 @@ class SequenceContainer : public QObject
 
         bool selected(void);
 
+        void setMute(bool);
+
     signals:
         void pageSelected(ConfigPage*);
         void thumbnailSelected(Thumbnail*);
         void rowSelected(ButtonRow*);
         void deleteRequested(SequenceContainer*);
+
+        void muteChanged_passthrough(bool);
+        void subloopCompleted_passthrough(void);
 
     public slots:
         void select(void);

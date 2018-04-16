@@ -14,6 +14,8 @@ Configurator::Configurator(void) {
 
     defaultPage = new ConfigPage(0);
 
+    setDefaultPage();
+
 }
 
 void Configurator::setPage(ConfigPage *newPage) {

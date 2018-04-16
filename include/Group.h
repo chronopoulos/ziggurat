@@ -3,14 +3,28 @@
 
 #include "SequenceContainer.h"
 
-class Group
+class Group : public QObject
 {
+    Q_OBJECT
+
     public:
         Group(void);
+        void addScont(SequenceContainer*);
+
+        static int Type_Free;
+        static int Type_Scene;
+        static int Type_Mutex;
+        static int Type_Chain;
 
     private:
-        std::vector<Sequence*> seqs;
-        std::vector<Sequence*>::iterator seqIter;
+        int m_type;
+        std::vector<SequenceContainer*> sconts;
+        std::vector<SequenceContainer*>::iterator scontIter;
+
+    public slots:
+        void handleMuteChange(bool);
+        void handleSubloopCompleted(void);
+        void setType(int);
 
 };
 
