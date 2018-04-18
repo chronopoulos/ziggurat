@@ -72,12 +72,14 @@ void Group::handleMuteChange(bool mute) {
         }
     }
 
-    // if the group is a mutex, and we just got an un-muting signal, then
+    // if the group is a mutex/chain, and we just got an un-muting signal, then
     //  mute all other sconts
-    if ((m_type == Group::Type_Mutex) && !mute) {
-        for (scontIter = sconts.begin(); scontIter != sconts.end(); scontIter++) {
-            if (scont != (*scontIter)) {
-                (*scontIter)->setMute(true);
+    if ((m_type == Group::Type_Mutex) || (m_type == Group::Type_Chain)) {
+        if (!mute) {
+            for (scontIter = sconts.begin(); scontIter != sconts.end(); scontIter++) {
+                if (scont != (*scontIter)) {
+                    (*scontIter)->setMute(true);
+                }
             }
         }
     } 
