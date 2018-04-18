@@ -18,7 +18,7 @@ class ManagerWidget : public QFrame
     Q_OBJECT
 
     public:
-        ManagerWidget();
+        ManagerWidget(void);
         void addThumbnail(Thumbnail*);
         void removeThumbnail(Thumbnail*);
 

@@ -15,7 +15,7 @@ class Sequence : public QObject
 
     public:
         Sequence(int);
-        ~Sequence();
+        ~Sequence(void);
         bool isMuted(void);
 
         static int Forward;

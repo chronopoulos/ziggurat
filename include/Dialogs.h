@@ -8,7 +8,7 @@
 class NewSequenceDialog : public QDialog
 {
     public:
-        NewSequenceDialog();
+        NewSequenceDialog(void);
         QString name(void);
         int length(void);
 

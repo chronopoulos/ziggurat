@@ -6,7 +6,7 @@ int TransportWidget::Stopped = 0;
 int TransportWidget::Paused = 1;
 int TransportWidget::Playing = 2;
 
-TransportWidget::TransportWidget() {
+TransportWidget::TransportWidget(void) {
 
     // qobjects
 

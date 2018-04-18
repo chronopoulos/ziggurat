@@ -13,7 +13,7 @@ class TransportWidget : public QFrame
     Q_OBJECT
 
     public:
-        TransportWidget();
+        TransportWidget(void);
         int state;
         static int Stopped, Playing, Paused;
         QPushButton *stopButton, *pauseButton, *playButton;

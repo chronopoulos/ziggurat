@@ -15,7 +15,7 @@ class SequenceContainer : public QObject
 
     public:
         SequenceContainer(int, QString);
-        ~SequenceContainer();
+        ~SequenceContainer(void);
 
         Sequence *seq;
         Thumbnail *thumb;

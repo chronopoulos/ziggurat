@@ -15,7 +15,7 @@ class MainWindow : public QWidget
     Q_OBJECT
 
     public:
-        MainWindow();
+        MainWindow(void);
         void togglePlayState(void);
 
     private:
