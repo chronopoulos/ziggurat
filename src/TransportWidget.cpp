@@ -15,19 +15,19 @@ TransportWidget::TransportWidget() {
     
 
     stopButton = new QPushButton();
-    stopButton->setIcon(QIcon("img/stop.png"));
+    stopButton->setIcon(QIcon(":/img/stop.png"));
     stopButton->setCheckable(true);
     stopButton->setFocusPolicy(Qt::NoFocus);
     connect(stopButton, SIGNAL(pressed(void)), this, SLOT(stop(void)));
 
     pauseButton = new QPushButton();
-    pauseButton->setIcon(QIcon("img/pause.png"));
+    pauseButton->setIcon(QIcon(":/img/pause.png"));
     pauseButton->setCheckable(true);
     pauseButton->setFocusPolicy(Qt::NoFocus);
     connect(pauseButton, SIGNAL(pressed(void)), this, SLOT(pause(void)));
 
     playButton = new QPushButton();
-    playButton->setIcon(QIcon("img/play.png"));
+    playButton->setIcon(QIcon(":/img/play.png"));
     playButton->setCheckable(true);
     playButton->setFocusPolicy(Qt::NoFocus);
     connect(playButton, SIGNAL(pressed(void)), this, SLOT(play(void)));

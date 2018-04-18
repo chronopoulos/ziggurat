@@ -31,7 +31,7 @@ MainWindow::MainWindow(void) : QWidget() {
 
     this->setLayout(layout);
     this->setWindowTitle("z i g g u r a t");
-    this->setWindowIcon(QIcon("img/ziggurat_icon.png"));
+    this->setWindowIcon(QIcon(":/img/ziggurat_icon.png"));
 
     state = STATE_STOPPED;
 

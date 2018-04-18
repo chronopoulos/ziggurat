@@ -23,6 +23,7 @@ VPATH += src include rtmidi
 INCLUDEPATH += include rtmidi
 OBJECTS_DIR = build
 MOC_DIR = build
+RCC_DIR = build
 DESTDIR = bin
 
 # Extra flags
@@ -78,5 +79,7 @@ HEADERS += Group.h
 HEADERS += GroupWidget.h
 HEADERS += GroupManager.h
 HEADERS += RtMidi.h
+
+RESOURCES = ziggurat.qrc
 
 # vim:syntax=sh
