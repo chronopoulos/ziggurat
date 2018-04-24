@@ -33,7 +33,7 @@ Sequence::Sequence(int nsteps) {
 
     // fill will null-type Trigs
     for (int i=0; i < m_nsteps; i++) {
-        trigs.push_back(Trigger(i));
+        trigs.push_back(Trigger());
     }
 
     // RtMidi config

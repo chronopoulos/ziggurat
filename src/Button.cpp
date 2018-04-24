@@ -17,7 +17,7 @@ Button::Button(int step) {
 
     m_isActive = false;
 
-    m_trig = new Trigger(m_step);    
+    m_trig = new Trigger();    
 
 }
 

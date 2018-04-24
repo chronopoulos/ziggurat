@@ -5,11 +5,10 @@ class Trigger
 {
 
     public:
-        Trigger(int);
+        Trigger(void);
         void setNote(int);
         void setNull(void);
 
-        int step(void);
         int note(void);
         int type(void);
 
@@ -21,7 +20,6 @@ class Trigger
 
     private:
 
-        int m_step;
         int m_note;
         int m_type;
 

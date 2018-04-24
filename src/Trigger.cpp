@@ -3,9 +3,8 @@
 int Trigger::Type_Null = -1;
 int Trigger::Type_Note = 0;
 
-Trigger::Trigger(int step) {
+Trigger::Trigger(void) {
 
-    m_step = step;
     setNull();
 
 }
@@ -20,12 +19,6 @@ void Trigger::setNote(int note) {
 void Trigger::setNull(void) {
 
     m_type = Trigger::Type_Null;
-
-}
-
-int Trigger::step(void) {
-
-    return m_step;
 
 }
 
@@ -46,8 +39,6 @@ int Trigger::type(void) {
 }
 
 bool Trigger::operator==(Trigger trig) {
-
-    if (trig.step() != m_step) return false;
 
     if (trig.type() == Trigger::Type_Note) {
         return (trig.note() == m_note);
