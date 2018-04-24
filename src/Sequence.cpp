@@ -2,10 +2,7 @@
 
 #include "Sequence.h"
 
-// choose between {LINUX_ALSA, UNIX_JACK}
-#define MIDI_API RtMidi::LINUX_ALSA
-
-// TODO: rtmidi exception handling
+extern QString MIDI_BACKEND;
 
 int Sequence::Forward = 0;
 int Sequence::Backward = 1;
@@ -38,10 +35,19 @@ Sequence::Sequence(int nsteps) {
 
     // RtMidi config
     try {
-        midiout = new RtMidiOut(MIDI_API, "ziggurat");
+
+        if (MIDI_BACKEND == "jack") {
+            midiout = new RtMidiOut(RtMidi::UNIX_JACK, "ziggurat");
+        } else {
+            midiout = new RtMidiOut(RtMidi::LINUX_ALSA, "ziggurat");
+        }
+
         midiout->openPort(0, "default");
+
     } catch (RtMidiError &e) {
-        qDebug() << "oy: " << e.what();
+
+        qDebug() << "RtMidiError: " << e.what();
+
     }
 
 }
