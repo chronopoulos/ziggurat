@@ -10,7 +10,6 @@
 #include <QMenu>
 #include <QAction>
 
-#include "TrigRequest.h"
 #include "Led.h"
 
 class Thumbnail : public QFrame

@@ -7,7 +7,6 @@
 #include "RtMidi.h"
 
 #include "Trigger.h"
-#include "TrigRequest.h"
 
 class Sequence : public QObject
 {
