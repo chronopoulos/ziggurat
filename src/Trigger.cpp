@@ -44,6 +44,10 @@ bool Trigger::operator==(Trigger trig) {
         return (trig.note() == m_note);
     }
 
+    if (trig.type() == Trigger::Type_Null) {
+        return true;
+    }
+
     return false;
 
 }

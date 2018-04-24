@@ -15,7 +15,6 @@ class Trigger
         static int Type_Null;
         static int Type_Note;
 
-        //bool operator==(const Trigger&);
         bool operator==(Trigger);
 
     private:
