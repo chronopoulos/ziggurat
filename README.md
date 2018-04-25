@@ -8,6 +8,7 @@ a standalone MIDI step sequencer
 ```
 git clone https://github.com/chronopoulos/ziggurat
 cd ziggurat
+git submodule init && git submodule update
 qmake
 make
 ./bin/ziggurat
