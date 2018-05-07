@@ -58,6 +58,15 @@ void Group::addScont(SequenceContainer *scont) {
 
 }
 
+void Group::removeScont(SequenceContainer *scont) {
+
+    scontIter = std::find(sconts.begin(), sconts.end(), scont);
+    if (scontIter != sconts.end()) {
+        sconts.erase(scontIter);
+    }
+
+}
+
 void Group::handleMuteChange(bool mute) {
 
     SequenceContainer *scont = qobject_cast<SequenceContainer*>(sender());

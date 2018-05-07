@@ -20,11 +20,12 @@ class Thumbnail : public QFrame
     public:
         Thumbnail(int);
         int nsteps;
-        void setInterest(bool);
-        bool hasInterest(void);
+        bool isSelected;
+        void select(void);
+        void deselect(void);
 
     private:
-        bool interest, m_enabled;
+        bool m_enabled;
         QLabel *label;
         QPushButton *muteButton, *queueButton;
         QPalette palette_light, palette_dark;
@@ -49,7 +50,7 @@ class Thumbnail : public QFrame
         void handleQueueClick(bool);
 
     signals:
-        void interestRequested(void);
+        void selected(void);
         void deleteRequested(void);
 
         void muteChanged(bool);

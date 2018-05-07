@@ -35,7 +35,6 @@ Thumbnail::Thumbnail(int nsteps) : QFrame() {
     Led *led;
     for (int i=0; i<nsteps; i++) {
         led = new Led();
-        //layout->addWidget(led, 1,i, 1,1);
         bottomLayout->addWidget(led);
         leds.push_back(led);
     }
@@ -57,7 +56,7 @@ Thumbnail::Thumbnail(int nsteps) : QFrame() {
     m_enabled = true;
     setPalette(palette_dark);
 
-    interest = false;
+    isSelected = false;
     setFrameStyle(QFrame::Box | QFrame::Plain);
 
 
@@ -74,27 +73,25 @@ void Thumbnail::setName(QString name) {
 
 }
 
-void Thumbnail::setInterest(bool interest) {
+void Thumbnail::select(void) {
 
-    this->interest = interest;
-    if (interest) {
-        setLineWidth(4);
-    } else {
-        setLineWidth(1);
-    }
+    isSelected = true;
+    setLineWidth(4);
 
 }
 
-bool Thumbnail::hasInterest(void) {
+void Thumbnail::deselect(void) {
 
-    return interest;
+    isSelected = false;
+    setLineWidth(1);
 
 }
 
 void Thumbnail::mousePressEvent(QMouseEvent *e) {
 
     if (e->buttons()==Qt::LeftButton) {
-        emit interestRequested();
+        select();
+        emit selected();
     } 
 
 }

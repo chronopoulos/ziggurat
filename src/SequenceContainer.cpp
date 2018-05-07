@@ -9,8 +9,8 @@ SequenceContainer::SequenceContainer(int nsteps, QString name) {
     page = new ConfigPage(nsteps);
     row = new ButtonRow(nsteps);
 
-    // interest
-    connect(thumb, SIGNAL(interestRequested(void)), this, SLOT(select(void)));
+    // selection
+    connect(thumb, SIGNAL(selected(void)), this, SLOT(select(void)));
 
     // trig requests
     connect(row, SIGNAL(trigSet(int, Trigger*)), seq, SLOT(setTrig(int, Trigger*)));
@@ -80,7 +80,7 @@ void SequenceContainer::select(void) {
 
 bool SequenceContainer::selected(void) {
 
-    return thumb->hasInterest();
+    return thumb->isSelected;
 
 }
 

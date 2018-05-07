@@ -2,13 +2,12 @@
 #include <QGridLayout>
 #include <QString>
 
-#include "ManagerWidget.h"
 #include "GroupManager.h"
 #include "TransportWidget.h"
 #include "Configurator.h"
 #include "RowEditor.h"
 
-#include "Group.h"
+#include "Session.h"
 
 class MainWindow : public QWidget
 {
@@ -20,8 +19,8 @@ class MainWindow : public QWidget
 
     private:
         int state;
+        Session *session;
         QGridLayout *layout;
-        ManagerWidget *manager;
         GroupManager *groupManager;
         TransportWidget *transport;
         Configurator *config;

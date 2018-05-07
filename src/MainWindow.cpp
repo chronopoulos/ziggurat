@@ -11,6 +11,8 @@
 
 MainWindow::MainWindow(void) : QWidget() {
 
+    session = new Session();
+
     layout = new QGridLayout();
 
     groupManager = new GroupManager();
@@ -18,11 +20,13 @@ MainWindow::MainWindow(void) : QWidget() {
     config = new Configurator();
     rowEditor = new RowEditor();
 
-    connect(groupManager, SIGNAL(pageSelected(ConfigPage*)), config, SLOT(setPage(ConfigPage*)));
-    connect(groupManager, SIGNAL(rowSelected(ButtonRow*)), rowEditor, SLOT(setRow(ButtonRow*)));
+    connect(transport, SIGNAL(ticked(void)), session, SLOT(tick(void)));
+    connect(transport, SIGNAL(stopped(void)), session, SLOT(resetAll(void)));
 
-    connect(transport, SIGNAL(ticked(void)), groupManager, SIGNAL(tick_passthrough(void)));
-    connect(transport, SIGNAL(stopped(void)), groupManager, SIGNAL(resetAll_passthrough(void)));
+    connect(groupManager, SIGNAL(newGroupRequested(void)), session, SLOT(createGroup(void)));
+    connect(session, SIGNAL(groupWidgetCreated(GroupWidget*)), groupManager, SLOT(addGroupWidget(GroupWidget*)));
+    connect(session, SIGNAL(pageSelected(ConfigPage*)), config, SLOT(setPage(ConfigPage*)));
+    connect(session, SIGNAL(rowSelected(ButtonRow*)), rowEditor, SLOT(setRow(ButtonRow*)));
 
     layout->addWidget(groupManager, 0,0, 5,6);
     layout->addWidget(transport, 5,0, 1,1);
@@ -37,7 +41,7 @@ MainWindow::MainWindow(void) : QWidget() {
 
     // initialize with 3 groups
     for (int i=0; i<3; i++) {
-        groupManager->addGroup();
+        session->createGroup();
     }
 
     resize(700,700);

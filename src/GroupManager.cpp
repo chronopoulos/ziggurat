@@ -14,17 +14,9 @@ GroupManager::GroupManager(void) {
 
 }
 
-void GroupManager::addGroup(void) {
+void GroupManager::addGroupWidget(GroupWidget *groupWidget) {
 
-    GroupWidget *groupWidget = new GroupWidget();
     layout->addWidget(groupWidget);
-    connect(groupWidget, SIGNAL(pageSelected(ConfigPage*)), this, SIGNAL(pageSelected(ConfigPage*)));
-    connect(groupWidget, SIGNAL(rowSelected(ButtonRow*)), this, SIGNAL(rowSelected(ButtonRow*)));
-
-    connect(this, SIGNAL(tick_passthrough(void)), groupWidget, SIGNAL(tick_passthrough(void)));
-    connect(this, SIGNAL(resetAll_passthrough(void)), groupWidget, SLOT(resetAll(void)));
-
-    groupWidgets.push_back(groupWidget);
 
 }
 
@@ -34,7 +26,7 @@ void GroupManager::contextMenuEvent(QContextMenuEvent*) {
     managerMenu.addAction("Add Group");
     QAction *action = managerMenu.exec(QCursor::pos());
     if (action && (action->text().contains("Add Group"))) {
-        addGroup();
+        emit newGroupRequested();
     }
 
 }

@@ -1,37 +1,33 @@
-#include <QWidget>
-#include <QComboBox>
+#ifndef GROUPWIDGET_H
+#define GROUPWIDGET_H
+
+#include <QFrame>
 #include <QVBoxLayout>
-#include <QContextMenuEvent>
+#include <QMenu>
+#include <QAction>
+#include <QCursor>
 
-#include "ManagerWidget.h"
-#include "Group.h"
-#include "SequenceContainer.h"
+#include "Thumbnail.h"
 
-class GroupWidget : public QWidget
+class GroupWidget : public QFrame
 {
     Q_OBJECT
 
     public:
         GroupWidget(void);
-        void addSequence(int, QString);
+        void addThumbnail(Thumbnail*);
+        void removeThumbnail(Thumbnail*);
 
     private:
-        QComboBox *typeSelector;
-        QVBoxLayout *seqLayout;
-        ManagerWidget* seqManager;
-        Group *group;
+        QVBoxLayout *layout;
+        Thumbnail *interestingThumb;
 
-        std::vector<SequenceContainer*> sconts;
-        std::vector<SequenceContainer*>::iterator scontIter;
-
-    public slots:
-        void addSequence(void);
-        void deleteSequence(SequenceContainer*);
-        void resetAll(void);
+    protected:
+        void contextMenuEvent(QContextMenuEvent*);
 
     signals:
-        void pageSelected(ConfigPage*);
-        void rowSelected(ButtonRow*);
-        void tick_passthrough(void);
+        void newSequenceRequested(int, QString);
 
 };
+
+#endif

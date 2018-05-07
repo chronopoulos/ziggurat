@@ -1,100 +1,46 @@
 #include "GroupWidget.h"
-
-#include <QLabel>
-#include <QDebug>
-#include <QMenu>
-#include <QAction>
-
 #include "Dialogs.h"
 
-GroupWidget::GroupWidget(void) {
+#include <QDebug>
 
-    typeSelector = new QComboBox();
-    typeSelector->addItem("Free");
-    typeSelector->addItem("Scene");
-    typeSelector->addItem("Mutex");
-    typeSelector->addItem("Chain");
-    typeSelector->setFocusPolicy(Qt::NoFocus);
+GroupWidget::GroupWidget(void) : QFrame() {
 
-    seqLayout = new QVBoxLayout();
-    seqLayout->setAlignment(Qt::AlignTop);
+    layout = new QVBoxLayout();
+    layout->setAlignment(Qt::AlignTop);
+    setLayout(layout);
 
-    seqManager = new ManagerWidget();
-
-    connect(seqManager, SIGNAL(newSequenceRequested(void)), this, SLOT(addSequence(void)));
-
-    QVBoxLayout *mainLayout = new QVBoxLayout();
-    mainLayout->addWidget(typeSelector);
-    mainLayout->addWidget(seqManager);
-    setLayout(mainLayout);
+    setFrameStyle(QFrame::Box | QFrame::Plain);
+    setLineWidth(1);
 
     setMinimumWidth(340);
 
-    group = new Group();
-    connect(typeSelector, SIGNAL(currentIndexChanged(int)), group, SLOT(setType(int)));
+}
+
+void GroupWidget::addThumbnail(Thumbnail *thumb) {
+
+    layout->addWidget(thumb);
 
 }
 
-void GroupWidget::addSequence(void) {
+void GroupWidget::removeThumbnail(Thumbnail *thumb) {
 
-    NewSequenceDialog dlg;
-    if (dlg.exec() == QDialog::Accepted) {
-        addSequence(dlg.length(), dlg.name());
+    if (layout->indexOf(thumb) >= 0) {
+        layout->removeWidget(thumb);
+        thumb->setParent(NULL);
     }
 
 }
 
-void GroupWidget::addSequence(int nsteps, QString name) {
+void GroupWidget::contextMenuEvent(QContextMenuEvent*) {
 
-    SequenceContainer *scont = new SequenceContainer(nsteps, name);
-
-    sconts.push_back(scont);
-    seqManager->addThumbnail(scont->thumb);
-    group->addScont(scont);
-
-    connect(scont, SIGNAL(pageSelected(ConfigPage*)), this, SIGNAL(pageSelected(ConfigPage*)));
-    connect(scont, SIGNAL(thumbnailSelected(Thumbnail*)), seqManager, SLOT(selectThumbnail(Thumbnail*)));
-    connect(scont, SIGNAL(rowSelected(ButtonRow*)), this, SIGNAL(rowSelected(ButtonRow*)));
-
-    connect(this, SIGNAL(tick_passthrough(void)), scont->seq, SLOT(tick(void)));
-
-    connect(scont, SIGNAL(deleteRequested(SequenceContainer*)),
-            this, SLOT(deleteSequence(SequenceContainer*)));
-
-    connect(scont, SIGNAL(muteChanged_passthrough(bool)), group, SLOT(handleMuteChange(bool)));
-    connect(scont, SIGNAL(subloopCompleted_passthrough(void)), group, SLOT(handleSubloopCompleted(void)));
-
-    if (sconts.size() == 1) scont->select();
-
-}
-
-void GroupWidget::deleteSequence(SequenceContainer* scont) {
-
-    seqManager->removeThumbnail(scont->thumb);
-
-    scontIter = std::find(sconts.begin(), sconts.end(), scont);
-    sconts.erase(scontIter);
-
-    // if this sequence was selected, select another sequence
-    // or, if no sequences remain, set defaults
-    if (scont->selected()) {
-        if (!sconts.empty()) {
-            scontIter = sconts.begin();
-            (*scontIter)->select();
-        } else {
-            emit pageSelected(nullptr);
-            emit rowSelected(nullptr);
+    QMenu managerMenu;
+    managerMenu.addAction("Add Sequence");
+    QAction *action = managerMenu.exec(QCursor::pos());
+    if (action && (action->text().contains("Add Sequence"))) {
+        NewSequenceDialog dlg;
+        if (dlg.exec() == QDialog::Accepted) {
+            emit newSequenceRequested(dlg.length(), dlg.name());
         }
-    }
-
-    delete scont;
-
-}
-
-void GroupWidget::resetAll(void) {
-
-    for (scontIter = sconts.begin(); scontIter != sconts.end(); scontIter++) {
-        (*scontIter)->seq->reset();
     }
 
 }

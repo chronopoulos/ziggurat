@@ -10,6 +10,7 @@ class Group : public QObject
     public:
         Group(void);
         void addScont(SequenceContainer*);
+        void removeScont(SequenceContainer*);
 
         static int Type_Free;
         static int Type_Scene;

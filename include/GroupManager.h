@@ -9,20 +9,17 @@ class GroupManager : public QFrame
 
     public:
         GroupManager(void);
-        void addGroup(void);
+
+    public slots:
+        void addGroupWidget(GroupWidget*);
 
     private:
         QHBoxLayout *layout;
-        std::vector<GroupWidget*> groupWidgets;
-        std::vector<GroupWidget*>::iterator gwIter;
 
     protected:
         void contextMenuEvent(QContextMenuEvent*);
 
     signals:
-        void pageSelected(ConfigPage*);
-        void rowSelected(ButtonRow*);
-        void tick_passthrough(void);
-        void resetAll_passthrough(void);
+        void newGroupRequested(void);
 
 };
