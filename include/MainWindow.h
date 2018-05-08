@@ -25,6 +25,7 @@ class MainWindow : public QWidget
         TransportWidget *transport;
         Configurator *config;
         RowEditor *rowEditor;
+        void saveSession(void);
 
     public slots:
         void keyPressEvent(QKeyEvent*);

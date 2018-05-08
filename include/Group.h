@@ -1,6 +1,8 @@
 #ifndef GROUP_H
 #define GROUP_H
 
+#include <QJsonObject>
+
 #include "SequenceContainer.h"
 
 class Group : public QObject
@@ -16,6 +18,8 @@ class Group : public QObject
         static int Type_Scene;
         static int Type_Mutex;
         static int Type_Chain;
+
+        void write(QJsonObject&);
 
     private:
         int m_type;

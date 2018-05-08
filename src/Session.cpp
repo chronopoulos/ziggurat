@@ -1,3 +1,5 @@
+#include <QJsonDocument>
+#include <QJsonArray>
 #include "Session.h"
 
 #include <QDebug>
@@ -100,5 +102,32 @@ void Session::resetAll(void) {
         (*scontIter)->seq->reset();
     }
 
+}
+
+void Session::save(QString filename) {
+
+    // open file
+    QFile saveFile(filename);
+    if (!saveFile.open(QIODevice::WriteOnly)) {
+        qWarning("Couldn't open save file.");
+        return;
+    } else {
+        qDebug() << "saving to: " << filename;
+    }
+
+    QJsonObject sessionObject;
+
+    // save all groups
+    QJsonArray groupArray;
+    QJsonObject groupObject;
+    for (gcontIter = gconts.begin(); gcontIter != gconts.end(); gcontIter++) {
+        (*gcontIter)->group->write(groupObject);
+        groupArray.append(groupObject);
+    }
+    sessionObject["groups"] = groupArray;
+
+    // write to file
+    QJsonDocument saveDoc(sessionObject);
+    saveFile.write(saveDoc.toJson());
 
 }

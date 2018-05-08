@@ -1,6 +1,8 @@
 #ifndef TRIGGER_H
 #define TRIGGER_H
 
+#include <QJsonObject>
+
 class Trigger
 {
 
@@ -16,6 +18,8 @@ class Trigger
         static int Type_Note;
 
         bool operator==(Trigger);
+
+        void write(QJsonObject&);
 
     private:
 

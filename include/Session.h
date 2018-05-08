@@ -10,6 +10,7 @@ class Session : public QObject
 
     public:
         Session(void);
+        void save(QString);
 
     private:
         std::vector<SequenceContainer*> sconts;

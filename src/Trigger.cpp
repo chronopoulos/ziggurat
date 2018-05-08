@@ -51,3 +51,10 @@ bool Trigger::operator==(Trigger trig) {
     return false;
 
 }
+
+void Trigger::write(QJsonObject &trigJsonObject) {
+
+    trigJsonObject["type"] = m_type;
+    trigJsonObject["note"] = m_note;
+
+}

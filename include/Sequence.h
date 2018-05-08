@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QString>
+#include <QJsonObject>
 
 #include "RtMidi.h"
 
@@ -21,6 +22,8 @@ class Sequence : public QObject
         static int Backward;
         static int Bounce;
 
+        void write(QJsonObject&);
+
     private:
         int m_nsteps;
         QString m_name;
@@ -32,13 +35,14 @@ class Sequence : public QObject
         int m_midiChan;
         int m_direction;
         bool m_bounceForward;
+        int m_subloopStart, m_subloopStop;
 
         std::vector<Trigger> trigs;
+        std::vector<Trigger>::iterator trigIter;
 
         RtMidiOut *midiout;
         void sendNoteOn(int);
 
-        int subloop_start, subloop_stop;
 
     public slots:
         void tick(void);

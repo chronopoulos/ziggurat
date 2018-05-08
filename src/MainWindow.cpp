@@ -1,7 +1,8 @@
 #include <QPalette>
 #include <QGridLayout>
 #include <QDebug>
-
+#include <QApplication>
+#include <QFileDialog>
 
 #include "MainWindow.h"
 
@@ -59,12 +60,24 @@ void MainWindow::togglePlayState(void) {
 
 }
 
+void MainWindow::saveSession(void) {
+
+    QString filename = QFileDialog::getSaveFileName(this, "Save Session", QDir::homePath());
+    session->save(filename);
+
+}
+
 void MainWindow::keyPressEvent(QKeyEvent* k) {
 
     if (!k->isAutoRepeat()) {
         switch (k->key()) {
             case Qt::Key_Space:
                 togglePlayState();
+                break;
+            case Qt::Key_S:
+                if (QApplication::keyboardModifiers() & Qt::ControlModifier) {
+                    saveSession();
+                }
                 break;
         }
     }

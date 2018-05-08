@@ -1,3 +1,5 @@
+#include <QJsonArray>
+
 #include "Group.h"
 
 #include <QDebug>
@@ -108,5 +110,22 @@ void Group::handleSubloopCompleted(void) {
         (*scontIter)->seq->setQueue(true);
  
     }
+
+}
+
+void Group::write(QJsonObject &groupJsonObject) {
+
+    groupJsonObject["type"] = m_type;
+
+    // save all sequences
+    QJsonArray seqArray;
+    QJsonObject seqObject;
+    for (scontIter = sconts.begin(); scontIter != sconts.end(); scontIter++) {
+        (*scontIter)->seq->write(seqObject);
+        seqArray.append(seqObject);
+    }
+
+    groupJsonObject["seqs"] = seqArray;
+
 
 }

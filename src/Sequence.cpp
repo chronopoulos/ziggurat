@@ -1,4 +1,5 @@
 #include <QDebug>
+#include <QJsonArray>
 
 #include "Sequence.h"
 
@@ -25,8 +26,8 @@ Sequence::Sequence(int nsteps) {
     m_direction = Sequence::Forward;
     m_bounceForward = true;
 
-    subloop_start = 0;
-    subloop_stop = m_nsteps - 1;
+    m_subloopStart = 0;
+    m_subloopStop = m_nsteps - 1;
 
     // fill will null-type Trigs
     for (int i=0; i < m_nsteps; i++) {
@@ -97,7 +98,7 @@ void Sequence::tick(void) {
     if (idiv == 0) {
 
         // handle queue, if applicable
-        if (m_queue && (playhead == subloop_start)) {
+        if (m_queue && (playhead == m_subloopStart)) {
 
             m_mute = !m_mute;
             emit muteChanged(m_mute);
@@ -115,15 +116,15 @@ void Sequence::tick(void) {
                 sendNoteOn(trigs[playhead].note() + m_transpose);
             }
 
-            if (playhead == subloop_stop) emit subloopCompleted();
+            if (playhead == m_subloopStop) emit subloopCompleted();
 
         }
 
         // advance playhead according to direction mode
         if (m_direction == Sequence::Forward) {
 
-            if (playhead == subloop_stop) {
-                playhead = subloop_start;
+            if (playhead == m_subloopStop) {
+                playhead = m_subloopStart;
             } else if (playhead == (m_nsteps-1)) {
                 playhead = 0;
             } else {
@@ -132,8 +133,8 @@ void Sequence::tick(void) {
 
         } else if (m_direction == Sequence::Backward) {
 
-            if (playhead == subloop_start) {
-                playhead = subloop_stop;
+            if (playhead == m_subloopStart) {
+                playhead = m_subloopStop;
             } else if (playhead == 0) {
                 playhead = m_nsteps - 1;
             } else {
@@ -142,10 +143,10 @@ void Sequence::tick(void) {
 
         } else if (m_direction == Sequence::Bounce) {
 
-            if (playhead == subloop_stop) {
+            if (playhead == m_subloopStop) {
                 playhead--;
                 m_bounceForward = false;
-            } else if (playhead == subloop_start) {
+            } else if (playhead == m_subloopStart) {
                 playhead++;
                 m_bounceForward = true;
             } else {
@@ -186,13 +187,13 @@ void Sequence::sendNoteOn(int note) {
 
 void Sequence::setSubloop_start(int step) {
 
-    subloop_start = step;
+    m_subloopStart = step;
 
 }
 
 void Sequence::setSubloop_stop(int step) {
 
-    subloop_stop = step;
+    m_subloopStop = step;
 
 }
 
@@ -228,7 +229,7 @@ void Sequence::setDirection(QString direction) {
 
 void Sequence::reset(void) {
 
-    playhead = subloop_start;
+    playhead = m_subloopStart;
     idiv = 0;
     emit playheadUpdated(playhead);    
 
@@ -237,5 +238,33 @@ void Sequence::reset(void) {
 bool Sequence::isMuted(void) {
 
     return m_mute;
+
+}
+
+void Sequence::write(QJsonObject &seqJsonObject) {
+
+    /* don't save playhead, m_queue, m_idiv, or m_bounceForward,
+        as these will change during playback
+    */
+
+    seqJsonObject["nsteps"] = m_nsteps;
+    seqJsonObject["name"] = m_name;
+    seqJsonObject["div"] = m_div;
+    seqJsonObject["mute"] = m_mute;
+    seqJsonObject["queue"] = m_div;
+    seqJsonObject["transpose"] = m_transpose;
+    seqJsonObject["midiChan"] = m_midiChan;
+    seqJsonObject["direction"] = m_direction;
+    seqJsonObject["subloopStart"] = m_subloopStart;
+    seqJsonObject["subloopStop"] = m_subloopStop;
+
+    QJsonArray trigJsonArray;
+    QJsonObject trigJsonObject;
+    for (trigIter = trigs.begin(); trigIter != trigs.end(); trigIter++) {
+        (*trigIter).write(trigJsonObject);
+        trigJsonArray.append(trigJsonObject);
+    }
+
+    seqJsonObject["trigs"] = trigJsonArray;
 
 }
