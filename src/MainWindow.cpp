@@ -63,7 +63,8 @@ void MainWindow::togglePlayState(void) {
 void MainWindow::saveSession(void) {
 
     QString filename = QFileDialog::getSaveFileName(this, "Save Session", QDir::homePath());
-    session->save(filename);
+
+    if (!filename.isNull()) session->save(filename);
 
 }
 
