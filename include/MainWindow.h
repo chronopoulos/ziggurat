@@ -26,6 +26,7 @@ class MainWindow : public QWidget
         Configurator *config;
         RowEditor *rowEditor;
         void saveSession(void);
+        void openSession(void);
 
     public slots:
         void keyPressEvent(QKeyEvent*);

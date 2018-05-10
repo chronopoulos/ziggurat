@@ -9,6 +9,34 @@ SequenceContainer::SequenceContainer(int nsteps, QString name) {
     page = new ConfigPage(nsteps);
     row = new ButtonRow(nsteps);
 
+    makeConnections();
+    page->setName(name); // propagates to thumbnail
+    seq->reset(); // call this to set the thumbnail playhead
+
+}
+
+SequenceContainer::SequenceContainer(const QJsonObject &seqJSO) {
+
+    seq = new Sequence(seqJSO);
+    thumb = new Thumbnail(seqJSO);
+    page = new ConfigPage(seqJSO);
+    row = new ButtonRow(seqJSO);
+
+    makeConnections();
+    seq->reset();
+}
+
+SequenceContainer::~SequenceContainer(void) {
+
+    delete seq;
+    delete thumb;
+    delete page;
+    delete row;
+
+}
+
+void SequenceContainer::makeConnections(void) {
+
     // selection
     connect(thumb, SIGNAL(selected(void)), this, SLOT(select(void)));
 
@@ -56,22 +84,11 @@ SequenceContainer::SequenceContainer(int nsteps, QString name) {
     // delete
     connect(thumb, SIGNAL(deleteRequested(void)), this, SLOT(routeDelete(void)));
 
-    page->setName(name); // propagates to thumbnail
-    seq->reset(); // call this to set the thumbnail playhead
-
-}
-
-SequenceContainer::~SequenceContainer(void) {
-
-    delete seq;
-    delete thumb;
-    delete page;
-    delete row;
-
 }
 
 void SequenceContainer::select(void) {
 
+    thumb->select();
     emit pageSelected(page);
     emit thumbnailSelected(thumb);
     emit rowSelected(row);

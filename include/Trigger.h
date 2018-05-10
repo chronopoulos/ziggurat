@@ -8,8 +8,10 @@ class Trigger
 
     public:
         Trigger(void);
+        Trigger(const QJsonObject&);
         void setNote(int);
         void setNull(void);
+        void setType(int);
 
         int note(void);
         int type(void);

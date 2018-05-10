@@ -1,6 +1,7 @@
 #include "GroupContainer.h"
 
 #include <QDebug>
+#include <QJsonArray>
 
 GroupContainer::GroupContainer(void) {
 
@@ -12,6 +13,20 @@ GroupContainer::GroupContainer(void) {
 
 }
 
+GroupContainer::GroupContainer(const QJsonObject &groupJSO) : GroupContainer() {
+
+    group->setType(groupJSO["type"].toInt());
+
+    QJsonArray seqJSA = groupJSO["seqs"].toArray();
+    SequenceContainer *scont;
+    for (int i = 0; i < seqJSA.size(); i++) {
+        scont = new SequenceContainer(seqJSA[i].toObject());
+        group->addScont(scont);
+        groupWidget->addThumbnail(scont->thumb);
+    }
+
+}
+
 GroupContainer::~GroupContainer(void) {
 
     delete group;
@@ -19,3 +34,9 @@ GroupContainer::~GroupContainer(void) {
 
 }
 
+void GroupContainer::addScont(SequenceContainer *scont) {
+
+    group->addScont(scont);
+    groupWidget->addThumbnail(scont->thumb);
+
+}

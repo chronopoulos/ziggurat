@@ -1,6 +1,8 @@
 #include <QDebug>
+#include <QJsonArray>
 
 #include "Thumbnail.h"
+#include "Trigger.h"
 
 Thumbnail::Thumbnail(int nsteps) : QFrame() {
 
@@ -66,6 +68,26 @@ Thumbnail::Thumbnail(int nsteps) : QFrame() {
 
 }
 
+Thumbnail::Thumbnail(const QJsonObject &seqJSO) : Thumbnail(seqJSO["nsteps"].toInt()) {
+
+    setName(seqJSO["name"].toString());
+    setMute(seqJSO["mute"].toBool());
+
+    QJsonArray trigJSA = seqJSO["trigs"].toArray();
+    Trigger trig;
+    for (int i = 0; i < trigJSA.size(); i++) {
+
+        trig = Trigger(trigJSA[i].toObject());
+        if (trig.type() == Trigger::Type_Null) {
+            setActivation(i, false);
+        } else {
+            setActivation(i, true);
+        }
+
+    }
+
+}
+
 void Thumbnail::setName(QString name) {
 
     m_name = name;
@@ -90,7 +112,6 @@ void Thumbnail::deselect(void) {
 void Thumbnail::mousePressEvent(QMouseEvent *e) {
 
     if (e->buttons()==Qt::LeftButton) {
-        select();
         emit selected();
     } 
 

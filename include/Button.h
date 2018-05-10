@@ -14,11 +14,12 @@ class Button : public QWidget
 
     public:
         Button(int);
+        void setTrig(Trigger);
 
     private:
         bool m_isActive;
         int m_step;
-        Trigger *m_trig;
+        Trigger m_trig;
 
     protected:
         void mousePressEvent(QMouseEvent*);

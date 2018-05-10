@@ -129,3 +129,4 @@ void Group::write(QJsonObject &groupJsonObject) {
 
 
 }
+

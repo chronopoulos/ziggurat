@@ -9,6 +9,15 @@ Trigger::Trigger(void) {
 
 }
 
+Trigger::Trigger(const QJsonObject &trigJSO) {
+
+    setType(trigJSO["type"].toInt());
+    if (m_type == Trigger::Type_Note) {
+        setNote(trigJSO["note"].toInt());
+    }
+
+}
+
 void Trigger::setNote(int note) {
 
     m_note = note;
@@ -16,9 +25,16 @@ void Trigger::setNote(int note) {
 
 }
 
+// convenience function
 void Trigger::setNull(void) {
 
     m_type = Trigger::Type_Null;
+
+}
+
+void Trigger::setType(int type) {
+
+    m_type = type;
 
 }
 

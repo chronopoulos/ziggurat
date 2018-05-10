@@ -10,8 +10,8 @@ Chris Chronopoulos 20180226
 
 QString MIDI_BACKEND;
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
+
     QApplication app(argc, argv);
 
     // MIDI backend selection (default is ALSA)
@@ -26,4 +26,5 @@ int main(int argc, char *argv[])
     mainWindow.show();
 
     return app.exec();
+
 }

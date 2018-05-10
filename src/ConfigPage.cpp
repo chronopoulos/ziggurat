@@ -71,6 +71,16 @@ ConfigPage::ConfigPage(int nsteps) : m_nsteps(nsteps) {
 
 }
 
+ConfigPage::ConfigPage(const QJsonObject &seqJSO) : ConfigPage(seqJSO["nsteps"].toInt()) {
+
+    nameLabel->setValue(seqJSO["name"].toString());
+    clockDivLabel->setValue(seqJSO["div"].toInt());
+    transposeLabel->setValue(seqJSO["transpose"].toInt());
+    midiChanLabel->setValue(seqJSO["midiChan"].toInt());
+    directionLabel->setValue(seqJSO["direction"].toInt());
+
+}
+
 void ConfigPage::setName(QString name) {
 
     nameLabel->setValue(name);

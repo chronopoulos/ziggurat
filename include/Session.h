@@ -11,8 +11,11 @@ class Session : public QObject
     public:
         Session(void);
         void save(QString);
+        void load(QString);
 
     private:
+        void makeScontConnections(SequenceContainer*);
+        void addGcont(GroupContainer*);
         std::vector<SequenceContainer*> sconts;
         std::vector<SequenceContainer*>::iterator scontIter;
         std::vector<GroupContainer*> gconts;

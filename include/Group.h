@@ -21,9 +21,10 @@ class Group : public QObject
 
         void write(QJsonObject&);
 
+        std::vector<SequenceContainer*> sconts;
+
     private:
         int m_type;
-        std::vector<SequenceContainer*> sconts;
         std::vector<SequenceContainer*>::iterator scontIter;
 
     public slots:

@@ -41,9 +41,11 @@ MainWindow::MainWindow(void) : QWidget() {
     state = STATE_STOPPED;
 
     // initialize with 3 groups
+    /*
     for (int i=0; i<3; i++) {
         session->createGroup();
     }
+    */
 
     resize(700,700);
 
@@ -68,6 +70,14 @@ void MainWindow::saveSession(void) {
 
 }
 
+void MainWindow::openSession(void) {
+
+    QString filename = QFileDialog::getOpenFileName(this, "Open Session", QDir::homePath());
+    
+    if (!filename.isNull()) session->load(filename);
+
+}
+
 void MainWindow::keyPressEvent(QKeyEvent* k) {
 
     if (!k->isAutoRepeat()) {
@@ -78,6 +88,11 @@ void MainWindow::keyPressEvent(QKeyEvent* k) {
             case Qt::Key_S:
                 if (QApplication::keyboardModifiers() & Qt::ControlModifier) {
                     saveSession();
+                }
+                break;
+            case Qt::Key_O:
+                if (QApplication::keyboardModifiers() & Qt::ControlModifier) {
+                    openSession();
                 }
                 break;
         }

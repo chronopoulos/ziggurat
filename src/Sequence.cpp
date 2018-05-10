@@ -34,7 +34,41 @@ Sequence::Sequence(int nsteps) {
         trigs.push_back(Trigger());
     }
 
-    // RtMidi config
+    configureMidi();
+
+}
+
+Sequence::Sequence(const QJsonObject &seqJSO) {
+
+    // sequence parameters, from JSON
+    m_nsteps = seqJSO["nsteps"].toInt();
+    m_name = seqJSO["name"].toString();
+    m_div = seqJSO["div"].toInt();
+    m_mute = seqJSO["mute"].toBool();
+    m_transpose = seqJSO["transpose"].toInt();
+    m_midiChan = seqJSO["midiChan"].toInt();
+    m_direction = seqJSO["direction"].toInt();
+    m_subloopStart = seqJSO["subloopStart"].toInt();
+    m_subloopStop = seqJSO["subloopStop"].toInt();
+
+    // dynamic parameters, default initialization
+    playhead = 0;
+    m_queue = false;
+    idiv = 0;
+    m_bounceForward = true;
+
+    // trigs
+    QJsonArray trigJSA = seqJSO["trigs"].toArray();
+    for (int i = 0; i < trigJSA.size(); i++) {
+        trigs.push_back(Trigger(trigJSA[i].toObject()));
+    }
+
+    configureMidi();
+
+}
+
+void Sequence::configureMidi(void) {
+
     try {
 
         if (MIDI_BACKEND == "jack") {
@@ -243,7 +277,7 @@ bool Sequence::isMuted(void) {
 
 void Sequence::write(QJsonObject &seqJsonObject) {
 
-    /* don't save playhead, m_queue, m_idiv, or m_bounceForward,
+    /* don't save playhead, m_queue, idiv, or m_bounceForward,
         as these will change during playback
     */
 
@@ -251,7 +285,6 @@ void Sequence::write(QJsonObject &seqJsonObject) {
     seqJsonObject["name"] = m_name;
     seqJsonObject["div"] = m_div;
     seqJsonObject["mute"] = m_mute;
-    seqJsonObject["queue"] = m_div;
     seqJsonObject["transpose"] = m_transpose;
     seqJsonObject["midiChan"] = m_midiChan;
     seqJsonObject["direction"] = m_direction;

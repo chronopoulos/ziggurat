@@ -9,6 +9,7 @@
 #include <QHBoxLayout>
 #include <QMenu>
 #include <QAction>
+#include <QJsonObject>
 
 #include "Led.h"
 
@@ -19,6 +20,7 @@ class Thumbnail : public QFrame
 
     public:
         Thumbnail(int);
+        Thumbnail(const QJsonObject&);
         int nsteps;
         bool isSelected;
         void select(void);

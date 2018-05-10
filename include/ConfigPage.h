@@ -2,6 +2,7 @@
 #define CONFIGPAGE_H
 
 #include <QGridLayout>
+#include <QJsonObject>
 
 #include "ClickLabel.h"
 
@@ -11,6 +12,7 @@ class ConfigPage : public QWidget
 
     public:
         ConfigPage(int);
+        ConfigPage(const QJsonObject&);
         void setName(QString);
 
     private:

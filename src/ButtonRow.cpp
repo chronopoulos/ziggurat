@@ -1,6 +1,7 @@
 #include "ButtonRow.h"
 
 #include <QDebug>
+#include <QJsonArray>
 
 ButtonRow::ButtonRow(int nsteps) : QWidget() {
 
@@ -22,6 +23,7 @@ ButtonRow::ButtonRow(int nsteps) : QWidget() {
         for (int i=0; i < m_nsteps; i++) {
 
             tmpButton = new Button(i);
+            buttons.push_back(tmpButton);
             connect(tmpButton, SIGNAL(trigSet(int, Trigger*)), this, SIGNAL(trigSet(int, Trigger*)));
             middleLayout->addWidget(tmpButton);
 
@@ -48,6 +50,23 @@ ButtonRow::ButtonRow(int nsteps) : QWidget() {
     }
 
     setLayout(layout);
+
+}
+
+ButtonRow::ButtonRow(const QJsonObject &seqJSO) : ButtonRow(seqJSO["nsteps"].toInt()) {
+
+    QJsonArray trigJSA = seqJSO["trigs"].toArray();
+    for (int i = 0; i < trigJSA.size(); i++) {
+
+        buttons[i]->setTrig(Trigger(trigJSA[i].toObject()));
+
+        if (i == seqJSO["subloopStart"].toInt()) {
+            indicators[i]->setLBracket(true);
+        } else if (i == seqJSO["subloopStop"].toInt()) {
+            indicators[i]->setRBracket(true);
+        }
+
+    }
 
 }
 

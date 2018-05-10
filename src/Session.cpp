@@ -13,10 +13,14 @@ Session::Session(void) {
 void Session::createGroup(void) {
 
     GroupContainer *gcont = new GroupContainer();
+    addGcont(gcont);
+
+}
+
+void Session::addGcont(GroupContainer *gcont) {
+
     gconts.push_back(gcont);
-
     emit groupWidgetCreated(gcont->groupWidget);
-
     connect(gcont, SIGNAL(newSequenceRequested(int, QString)),
             this, SLOT(createSequenceInGroup(int, QString)));
 
@@ -25,13 +29,22 @@ void Session::createGroup(void) {
 void Session::createSequenceInGroup(int nsteps, QString name) {
 
     GroupContainer *gcont = qobject_cast<GroupContainer*>(sender());
-
     SequenceContainer *scont = new SequenceContainer(nsteps, name);
+
     sconts.push_back(scont);
 
-    gcont->group->addScont(scont);
-    gcont->groupWidget->addThumbnail(scont->thumb);
+    gcont->addScont(scont);
 
+    makeScontConnections(scont);
+
+    // if this is the only sequence in the session, select it
+    if (sconts.size() == 1) scont->select();
+
+}
+
+void Session::makeScontConnections(SequenceContainer *scont) {
+
+    // selection
     connect(scont, SIGNAL(thumbnailSelected(Thumbnail*)),
             this, SLOT(updateSelectedThumbnail(Thumbnail*)));
 
@@ -44,9 +57,6 @@ void Session::createSequenceInGroup(int nsteps, QString name) {
     // delete
     connect(scont, SIGNAL(deleteRequested(SequenceContainer*)),
             this, SLOT(deleteScont(SequenceContainer*)));
-
-    // if this is the only sequence in the session, select it
-    if (sconts.size() == 1) scont->select();
 
 }
 
@@ -129,5 +139,50 @@ void Session::save(QString filename) {
     // write to file
     QJsonDocument saveDoc(sessionObject);
     saveFile.write(saveDoc.toJson());
+
+}
+
+void Session::load(QString filename) {
+
+    // open file
+    QFile loadFile(filename);
+    if (!loadFile.open(QIODevice::ReadOnly)) {
+        qWarning("Couldn't open load file.");
+        return;
+    } else {
+        qDebug() << "loading: " << filename;
+    }
+
+    // check if format is correct
+    QByteArray loadData = loadFile.readAll();
+    QJsonDocument loadDoc(QJsonDocument::fromJson(loadData));
+    QJsonObject json(loadDoc.object());
+    if (!json.contains("groups") || !json["groups"].isArray()) {
+        qDebug() << "Load file " << filename << "has invalid format";
+        return;
+    }
+
+    // main loop
+    QJsonArray groupJSA = json["groups"].toArray();
+    GroupContainer *gcont;
+    for (int i = 0; i < groupJSA.size(); i++) {
+
+        gcont = new GroupContainer(groupJSA[i].toObject());
+
+        // some redundancy here
+        for (scontIter = gcont->group->sconts.begin(); scontIter != gcont->group->sconts.end(); scontIter++) {
+            sconts.push_back(*scontIter);
+            makeScontConnections(*scontIter);
+            if (sconts.size() == 1) (*scontIter)->select();
+        }
+
+        addGcont(gcont);
+        
+    }
+
+    // update GUI
+    for (gcontIter = gconts.begin(); gcontIter != gconts.end(); gcontIter++) {
+        emit groupWidgetCreated((*gcontIter)->groupWidget);
+    }
 
 }

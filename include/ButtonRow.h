@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QLabel>
 #include <QHBoxLayout>
+#include <QJsonObject>
 
 #include "ClickLabel.h"
 #include "Button.h"
@@ -14,6 +15,7 @@ class ButtonRow : public QWidget
 
     public:
         ButtonRow(int);
+        ButtonRow(const QJsonObject&);
         void setName(QString);
 
     private:
@@ -24,6 +26,7 @@ class ButtonRow : public QWidget
         ClickLabel *transposeLabel;
         ClickLabel *midiChanLabel;
         ClickLabel *directionLabel;
+        std::vector<Button*> buttons;
         std::vector<Indicator*> indicators;
 
         Indicator *playheadIndicator;

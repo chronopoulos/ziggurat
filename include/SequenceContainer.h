@@ -16,6 +16,7 @@ class SequenceContainer : public QObject
     public:
         SequenceContainer(int, QString);
         ~SequenceContainer(void);
+        SequenceContainer(const QJsonObject&);
 
         Sequence *seq;
         Thumbnail *thumb;
@@ -25,6 +26,9 @@ class SequenceContainer : public QObject
         bool selected(void);
 
         void setMute(bool);
+
+    private:
+        void makeConnections(void);
 
     signals:
         void pageSelected(ConfigPage*);

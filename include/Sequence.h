@@ -15,6 +15,7 @@ class Sequence : public QObject
 
     public:
         Sequence(int);
+        Sequence(const QJsonObject&);
         ~Sequence(void);
         bool isMuted(void);
 
@@ -42,6 +43,7 @@ class Sequence : public QObject
 
         RtMidiOut *midiout;
         void sendNoteOn(int);
+        void configureMidi(void);
 
 
     public slots:
