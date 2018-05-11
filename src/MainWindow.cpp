@@ -5,6 +5,7 @@
 #include <QFileDialog>
 
 #include "MainWindow.h"
+#include "Dialogs.h"
 
 #define STATE_STOPPED 0
 #define STATE_PLAYING 1
@@ -62,12 +63,17 @@ void MainWindow::togglePlayState(void) {
 
 }
 
-void MainWindow::saveSession(void) {
+bool MainWindow::saveSession(void) {
 
     QString filename = QFileDialog::getSaveFileName(this, "Save Session", QDir::homePath());
 
-    if (!filename.isNull()) session->save(filename);
+    bool saved = false;
+    if (!filename.isNull()) {
+        session->save(filename);
+        saved = true;
+    }
 
+    return saved;
 }
 
 void MainWindow::openSession(void) {
@@ -97,5 +103,28 @@ void MainWindow::keyPressEvent(QKeyEvent* k) {
                 break;
         }
     }
+
+}
+
+void MainWindow::closeEvent(QCloseEvent *e) {
+
+    MaybeSaveDialog dlg;
+
+    switch (dlg.exec()) {
+        case -1:
+            e->accept();
+            break;
+        case 0:
+            e->ignore();
+            break;
+        case 1:
+            if (saveSession()) {
+                e->accept();
+            } else {
+                e->ignore();
+            }
+            break;
+    }
+
 
 }

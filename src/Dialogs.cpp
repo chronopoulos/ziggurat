@@ -45,3 +45,39 @@ int NewSequenceDialog::length(void) {
     return lengthSpin->value();
 
 }
+
+
+MaybeSaveDialog::MaybeSaveDialog(void) {
+
+    layout = new QVBoxLayout();
+
+    description = new QLabel("\nSave changes before closing?\n");
+    description->setAlignment(Qt::AlignCenter);
+
+    buttons = new QDialogButtonBox();
+    buttons->addButton(QDialogButtonBox::Save);
+    buttons->addButton(QDialogButtonBox::Cancel);
+    connect(buttons, SIGNAL(accepted(void)), this, SLOT(accept(void)));
+    connect(buttons, SIGNAL(rejected(void)), this, SLOT(reject(void)));
+
+    // why isn't this built into QDialogButtonBox?
+    discardButton = new QPushButton("Close Without Saving");
+    buttons->addButton(discardButton, QDialogButtonBox::DestructiveRole);
+    connect(discardButton, SIGNAL(released(void)), this, SLOT(discard(void)));
+
+    layout->addWidget(description);
+    layout->addWidget(buttons);
+
+    setLayout(layout);
+
+    setModal(true);
+    setWindowTitle("Save Session?");
+    setWindowFlags(Qt::WindowStaysOnTopHint);
+
+}
+
+void MaybeSaveDialog::discard(void) {
+
+    done(-1);
+
+}

@@ -4,9 +4,12 @@
 #include <QLineEdit>
 #include <QSpinBox>
 #include <QDialogButtonBox>
+#include <QPushButton>
 
 class NewSequenceDialog : public QDialog
 {
+    Q_OBJECT
+
     public:
         NewSequenceDialog(void);
         QString name(void);
@@ -19,4 +22,22 @@ class NewSequenceDialog : public QDialog
         QDialogButtonBox *buttons;
         QSpinBox *lengthSpin;
 
+};
+
+
+class MaybeSaveDialog : public QDialog
+{
+    Q_OBJECT
+
+    public:
+        MaybeSaveDialog(void);
+
+    private:
+        QLabel *description;
+        QVBoxLayout *layout;
+        QDialogButtonBox *buttons;
+        QPushButton *discardButton;
+
+    public slots:
+        void discard(void);
 };

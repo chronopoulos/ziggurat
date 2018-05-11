@@ -25,10 +25,11 @@ class MainWindow : public QWidget
         TransportWidget *transport;
         Configurator *config;
         RowEditor *rowEditor;
-        void saveSession(void);
+        bool saveSession(void);
         void openSession(void);
 
-    public slots:
+    protected:
         void keyPressEvent(QKeyEvent*);
+        void closeEvent(QCloseEvent*);
 
 };
