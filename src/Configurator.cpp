@@ -10,33 +10,28 @@ Configurator::Configurator(void) {
     setFrameStyle(QFrame::Box | QFrame::Plain);
     setLineWidth(1);
 
-    currentPage = nullptr;
-
     defaultPage = new ConfigPage(0);
 
-    setDefaultPage();
+    currentPage = defaultPage;
+    layout->addWidget(currentPage);
 
 }
 
 void Configurator::setPage(ConfigPage *newPage) {
 
+    // case of newPage == nullptr
     if (!newPage) newPage = defaultPage;
 
-    if (currentPage != newPage) {
-        if (currentPage) {
-            layout->replaceWidget(currentPage, newPage);
-            currentPage->setParent(NULL);
-        } else {
-            layout->addWidget(newPage);
-        }
+    if (newPage != currentPage) {
+
+        layout->replaceWidget(currentPage, newPage);
+
+        currentPage->hide();
         currentPage = newPage;
+        currentPage->show();
+
     }
 
 
 }
 
-void Configurator::setDefaultPage(void) {
-
-    setPage(defaultPage);
-
-}

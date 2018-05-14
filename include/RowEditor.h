@@ -9,7 +9,6 @@ class RowEditor : public QFrame
 
     public:
         RowEditor(void);
-        void setDefaultRow(void);
 
     private:
         QVBoxLayout *layout;

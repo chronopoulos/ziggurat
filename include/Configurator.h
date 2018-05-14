@@ -9,7 +9,6 @@ class Configurator : public QFrame
 
     public:
         Configurator(void);
-        void setDefaultPage(void);
 
     private:
         QVBoxLayout *layout;

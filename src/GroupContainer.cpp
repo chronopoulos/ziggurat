@@ -11,6 +11,9 @@ GroupContainer::GroupContainer(void) {
     connect(groupWidget, SIGNAL(newSequenceRequested(int, QString)),
             this, SIGNAL(newSequenceRequested(int, QString)));
 
+    connect(groupWidget, SIGNAL(deleteRequested(void)),
+            this, SLOT(routeDelete(void)));
+
 }
 
 GroupContainer::GroupContainer(const QJsonObject &groupJSO) : GroupContainer() {
@@ -40,3 +43,10 @@ void GroupContainer::addScont(SequenceContainer *scont) {
     groupWidget->addThumbnail(scont->thumb);
 
 }
+
+void GroupContainer::routeDelete(void) {
+
+    emit deleteRequested(this);
+
+}
+

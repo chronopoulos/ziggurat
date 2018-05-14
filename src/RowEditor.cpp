@@ -8,32 +8,27 @@ RowEditor::RowEditor(void) {
     setFrameStyle(QFrame::Box | QFrame::Plain);
     setLineWidth(1);
 
-    currentRow = nullptr;
-
     defaultRow = new ButtonRow(0);
 
-    setDefaultRow();
+    currentRow = defaultRow;
+    layout->addWidget(currentRow);
 
 }
 
 void RowEditor::setRow(ButtonRow *newRow) {
 
+    // case of newRow == nullptr
     if (!newRow) newRow = defaultRow;
 
-    if (currentRow != newRow) {
-        if (currentRow) {
-            layout->replaceWidget(currentRow, newRow);
-            currentRow->setParent(NULL);
-        } else {
-            layout->addWidget(newRow);
-        }
+    if (newRow != currentRow) {
+
+        layout->replaceWidget(currentRow, newRow);
+
+        currentRow->hide();
         currentRow = newRow;
+        currentRow->show();
+
     }
 
 }
 
-void RowEditor::setDefaultRow(void) {
-
-    setRow(defaultRow);
-
-}

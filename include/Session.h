@@ -12,6 +12,7 @@ class Session : public QObject
         Session(void);
         void save(QString);
         void load(QString);
+        void selectNothing(void);
 
     private:
         void makeScontConnections(SequenceContainer*);
@@ -29,9 +30,11 @@ class Session : public QObject
         void tick(void);
         void resetAll(void);
         void deleteScont(SequenceContainer*);
+        void deleteGcont(GroupContainer*);
 
     signals:
         void groupWidgetCreated(GroupWidget*);
+        void groupWidgetDeleted(GroupWidget*);
         void pageSelected(ConfigPage*);
         void rowSelected(ButtonRow*);
        

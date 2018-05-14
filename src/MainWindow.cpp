@@ -27,6 +27,7 @@ MainWindow::MainWindow(void) : QWidget() {
 
     connect(groupManager, SIGNAL(newGroupRequested(void)), session, SLOT(createGroup(void)));
     connect(session, SIGNAL(groupWidgetCreated(GroupWidget*)), groupManager, SLOT(addGroupWidget(GroupWidget*)));
+    connect(session, SIGNAL(groupWidgetDeleted(GroupWidget*)), groupManager, SLOT(removeGroupWidget(GroupWidget*)));
     connect(session, SIGNAL(pageSelected(ConfigPage*)), config, SLOT(setPage(ConfigPage*)));
     connect(session, SIGNAL(rowSelected(ButtonRow*)), rowEditor, SLOT(setRow(ButtonRow*)));
 
@@ -100,6 +101,9 @@ void MainWindow::keyPressEvent(QKeyEvent* k) {
                 if (QApplication::keyboardModifiers() & Qt::ControlModifier) {
                     openSession();
                 }
+                break;
+            case Qt::Key_Escape:
+                session->selectNothing();
                 break;
         }
     }

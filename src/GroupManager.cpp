@@ -20,6 +20,15 @@ void GroupManager::addGroupWidget(GroupWidget *groupWidget) {
 
 }
 
+void GroupManager::removeGroupWidget(GroupWidget *groupWidget) {
+
+    if (layout->indexOf(groupWidget) >= 0) {
+        layout->removeWidget(groupWidget);
+        groupWidget->setParent(NULL);
+    }
+
+}
+
 void GroupManager::contextMenuEvent(QContextMenuEvent*) {
 
     QMenu managerMenu;

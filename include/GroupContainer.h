@@ -20,5 +20,9 @@ class GroupContainer : public QObject
 
     signals:
         void newSequenceRequested(int, QString);
+        void deleteRequested(GroupContainer*);
+
+    public slots:
+        void routeDelete(void);
 
 };

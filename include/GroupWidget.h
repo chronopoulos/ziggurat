@@ -15,6 +15,7 @@ class GroupWidget : public QFrame
 
     public:
         GroupWidget(void);
+        ~GroupWidget(void);
         void addThumbnail(Thumbnail*);
         void removeThumbnail(Thumbnail*);
 
@@ -27,6 +28,7 @@ class GroupWidget : public QFrame
 
     signals:
         void newSequenceRequested(int, QString);
+        void deleteRequested(void);
 
 };
 

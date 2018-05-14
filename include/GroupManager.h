@@ -12,6 +12,7 @@ class GroupManager : public QFrame
 
     public slots:
         void addGroupWidget(GroupWidget*);
+        void removeGroupWidget(GroupWidget*);
 
     private:
         QHBoxLayout *layout;

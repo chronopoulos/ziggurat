@@ -7,6 +7,7 @@
 Session::Session(void) {
 
     selectedThumbnail = nullptr;
+    selectNothing();
 
 }
 
@@ -21,8 +22,11 @@ void Session::addGcont(GroupContainer *gcont) {
 
     gconts.push_back(gcont);
     emit groupWidgetCreated(gcont->groupWidget);
+
     connect(gcont, SIGNAL(newSequenceRequested(int, QString)),
             this, SLOT(createSequenceInGroup(int, QString)));
+    connect(gcont, SIGNAL(deleteRequested(GroupContainer*)),
+            this, SLOT(deleteGcont(GroupContainer*)));
 
 }
 
@@ -79,13 +83,58 @@ void Session::deleteScont(SequenceContainer *scont) {
             scontIter = sconts.begin();
             (*scontIter)->select();
         } else {
-            emit pageSelected(nullptr);
-            emit rowSelected(nullptr);
-            selectedThumbnail = nullptr;
+            selectNothing();
         }
     }
 
     delete scont;
+
+}
+
+void Session::selectNothing(void) {
+
+    if (selectedThumbnail) selectedThumbnail->deselect();
+
+    emit pageSelected(nullptr);
+    emit rowSelected(nullptr);
+    selectedThumbnail = nullptr;
+
+}
+
+void Session::deleteGcont(GroupContainer *gcont) {
+
+    qDebug() << "Session::deleteGcont called with " << gcont;
+
+    // remove groupWidget from groupManager
+    emit groupWidgetDeleted(gcont->groupWidget);
+    
+    // remove each scont from sconts
+    /*
+    SequenceContainer *scont;
+    for (scontIter = gcont->group->sconts.begin(); scontIter != gcont->group->sconts.end(); scontIter++) {
+        scont = *scontIter;
+        sconts.erase(std::find(sconts.begin(), sconts.end(), scont));
+
+        // handle selection transfer
+        if (scont->selected()) {
+            if (!sconts.empty()) {
+                (*(sconts.begin()))->select();
+            } else {
+                emit pageSelected(nullptr);
+                emit rowSelected(nullptr);
+                selectedThumbnail = nullptr;
+            }
+        }
+
+        delete scont;
+    }
+    */
+
+    // remove gcont from gconts
+    gcontIter = std::find(gconts.begin(), gconts.end(), gcont);
+    gconts.erase(gcontIter);
+
+    delete gcont;
 
 }
 
@@ -162,27 +211,40 @@ void Session::load(QString filename) {
         return;
     }
 
-    // main loop
+
+    // nuke the current session
+    selectNothing();
+    for (scontIter = sconts.begin(); scontIter != sconts.end(); scontIter++) {
+        delete *scontIter;
+    }
+    sconts.clear();
+    for (gcontIter = gconts.begin(); gcontIter != gconts.end(); gcontIter++) {
+        delete *gcontIter;
+    }
+    gconts.clear();
+
+    
+
+    // load all groups and sequences from file
     QJsonArray groupJSA = json["groups"].toArray();
     GroupContainer *gcont;
     for (int i = 0; i < groupJSA.size(); i++) {
 
         gcont = new GroupContainer(groupJSA[i].toObject());
 
-        // some redundancy here
+        // some redundancy here: store groups in session->sconts as well as group->sconts
         for (scontIter = gcont->group->sconts.begin(); scontIter != gcont->group->sconts.end(); scontIter++) {
             sconts.push_back(*scontIter);
             makeScontConnections(*scontIter);
-            if (sconts.size() == 1) (*scontIter)->select();
         }
 
         addGcont(gcont);
         
     }
 
-    // update GUI
-    for (gcontIter = gconts.begin(); gcontIter != gconts.end(); gcontIter++) {
-        emit groupWidgetCreated((*gcontIter)->groupWidget);
+    if (!sconts.empty()) {
+        scontIter = sconts.begin();
+        (*scontIter)->select();  
     }
 
 }
