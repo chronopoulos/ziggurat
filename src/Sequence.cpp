@@ -218,12 +218,10 @@ void Sequence::tick(void) {
 
 void Sequence::sendNoteOn(int note) {
 
-    std::vector<unsigned char> message;
-    message.push_back(143 + m_midiChan); // 144=chan1, 145=chan2, etc.
-    message.push_back(note);
-    message.push_back(100); // velocity 100 (hard-wired)
-    midiout->sendMessage( &message );
-
+    midiBuf[0] = 143 + m_midiChan; // 144=chan1, 145=chan2, etc.
+    midiBuf[1] = note;
+    midiBuf[2] = 100; // velocity 100 (hard-wired for now)
+    midiout->sendMessage(midiBuf, 3);
 }
 
 void Sequence::setSubloop_start(int step) {

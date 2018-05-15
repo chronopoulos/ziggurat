@@ -42,6 +42,7 @@ class Sequence : public QObject
         std::vector<Trigger>::iterator trigIter;
 
         RtMidiOut *midiout;
+        unsigned char midiBuf[3];
         void sendNoteOn(int);
         void configureMidi(void);
 
