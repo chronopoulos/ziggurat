@@ -15,13 +15,13 @@ class ConfigPage : public QWidget
         ConfigPage(const QJsonObject&);
         void setName(QString);
 
-        ClickLabel *nameLabel; // tmp here
 
-        int m_nsteps; // tmp here
     private:
 
+        int m_nsteps;
         QGridLayout *layout;
 
+        ClickLabel *nameLabel;
         ClickLabel *lengthLabel;
         ClickLabel *clockDivLabel;
         ClickLabel *transposeLabel;

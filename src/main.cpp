@@ -1,6 +1,9 @@
 /*
-[ziggurat]
-Chris Chronopoulos 20180226
+
+    [ziggurat]
+
+    Chris Chronopoulos 20180226
+
 */
 
 #include <QApplication>
@@ -9,6 +12,7 @@ Chris Chronopoulos 20180226
 #include "MainWindow.h"
 
 QString MIDI_BACKEND;
+bool DELTA = false;
 
 int main(int argc, char *argv[]) {
 

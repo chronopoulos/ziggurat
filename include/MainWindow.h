@@ -25,7 +25,6 @@ class MainWindow : public QWidget
         TransportWidget *transport;
         Configurator *config;
         RowEditor *rowEditor;
-        bool saveSession(void);
         void openSession(void);
 
     protected:

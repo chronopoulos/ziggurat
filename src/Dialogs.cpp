@@ -61,7 +61,7 @@ MaybeSaveDialog::MaybeSaveDialog(void) {
     connect(buttons, SIGNAL(rejected(void)), this, SLOT(reject(void)));
 
     // why isn't this built into QDialogButtonBox?
-    discardButton = new QPushButton("Close Without Saving");
+    discardButton = new QPushButton("Discard Changes");
     buttons->addButton(discardButton, QDialogButtonBox::DestructiveRole);
     connect(discardButton, SIGNAL(released(void)), this, SLOT(discard(void)));
 

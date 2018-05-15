@@ -1,8 +1,12 @@
 #include <QJsonDocument>
 #include <QJsonArray>
+#include <QFileDialog>
 #include "Session.h"
+#include "Dialogs.h"
 
 #include <QDebug>
+
+extern bool DELTA;
 
 Session::Session(void) {
 
@@ -28,6 +32,8 @@ void Session::addGcont(GroupContainer *gcont) {
     connect(gcont, SIGNAL(deleteRequested(GroupContainer*)),
             this, SLOT(deleteGcont(GroupContainer*)));
 
+    DELTA = true;
+
 }
 
 void Session::createSequenceInGroup(int nsteps, QString name) {
@@ -43,6 +49,8 @@ void Session::createSequenceInGroup(int nsteps, QString name) {
 
     // if this is the only sequence in the session, select it
     if (sconts.size() == 1) scont->select();
+
+    DELTA = true;
 
 }
 
@@ -89,6 +97,8 @@ void Session::deleteScont(SequenceContainer *scont) {
 
     delete scont;
 
+    DELTA = true;
+
 }
 
 void Session::selectNothing(void) {
@@ -108,33 +118,13 @@ void Session::deleteGcont(GroupContainer *gcont) {
     // remove groupWidget from groupManager
     emit groupWidgetDeleted(gcont->groupWidget);
     
-    // remove each scont from sconts
-    /*
-    SequenceContainer *scont;
-    for (scontIter = gcont->group->sconts.begin(); scontIter != gcont->group->sconts.end(); scontIter++) {
-        scont = *scontIter;
-        sconts.erase(std::find(sconts.begin(), sconts.end(), scont));
-
-        // handle selection transfer
-        if (scont->selected()) {
-            if (!sconts.empty()) {
-                (*(sconts.begin()))->select();
-            } else {
-                emit pageSelected(nullptr);
-                emit rowSelected(nullptr);
-                selectedThumbnail = nullptr;
-            }
-        }
-
-        delete scont;
-    }
-    */
-
     // remove gcont from gconts
     gcontIter = std::find(gconts.begin(), gconts.end(), gcont);
     gconts.erase(gcontIter);
 
     delete gcont;
+
+    DELTA = true;
 
 }
 
@@ -163,13 +153,19 @@ void Session::resetAll(void) {
 
 }
 
-void Session::save(QString filename) {
+bool Session::save(void) {
+
+    QString filename = QFileDialog::getSaveFileName(Q_NULLPTR, "Save Session", QDir::homePath());
+
+    if (filename.isNull()) {
+        return false;
+    }
 
     // open file
     QFile saveFile(filename);
     if (!saveFile.open(QIODevice::WriteOnly)) {
         qWarning("Couldn't open save file.");
-        return;
+        return false;
     } else {
         qDebug() << "saving to: " << filename;
     }
@@ -189,9 +185,39 @@ void Session::save(QString filename) {
     QJsonDocument saveDoc(sessionObject);
     saveFile.write(saveDoc.toJson());
 
+    // reset flag
+    DELTA = false;
+
+    return true;
+
 }
 
-void Session::load(QString filename) {
+void Session::load(void) {
+
+    // if there are changes to be saved, ask to save them
+    if (DELTA) {
+
+        MaybeSaveDialog dlg;
+        switch (dlg.exec()) {
+            case -1: // Discard
+                break;
+            case 0: // Cancel
+                return;
+            case 1: // Save
+                if (save()) {
+                    break;
+                } else {
+                    return;
+                }
+        }
+
+    }
+
+    QString filename = QFileDialog::getOpenFileName(Q_NULLPTR, "Open Session", QDir::homePath());
+
+    if (filename.isNull()) {
+        return;
+    }
 
     // open file
     QFile loadFile(filename);
@@ -246,5 +272,7 @@ void Session::load(QString filename) {
         scontIter = sconts.begin();
         (*scontIter)->select();  
     }
+
+    DELTA = false;
 
 }

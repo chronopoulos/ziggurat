@@ -11,6 +11,8 @@
 #define STATE_PLAYING 1
 #define STATE_PAUSED 2
 
+extern bool DELTA;
+
 MainWindow::MainWindow(void) : QWidget() {
 
     session = new Session();
@@ -43,11 +45,11 @@ MainWindow::MainWindow(void) : QWidget() {
     state = STATE_STOPPED;
 
     // initialize with 3 groups
-    /*
     for (int i=0; i<3; i++) {
         session->createGroup();
     }
-    */
+
+    DELTA = false;
 
     resize(700,700);
 
@@ -64,24 +66,13 @@ void MainWindow::togglePlayState(void) {
 
 }
 
-bool MainWindow::saveSession(void) {
-
-    QString filename = QFileDialog::getSaveFileName(this, "Save Session", QDir::homePath());
-
-    bool saved = false;
-    if (!filename.isNull()) {
-        session->save(filename);
-        saved = true;
-    }
-
-    return saved;
-}
-
+// TODO delete
 void MainWindow::openSession(void) {
 
+    /*
     QString filename = QFileDialog::getOpenFileName(this, "Open Session", QDir::homePath());
-    
     if (!filename.isNull()) session->load(filename);
+    */
 
 }
 
@@ -94,12 +85,13 @@ void MainWindow::keyPressEvent(QKeyEvent* k) {
                 break;
             case Qt::Key_S:
                 if (QApplication::keyboardModifiers() & Qt::ControlModifier) {
-                    saveSession();
+                    session->save();
                 }
                 break;
             case Qt::Key_O:
                 if (QApplication::keyboardModifiers() & Qt::ControlModifier) {
-                    openSession();
+                    //openSession();
+                    session->load();
                 }
                 break;
             case Qt::Key_Escape:
@@ -112,23 +104,29 @@ void MainWindow::keyPressEvent(QKeyEvent* k) {
 
 void MainWindow::closeEvent(QCloseEvent *e) {
 
-    MaybeSaveDialog dlg;
+    if (DELTA) { // if there are changes, then ask to save
 
-    switch (dlg.exec()) {
-        case -1:
-            e->accept();
-            break;
-        case 0:
-            e->ignore();
-            break;
-        case 1:
-            if (saveSession()) {
+        MaybeSaveDialog dlg;
+        switch (dlg.exec()) {
+            case -1: // Discard
                 e->accept();
-            } else {
+                break;
+            case 0: // Cancel
                 e->ignore();
-            }
-            break;
-    }
+                break;
+            case 1: // Save
+                if (session->save()) {
+                    e->accept();
+                } else {
+                    e->ignore();
+                }
+                break;
+        }
 
+    } else { // otherwise, just close
+
+        e->accept();
+
+    }
 
 }

@@ -10,8 +10,8 @@ class Session : public QObject
 
     public:
         Session(void);
-        void save(QString);
-        void load(QString);
+        bool save(void);
+        void load(void);
         void selectNothing(void);
 
     private:

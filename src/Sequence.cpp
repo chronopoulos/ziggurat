@@ -4,6 +4,7 @@
 #include "Sequence.h"
 
 extern QString MIDI_BACKEND;
+extern bool DELTA;
 
 int Sequence::Forward = 0;
 int Sequence::Backward = 1;
@@ -98,11 +99,15 @@ void Sequence::setName(QString name) {
     m_name = name;
     midiout->setPortName(name.toStdString());
 
+    DELTA = true;
+
 }
 
 void Sequence::setMute(bool mute) {
 
     m_mute = mute;
+
+    DELTA = true;
 
 }
 
@@ -124,6 +129,8 @@ void Sequence::setTrig(int step, Trigger *trig) {
     }
 
     trigs[step] = *trig;
+
+    DELTA = true;
 
 }
 
@@ -223,11 +230,15 @@ void Sequence::setSubloop_start(int step) {
 
     m_subloopStart = step;
 
+    DELTA = true;
+
 }
 
 void Sequence::setSubloop_stop(int step) {
 
     m_subloopStop = step;
+
+    DELTA = true;
 
 }
 
@@ -235,17 +246,23 @@ void Sequence::setClockDiv(int div) {
 
     m_div = div;
 
+    DELTA = true;
+
 }
 
 void Sequence::setTranspose(int transpose) {
 
     m_transpose = transpose;
 
+    DELTA = true;
+
 }
 
 void Sequence::setMidiChan(int chan) {
 
     m_midiChan = chan;
+
+    DELTA = true;
 
 }
 
@@ -258,6 +275,8 @@ void Sequence::setDirection(QString direction) {
     } else if (direction == "Bounce") {
         m_direction = Sequence::Bounce;
     }
+
+    DELTA = true;
 
 }
 

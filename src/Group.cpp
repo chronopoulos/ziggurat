@@ -4,6 +4,8 @@
 
 #include <QDebug>
 
+extern bool DELTA;
+
 int Group::Type_Free = 0;
 int Group::Type_Scene = 1;
 int Group::Type_Mutex = 2;
@@ -51,12 +53,15 @@ void Group::setType(int type) {
         }
     }
 
+    DELTA = true;
 
 }
 
 void Group::addScont(SequenceContainer *scont) {
 
     sconts.push_back(scont);
+
+    DELTA = true;
 
 }
 
@@ -66,6 +71,8 @@ void Group::removeScont(SequenceContainer *scont) {
     if (scontIter != sconts.end()) {
         sconts.erase(scontIter);
     }
+
+    DELTA = true;
 
 }
 
