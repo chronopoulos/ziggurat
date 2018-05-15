@@ -154,7 +154,7 @@ void Sequence::tick(void) {
         if (!m_mute) {
 
             if (trigs[playhead].type() == Trigger::Type_Note) {
-                sendNoteOn(trigs[playhead].note() + m_transpose);
+                sendNoteOn(trigs[playhead].noteValue() + m_transpose);
             }
 
             if (playhead == m_subloopStop) emit subloopCompleted();

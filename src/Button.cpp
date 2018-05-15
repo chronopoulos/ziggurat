@@ -24,9 +24,10 @@ void Button::mousePressEvent(QMouseEvent *e) {
     if (e->buttons() == Qt::LeftButton) m_isActive = !m_isActive;
 
     if (m_isActive) {
-        m_trig.setNote(60); // default value
+        m_trig.setType(Trigger::Type_Note);
+        m_trig.setNoteValue(60); // default value
     } else {
-        m_trig.setNull();
+        m_trig.setType(Trigger::Type_Null);
     }
 
     emit trigSet(m_step, &m_trig);
@@ -38,11 +39,11 @@ void Button::wheelEvent(QWheelEvent *e) {
 
     if (m_isActive) {
 
-        int note = m_trig.note();
+        int note = m_trig.noteValue();
         if (e->angleDelta().y() > 0) {
-            m_trig.setNote(note + 1);
+            m_trig.setNoteValue(note + 1);
         } else if (e->angleDelta().y() < 0) {
-            m_trig.setNote(note - 1);
+            m_trig.setNoteValue(note - 1);
         }
 
         emit trigSet(m_step, &m_trig);
@@ -81,7 +82,7 @@ void Button::paintEvent(QPaintEvent*) {
         painter.setBrush(Qt::red);
         painter.drawRect(0.3*w, 0.1*h, 0.4*w, 0.2*h);
         painter.drawText(QRect(0.3*w,0.5*h,0.4*w,0.2*h), Qt::AlignCenter,
-                            QString::number(m_trig.note()));
+                            QString::number(m_trig.noteValue()));
     } else {
         painter.setBrush(Qt::black);
         painter.drawRect(0.3*w, 0.1*h, 0.4*w, 0.2*h);

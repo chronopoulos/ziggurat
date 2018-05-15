@@ -1,34 +1,27 @@
 #include "Trigger.h"
 
+#include <QDebug>
+
 int Trigger::Type_Null = -1;
 int Trigger::Type_Note = 0;
 
+#define DEFAULT_NOTEVALUE 60
+#define DEFAULT_NOTEVELOCITY 100
+
 Trigger::Trigger(void) {
 
-    setNull();
+    m_type = Trigger::Type_Null;
+
+    m_noteValue = DEFAULT_NOTEVALUE;
+    m_noteVelocity = DEFAULT_NOTEVELOCITY;
 
 }
 
 Trigger::Trigger(const QJsonObject &trigJSO) {
 
-    setType(trigJSO["type"].toInt());
-    if (m_type == Trigger::Type_Note) {
-        setNote(trigJSO["note"].toInt());
-    }
-
-}
-
-void Trigger::setNote(int note) {
-
-    m_note = note;
-    m_type = Trigger::Type_Note;
-
-}
-
-// convenience function
-void Trigger::setNull(void) {
-
-    m_type = Trigger::Type_Null;
+    setType(trigJSO["type"].toInt(Trigger::Type_Null));
+    setNoteValue(trigJSO["note"].toInt(DEFAULT_NOTEVALUE));
+    setNoteVelocity(trigJSO["velocity"].toInt(DEFAULT_NOTEVELOCITY));
 
 }
 
@@ -38,13 +31,15 @@ void Trigger::setType(int type) {
 
 }
 
-int Trigger::note(void) {
+void Trigger::setNoteValue(int noteVal) {
 
-    if (m_type == Trigger::Type_Note) {
-        return m_note;
-    } else {
-        return -1;
-    }
+    m_noteValue = noteVal;
+
+}
+
+void Trigger::setNoteVelocity(int noteVel) {
+
+    m_noteVelocity = noteVel;
 
 }
 
@@ -54,10 +49,23 @@ int Trigger::type(void) {
 
 }
 
+int Trigger::noteValue(void) {
+
+        return m_noteValue;
+
+}
+
+int Trigger::noteVelocity(void) {
+
+        return m_noteVelocity;
+
+}
+
 bool Trigger::operator==(Trigger trig) {
 
     if (trig.type() == Trigger::Type_Note) {
-        return (trig.note() == m_note);
+        return (trig.noteValue() == m_noteValue);
+        return (trig.noteVelocity() == m_noteVelocity);
     }
 
     if (trig.type() == Trigger::Type_Null) {
@@ -71,6 +79,8 @@ bool Trigger::operator==(Trigger trig) {
 void Trigger::write(QJsonObject &trigJsonObject) {
 
     trigJsonObject["type"] = m_type;
-    trigJsonObject["note"] = m_note;
+    trigJsonObject["note"] = m_noteValue;
+    trigJsonObject["velocity"] = m_noteVelocity;
 
 }
+
