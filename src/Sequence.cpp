@@ -154,7 +154,8 @@ void Sequence::tick(void) {
         if (!m_mute) {
 
             if (trigs[playhead].type() == Trigger::Type_Note) {
-                sendNoteOn(trigs[playhead].noteValue() + m_transpose);
+                sendNoteOn(trigs[playhead].noteValue() + m_transpose,
+                            trigs[playhead].noteVelocity());
             }
 
             if (playhead == m_subloopStop) emit subloopCompleted();
@@ -216,11 +217,11 @@ void Sequence::tick(void) {
 
 }
 
-void Sequence::sendNoteOn(int note) {
+void Sequence::sendNoteOn(int note, int vel) {
 
     midiBuf[0] = 143 + m_midiChan; // 144=chan1, 145=chan2, etc.
     midiBuf[1] = note;
-    midiBuf[2] = 100; // velocity 100 (hard-wired for now)
+    midiBuf[2] = vel; // velocity 100 (hard-wired for now)
     midiout->sendMessage(midiBuf, 3);
 }
 

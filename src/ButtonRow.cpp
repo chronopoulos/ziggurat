@@ -1,6 +1,6 @@
 #include "ButtonRow.h"
 
-#include <QDebug>
+#include <QLabel>
 #include <QJsonArray>
 
 ButtonRow::ButtonRow(int nsteps) : QWidget() {
@@ -11,12 +11,26 @@ ButtonRow::ButtonRow(int nsteps) : QWidget() {
 
     if (m_nsteps > 0) {
 
+        QHBoxLayout *topLayout = new QHBoxLayout();
         QHBoxLayout *middleLayout = new QHBoxLayout();
         QHBoxLayout *bottomLayout = new QHBoxLayout();
 
         playheadIndicator = nullptr;
         lBracketIndicator = nullptr;
         rBracketIndicator = nullptr;
+
+        editParameterCombo = new QComboBox();
+        editParameterCombo->addItem("Editing: Note Value");
+        editParameterCombo->addItem("Editing: Note Velocity");
+        editParameterCombo->setFocusPolicy(Qt::NoFocus);
+        editParameterCombo->setMaximumWidth(200);
+        connect(editParameterCombo, SIGNAL(currentIndexChanged(int)),
+                this, SLOT(setEditParameter(int)));
+
+        topLayout->addWidget(editParameterCombo);
+        topLayout->setAlignment(Qt::AlignRight);
+
+        QSpacerItem *spacer = new QSpacerItem(0,10);
 
         Button *tmpButton;
         Indicator *tmpIndicator;
@@ -37,6 +51,8 @@ ButtonRow::ButtonRow(int nsteps) : QWidget() {
 
         }
 
+        layout->addLayout(topLayout);
+        layout->addItem(spacer);
         layout->addLayout(middleLayout);
         layout->addLayout(bottomLayout);
 
@@ -95,3 +111,12 @@ void ButtonRow::updateRBracket(int step) {
 
 }
 
+void ButtonRow::setEditParameter(int index) {
+
+    std::vector<Button*>::iterator buttonIter;
+    for (buttonIter = buttons.begin(); buttonIter != buttons.end(); buttonIter++) {
+        (*buttonIter)->setEditParameter(index);
+    }
+    
+
+}

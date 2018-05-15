@@ -11,7 +11,7 @@ class RowEditor : public QFrame
         RowEditor(void);
 
     private:
-        QVBoxLayout *layout;
+        QVBoxLayout *mainLayout;
         ButtonRow *currentRow, *defaultRow;
 
     public slots:
