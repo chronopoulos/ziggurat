@@ -2,16 +2,16 @@
 
 RowEditor::RowEditor(void) {
 
-    layout = new QVBoxLayout();
-    setLayout(layout);
+    mainLayout = new QVBoxLayout();
+    setLayout(mainLayout);
+
+    defaultRow = new ButtonRow(0);
+    currentRow = defaultRow;
+
+    mainLayout->addWidget(currentRow);
 
     setFrameStyle(QFrame::Box | QFrame::Plain);
     setLineWidth(1);
-
-    defaultRow = new ButtonRow(0);
-
-    currentRow = defaultRow;
-    layout->addWidget(currentRow);
 
 }
 
@@ -22,7 +22,7 @@ void RowEditor::setRow(ButtonRow *newRow) {
 
     if (newRow != currentRow) {
 
-        layout->replaceWidget(currentRow, newRow);
+        mainLayout->replaceWidget(currentRow, newRow);
 
         currentRow->hide();
         currentRow = newRow;

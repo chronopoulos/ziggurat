@@ -3,6 +3,9 @@
 #include <QDebug>
 #include <QPalette>
 
+int Button::Edit_NoteValue = 0;
+int Button::Edit_NoteVelocity = 1;
+
 Button::Button(int step) {
 
     m_step = step;
@@ -17,6 +20,8 @@ Button::Button(int step) {
 
     m_isActive = false;
 
+    m_editParameter = Button::Edit_NoteValue;
+
 }
 
 void Button::mousePressEvent(QMouseEvent *e) {
@@ -24,9 +29,9 @@ void Button::mousePressEvent(QMouseEvent *e) {
     if (e->buttons() == Qt::LeftButton) m_isActive = !m_isActive;
 
     if (m_isActive) {
-        m_trig.setNote(60); // default value
+        m_trig.setType(Trigger::Type_Note);
     } else {
-        m_trig.setNull();
+        m_trig.setType(Trigger::Type_Null);
     }
 
     emit trigSet(m_step, &m_trig);
@@ -38,11 +43,30 @@ void Button::wheelEvent(QWheelEvent *e) {
 
     if (m_isActive) {
 
-        int note = m_trig.note();
-        if (e->angleDelta().y() > 0) {
-            m_trig.setNote(note + 1);
-        } else if (e->angleDelta().y() < 0) {
-            m_trig.setNote(note - 1);
+        if (m_editParameter == Button::Edit_NoteValue) {
+
+            noteValue = m_trig.noteValue();
+            if (e->angleDelta().y() > 0) {
+                noteValue++;
+                if (noteValue > 127) noteValue = 127;
+            } else if (e->angleDelta().y() < 0) {
+                noteValue--;
+                if (noteValue < 0) noteValue = 0;
+            }
+            m_trig.setNoteValue(noteValue);
+
+        } else if (m_editParameter == Button::Edit_NoteVelocity) {
+
+            noteVelocity = m_trig.noteVelocity();
+            if (e->angleDelta().y() > 0) {
+                noteVelocity++;
+                if (noteVelocity > 127) noteVelocity = 127;
+            } else if (e->angleDelta().y() < 0) {
+                noteVelocity--;
+                if (noteVelocity < 0) noteVelocity = 0;
+            }
+            m_trig.setNoteVelocity(noteVelocity);
+
         }
 
         emit trigSet(m_step, &m_trig);
@@ -66,6 +90,14 @@ void Button::setTrig(Trigger trig) {
 
 }
 
+void Button::setEditParameter(int index) {
+
+    m_editParameter = index;
+
+    update();
+
+}
+
 void Button::paintEvent(QPaintEvent*) {
 
     QPainter painter(this);
@@ -76,15 +108,24 @@ void Button::paintEvent(QPaintEvent*) {
     w = width();
     h = height();
 
-    // led
     if (m_isActive) {
+
         painter.setBrush(Qt::red);
         painter.drawRect(0.3*w, 0.1*h, 0.4*w, 0.2*h);
-        painter.drawText(QRect(0.3*w,0.5*h,0.4*w,0.2*h), Qt::AlignCenter,
-                            QString::number(m_trig.note()));
+
+        if (m_editParameter == Button::Edit_NoteValue) {
+            editText = QString::number(m_trig.noteValue());
+        } else if (m_editParameter == Button::Edit_NoteVelocity) {
+            editText = QString::number(m_trig.noteVelocity());
+        }
+
+        painter.drawText(QRect(0.3*w,0.5*h,0.4*w,0.2*h), Qt::AlignCenter, editText);
+
     } else {
+
         painter.setBrush(Qt::black);
         painter.drawRect(0.3*w, 0.1*h, 0.4*w, 0.2*h);
+
     }
 
 }

@@ -9,24 +9,26 @@ class Trigger
     public:
         Trigger(void);
         Trigger(const QJsonObject&);
-        void setNote(int);
-        void setNull(void);
-        void setType(int);
 
-        int note(void);
+        void setType(int);
+        void setNoteValue(int);
+        void setNoteVelocity(int);
+
         int type(void);
+        int noteValue(void);
+        int noteVelocity(void);
 
         static int Type_Null;
         static int Type_Note;
 
         bool operator==(Trigger);
-
         void write(QJsonObject&);
 
     private:
 
-        int m_note;
         int m_type;
+        int m_noteValue;
+        int m_noteVelocity;
 
 };
 

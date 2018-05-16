@@ -43,7 +43,7 @@ class Sequence : public QObject
 
         RtMidiOut *midiout;
         unsigned char midiBuf[3];
-        void sendNoteOn(int);
+        void sendNoteOn(int, int);
         void configureMidi(void);
 
 

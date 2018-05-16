@@ -2,11 +2,10 @@
 #define BUTTONROW_H
 
 #include <QWidget>
-#include <QLabel>
 #include <QHBoxLayout>
+#include <QComboBox>
 #include <QJsonObject>
 
-#include "ClickLabel.h"
 #include "Button.h"
 
 class ButtonRow : public QWidget
@@ -20,14 +19,10 @@ class ButtonRow : public QWidget
 
     private:
         int m_nsteps;
-        ClickLabel *nameLabel;
-        ClickLabel *lengthLabel;
-        ClickLabel *clockDivLabel;
-        ClickLabel *transposeLabel;
-        ClickLabel *midiChanLabel;
-        ClickLabel *directionLabel;
         std::vector<Button*> buttons;
         std::vector<Indicator*> indicators;
+
+        QComboBox *editParameterCombo;
 
         Indicator *playheadIndicator;
         Indicator *lBracketIndicator;
@@ -37,6 +32,7 @@ class ButtonRow : public QWidget
         void updatePlayhead(int);
         void updateLBracket(int);
         void updateRBracket(int);
+        void setEditParameter(int index);
 
     signals:
         void trigSet(int, Trigger*);
