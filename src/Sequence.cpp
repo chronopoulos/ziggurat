@@ -15,6 +15,7 @@ Sequence::Sequence(int nsteps) {
     m_nsteps = nsteps;
 
     // initialize sequence parameters
+    m_name = "default";
     playhead = 0;
     m_div = 1;
     idiv = 0;
@@ -78,7 +79,7 @@ void Sequence::configureMidi(void) {
             midiout = new RtMidiOut(RtMidi::LINUX_ALSA, "ziggurat");
         }
 
-        midiout->openPort(0, "default");
+        midiout->openPort(0, m_name.toStdString());
 
     } catch (RtMidiError &e) {
 
@@ -97,7 +98,7 @@ Sequence::~Sequence(void) {
 void Sequence::setName(QString name) {
 
     m_name = name;
-    midiout->setPortName(name.toStdString());
+    midiout->setPortName(m_name.toStdString());
 
     DELTA = true;
 
