@@ -10,7 +10,7 @@ SequenceContainer::SequenceContainer(int nsteps, QString name) {
     row = new ButtonRow(nsteps);
 
     makeConnections();
-    page->setName(name); // propagates to thumbnail
+    page->setName(name); // propagates to thumbnail and sequence
     seq->reset(); // call this to set the thumbnail playhead
 
 }
