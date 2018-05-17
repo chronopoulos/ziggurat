@@ -113,8 +113,6 @@ void Session::selectNothing(void) {
 
 void Session::deleteGcont(GroupContainer *gcont) {
 
-    qDebug() << "Session::deleteGcont called with " << gcont;
-
     // remove groupWidget from groupManager
     emit groupWidgetDeleted(gcont->groupWidget);
     
