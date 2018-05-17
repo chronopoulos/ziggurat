@@ -12,6 +12,7 @@ class Session : public QObject
         Session(void);
         bool save(void);
         void load(void);
+        void load(const QString&);
         void selectNothing(void);
 
     private:

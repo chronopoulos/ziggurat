@@ -215,9 +215,13 @@ void Session::load(void) {
 
     QString filename = QFileDialog::getOpenFileName(Q_NULLPTR, "Open Session", QDir::homePath());
 
-    if (filename.isNull()) {
-        return;
+    if (!filename.isNull()) {
+        load(filename);
     }
+
+}
+
+void Session::load(const QString &filename) {
 
     // open file
     QFile loadFile(filename);

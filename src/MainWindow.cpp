@@ -13,7 +13,7 @@
 
 extern bool DELTA;
 
-MainWindow::MainWindow(void) : QWidget() {
+MainWindow::MainWindow(const QString &filename) : QWidget() {
 
     session = new Session();
 
@@ -44,9 +44,17 @@ MainWindow::MainWindow(void) : QWidget() {
 
     state = STATE_STOPPED;
 
-    // initialize with 3 groups
-    for (int i=0; i<3; i++) {
-        session->createGroup();
+    if (filename.isNull()) {
+
+        // initialize with 3 empty groups
+        for (int i=0; i<3; i++) {
+            session->createGroup();
+        }
+
+    } else {
+
+        session->load(filename);
+
     }
 
     DELTA = false;
@@ -66,16 +74,6 @@ void MainWindow::togglePlayState(void) {
 
 }
 
-// TODO delete
-void MainWindow::openSession(void) {
-
-    /*
-    QString filename = QFileDialog::getOpenFileName(this, "Open Session", QDir::homePath());
-    if (!filename.isNull()) session->load(filename);
-    */
-
-}
-
 void MainWindow::keyPressEvent(QKeyEvent* k) {
 
     if (!k->isAutoRepeat()) {
@@ -90,7 +88,6 @@ void MainWindow::keyPressEvent(QKeyEvent* k) {
                 break;
             case Qt::Key_O:
                 if (QApplication::keyboardModifiers() & Qt::ControlModifier) {
-                    //openSession();
                     session->load();
                 }
                 break;

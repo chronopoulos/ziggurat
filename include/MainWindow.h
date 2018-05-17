@@ -14,7 +14,7 @@ class MainWindow : public QWidget
     Q_OBJECT
 
     public:
-        MainWindow(void);
+        MainWindow(const QString&);
         void togglePlayState(void);
 
     private:
@@ -25,7 +25,6 @@ class MainWindow : public QWidget
         TransportWidget *transport;
         Configurator *config;
         RowEditor *rowEditor;
-        void openSession(void);
 
     protected:
         void keyPressEvent(QKeyEvent*);
