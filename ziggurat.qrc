@@ -4,5 +4,6 @@
     <file>img/play.png</file>
     <file>img/stop.png</file>
     <file>img/ziggurat_icon.png</file>
+    <file>img/empty_set.png</file>
 </qresource>
 </RCC>

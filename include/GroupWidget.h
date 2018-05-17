@@ -6,6 +6,7 @@
 #include <QMenu>
 #include <QAction>
 #include <QCursor>
+#include <QLabel>
 
 #include "Thumbnail.h"
 
@@ -21,6 +22,9 @@ class GroupWidget : public QFrame
     private:
         QVBoxLayout *layout;
         Thumbnail *interestingThumb;
+        QLabel *emptySetIcon;
+        bool nullState;
+        void setNullState(void);
 
     protected:
         void contextMenuEvent(QContextMenuEvent*);

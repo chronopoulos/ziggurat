@@ -6,11 +6,17 @@
 GroupWidget::GroupWidget(void) : QFrame() {
 
     layout = new QVBoxLayout();
-    layout->setAlignment(Qt::AlignTop);
     setLayout(layout);
 
     setFrameStyle(QFrame::Box | QFrame::Plain);
     setLineWidth(1);
+
+    emptySetIcon = new QLabel();
+    QPixmap pm(":/img/empty_set.png");
+    emptySetIcon->setPixmap(pm.scaledToWidth(100, Qt::SmoothTransformation));
+    emptySetIcon->setAlignment(Qt::AlignHCenter);
+
+    setNullState();
 
     setMinimumWidth(340);
 
@@ -18,7 +24,17 @@ GroupWidget::GroupWidget(void) : QFrame() {
 
 void GroupWidget::addThumbnail(Thumbnail *thumb) {
 
+    if (nullState) {
+
+        layout->removeWidget(emptySetIcon);
+        emptySetIcon->setParent(NULL);
+        layout->setAlignment(Qt::AlignTop);
+        nullState = false;
+
+    }
+
     layout->addWidget(thumb);
+
 
 }
 
@@ -28,6 +44,18 @@ void GroupWidget::removeThumbnail(Thumbnail *thumb) {
         layout->removeWidget(thumb);
         thumb->setParent(NULL);
     }
+
+    if (layout->count() == 0) {
+        setNullState();
+    }
+
+}
+
+void GroupWidget::setNullState(void) {
+
+    layout->setAlignment(Qt::AlignCenter);
+    layout->addWidget(emptySetIcon);
+    nullState = true;
 
 }
 
