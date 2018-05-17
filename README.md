@@ -22,9 +22,9 @@ Sequence", choose a sequence name and length and click "OK".
 
 Along the bottom of the window, you will find the Button-Row Editor, where you
 can enter notes by clicking on the buttons. The default note has MIDI value 60
-(middle C) and velocity 100. To change this, mouse-wheel over the button. You
-can switch between editing note value or velocity using the dropdown menu in
-the Row Editor.
+(middle C) and velocity 100. To change this, mouse-wheel over the button;
+holding Shift will increase the rate of change. You can switch between editing
+note value or velocity using the dropdown menu in the Row Editor.
 
 In the Transport section (middle-left), you can set the tempo, start,
 stop, and pause the sequencer. Hitting spacebar toggles start/stop. Each

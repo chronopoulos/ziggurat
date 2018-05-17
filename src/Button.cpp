@@ -2,6 +2,7 @@
 
 #include <QDebug>
 #include <QPalette>
+#include <QApplication>
 
 int Button::Edit_NoteValue = 0;
 int Button::Edit_NoteVelocity = 1;
@@ -43,14 +44,20 @@ void Button::wheelEvent(QWheelEvent *e) {
 
     if (m_isActive) {
 
+        if (QApplication::keyboardModifiers() & Qt::ShiftModifier) {
+            wheelIncrement = 4;
+        } else {
+            wheelIncrement = 1;
+        }
+
         if (m_editParameter == Button::Edit_NoteValue) {
 
             noteValue = m_trig.noteValue();
             if (e->angleDelta().y() > 0) {
-                noteValue++;
+                noteValue += wheelIncrement;
                 if (noteValue > 127) noteValue = 127;
             } else if (e->angleDelta().y() < 0) {
-                noteValue--;
+                noteValue -= wheelIncrement;
                 if (noteValue < 0) noteValue = 0;
             }
             m_trig.setNoteValue(noteValue);
@@ -59,10 +66,10 @@ void Button::wheelEvent(QWheelEvent *e) {
 
             noteVelocity = m_trig.noteVelocity();
             if (e->angleDelta().y() > 0) {
-                noteVelocity++;
+                noteVelocity += wheelIncrement;
                 if (noteVelocity > 127) noteVelocity = 127;
             } else if (e->angleDelta().y() < 0) {
-                noteVelocity--;
+                noteVelocity -= wheelIncrement;
                 if (noteVelocity < 0) noteVelocity = 0;
             }
             m_trig.setNoteVelocity(noteVelocity);

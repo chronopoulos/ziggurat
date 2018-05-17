@@ -27,8 +27,8 @@ class Button : public QWidget
         int m_editParameter;
 
         // to avoid repeated declaration
-        int noteValue;
-        int noteVelocity;
+        int noteValue, noteVelocity;
+        int wheelIncrement;
         QString editText;
 
     protected:
