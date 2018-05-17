@@ -16,19 +16,6 @@ GroupWidget::GroupWidget(void) : QFrame() {
 
 }
 
-GroupWidget::~GroupWidget(void) {
-
-    // this is to prevent double deletion with scont in Session::load()
-    /*
-    Thumbnail *thumb;
-    for (int i=0; i<layout->count(); i++) {
-        thumb = qobject_cast<Thumbnail*> layout->itemAt(i)->widget();
-        removeThumbnail(thumb);
-    }
-    */
-
-}
-
 void GroupWidget::addThumbnail(Thumbnail *thumb) {
 
     layout->addWidget(thumb);

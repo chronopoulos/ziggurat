@@ -15,7 +15,6 @@ class GroupWidget : public QFrame
 
     public:
         GroupWidget(void);
-        ~GroupWidget(void);
         void addThumbnail(Thumbnail*);
         void removeThumbnail(Thumbnail*);
 
