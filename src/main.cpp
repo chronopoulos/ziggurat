@@ -29,21 +29,24 @@ int main(int argc, char *argv[]) {
     parser.addHelpOption();
     parser.addVersionOption();
 
+    parser.addPositionalArgument("filename", "Ziggurat session file to load");
+
     QCommandLineOption jackOption(QStringList() << "j" << "jack-midi", "Use JACK MIDI");
     parser.addOption(jackOption);
 
     QCommandLineOption alsaOption(QStringList() << "a" << "alsa-midi", "Use ALSA MIDI (default)");
     parser.addOption(alsaOption);
 
-    QCommandLineOption fileOption(QStringList() << "f" << "file",
-            "Open session file <filename>", "filename");
-    parser.addOption(fileOption);
-
     parser.process(app);
 
     bool jackMidi = parser.isSet(jackOption);
     bool alsaMidi = parser.isSet(alsaOption);
-    QString filename = parser.value(fileOption);
+
+    const QStringList args = parser.positionalArguments();
+    QString filename;
+    if (args.count() > 0) {
+        filename = args[0];
+    }
 
     if (jackMidi && !alsaMidi) {
         MIDI_BACKEND = "jack";
