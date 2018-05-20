@@ -115,7 +115,7 @@ void Session::handleTransfer(Thumbnail *thumb, GroupContainer *gcont) {
     }
 
     // find the group
-    Group *group;
+    Group *group = nullptr;
     for (gcontIter = gconts.begin(); gcontIter != gconts.end(); gcontIter++) {
 
         scontIter = std::find((*gcontIter)->group->sconts.begin(),
@@ -129,8 +129,10 @@ void Session::handleTransfer(Thumbnail *thumb, GroupContainer *gcont) {
     }
 
     // do the transfer
-    group->removeScont(scont);
-    gcont->group->addScont(scont);
+    if (group) {
+        group->removeScont(scont);
+        gcont->group->addScont(scont);
+    }
 
 }
 
