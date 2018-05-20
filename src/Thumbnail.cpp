@@ -178,6 +178,10 @@ void Thumbnail::mouseMoveEvent(QMouseEvent *e) {
         mimeData->setText("thumb");
         drag->setMimeData(mimeData);
 
+        QPixmap pm = grab();
+        drag->setPixmap(pm);
+        drag->setHotSpot(e->pos());
+
         drag->exec(Qt::MoveAction);
 
     }
