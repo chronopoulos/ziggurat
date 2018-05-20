@@ -10,6 +10,7 @@ class GroupContainer : public QObject
         GroupContainer(const QJsonObject&);
         ~GroupContainer(void);
         void addScont(SequenceContainer*);
+        void removeScont(SequenceContainer*);
 
         Group *group;
         GroupWidget *groupWidget;

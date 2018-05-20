@@ -103,35 +103,37 @@ void Session::deleteScont(SequenceContainer *scont) {
 
 }
 
-void Session::handleTransfer(Thumbnail *thumb, GroupContainer *gcont) {
+void Session::handleTransfer(Thumbnail *thumb, GroupContainer *newGcont) {
 
     // find the scont
-    SequenceContainer *scont;
+    SequenceContainer *scont = nullptr;
     for (scontIter = sconts.begin(); scontIter != sconts.end(); scontIter++) {
+
         if ((*scontIter)->thumb == thumb) {
             scont = *scontIter;
             break;
         }
+
     }
 
-    // find the group
-    Group *group = nullptr;
+    // find the old gcont
+    GroupContainer *oldGcont = nullptr;
     for (gcontIter = gconts.begin(); gcontIter != gconts.end(); gcontIter++) {
 
         scontIter = std::find((*gcontIter)->group->sconts.begin(),
                                 (*gcontIter)->group->sconts.end(), scont);
 
         if (scontIter != (*gcontIter)->group->sconts.end()) {
-            group = (*gcontIter)->group;
+            oldGcont = *gcontIter;
             break;
         }
 
     }
 
     // do the transfer
-    if (group) {
-        group->removeScont(scont);
-        gcont->group->addScont(scont);
+    if (scont && oldGcont) {
+        oldGcont->removeScont(scont);
+        newGcont->addScont(scont);
     }
 
 }

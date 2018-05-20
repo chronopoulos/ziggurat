@@ -178,19 +178,7 @@ void Thumbnail::mouseMoveEvent(QMouseEvent *e) {
         mimeData->setText("thumb");
         drag->setMimeData(mimeData);
 
-        setAcceptDrops(false);
-        Qt::DropAction dropAction = drag->exec(Qt::MoveAction);
-
-        //GroupWidget *oldGroupWidget, *newGroupWidget;
-        if (dropAction == Qt::MoveAction) {
-            /*
-            oldGroupWidget = qobject_cast<GroupWidget*>(parentWidget());
-            //newGroupWidget = qobject_cast<GroupWidget*>(drag->target());
-            emit transferRequested(oldGroupWidget, newGroupWidget);
-            */
-
-        }
-        setAcceptDrops(true);
+        drag->exec(Qt::MoveAction);
 
     }
 

@@ -94,10 +94,6 @@ void GroupWidget::dragEnterEvent(QDragEnterEvent *e) {
 void GroupWidget::dropEvent(QDropEvent *e) {
 
     Thumbnail *thumb = qobject_cast<Thumbnail*>(e->source());
-    GroupWidget *oldGroupWidget = qobject_cast<GroupWidget*>(thumb->parentWidget());
-
-    oldGroupWidget->removeThumbnail(thumb);
-    addThumbnail(thumb);
 
     emit transferRequested(thumb);
 

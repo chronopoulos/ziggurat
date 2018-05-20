@@ -47,6 +47,13 @@ void GroupContainer::addScont(SequenceContainer *scont) {
 
 }
 
+void GroupContainer::removeScont(SequenceContainer *scont) {
+
+    group->removeScont(scont);
+    groupWidget->removeThumbnail(scont->thumb);
+
+}
+
 void GroupContainer::routeDelete(void) {
 
     emit deleteRequested(this);
