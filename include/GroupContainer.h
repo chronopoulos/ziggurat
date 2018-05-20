@@ -21,8 +21,10 @@ class GroupContainer : public QObject
     signals:
         void newSequenceRequested(int, QString);
         void deleteRequested(GroupContainer*);
+        void transferRequested(Thumbnail*, GroupContainer*);
 
     public slots:
         void routeDelete(void);
+        void routeTransfer(Thumbnail*);
 
 };

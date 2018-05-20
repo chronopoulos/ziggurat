@@ -7,6 +7,8 @@
 #include <QAction>
 #include <QCursor>
 #include <QLabel>
+#include <QDragEnterEvent>
+#include <QMimeData>
 
 #include "Thumbnail.h"
 
@@ -17,6 +19,8 @@ class GroupWidget : public QFrame
     public:
         GroupWidget(void);
         void addThumbnail(Thumbnail*);
+
+    public slots:
         void removeThumbnail(Thumbnail*);
 
     private:
@@ -28,10 +32,13 @@ class GroupWidget : public QFrame
 
     protected:
         void contextMenuEvent(QContextMenuEvent*);
+        void dragEnterEvent(QDragEnterEvent*);
+        void dropEvent(QDropEvent*);
 
     signals:
         void newSequenceRequested(int, QString);
         void deleteRequested(void);
+        void transferRequested(Thumbnail*);
 
 };
 

@@ -37,6 +37,7 @@ class Thumbnail : public QFrame
 
     protected:
         void mousePressEvent(QMouseEvent*);
+        void mouseMoveEvent(QMouseEvent*);
         void contextMenuEvent(QContextMenuEvent*);
 
     public slots:
@@ -54,7 +55,6 @@ class Thumbnail : public QFrame
     signals:
         void selected(void);
         void deleteRequested(void);
-
         void muteChanged(bool);
         void queueChanged(bool);
 

@@ -20,6 +20,8 @@ GroupWidget::GroupWidget(void) : QFrame() {
 
     setMinimumWidth(340);
 
+    setAcceptDrops(true);
+
 }
 
 void GroupWidget::addThumbnail(Thumbnail *thumb) {
@@ -34,7 +36,6 @@ void GroupWidget::addThumbnail(Thumbnail *thumb) {
     }
 
     layout->addWidget(thumb);
-
 
 }
 
@@ -75,5 +76,31 @@ void GroupWidget::contextMenuEvent(QContextMenuEvent*) {
             emit deleteRequested();
         }
     }
+
+}
+
+void GroupWidget::dragEnterEvent(QDragEnterEvent *e) {
+
+    if (e->mimeData()->hasFormat("text/plain")) {
+
+        if (e->mimeData()->text() == "thumb") {
+            e->accept();
+        }
+
+    }
+
+}
+
+void GroupWidget::dropEvent(QDropEvent *e) {
+
+    Thumbnail *thumb = qobject_cast<Thumbnail*>(e->source());
+    GroupWidget *oldGroupWidget = qobject_cast<GroupWidget*>(thumb->parentWidget());
+
+    oldGroupWidget->removeThumbnail(thumb);
+    addThumbnail(thumb);
+
+    emit transferRequested(thumb);
+
+    e->acceptProposedAction();
 
 }

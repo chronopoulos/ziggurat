@@ -1,5 +1,7 @@
 #include <QDebug>
 #include <QJsonArray>
+#include <QDrag>
+#include <QMimeData>
 
 #include "Thumbnail.h"
 #include "Trigger.h"
@@ -164,5 +166,32 @@ void Thumbnail::updatePlayhead(int step) {
 void Thumbnail::setActivation(int step, bool activation) {
 
     leds[step]->setActive(activation);
+
+}
+
+void Thumbnail::mouseMoveEvent(QMouseEvent *e) {
+
+    if (e->buttons() == Qt::LeftButton) {
+
+        QDrag *drag = new QDrag(this);
+        QMimeData *mimeData = new QMimeData;
+        mimeData->setText("thumb");
+        drag->setMimeData(mimeData);
+
+        setAcceptDrops(false);
+        Qt::DropAction dropAction = drag->exec(Qt::MoveAction);
+
+        //GroupWidget *oldGroupWidget, *newGroupWidget;
+        if (dropAction == Qt::MoveAction) {
+            /*
+            oldGroupWidget = qobject_cast<GroupWidget*>(parentWidget());
+            //newGroupWidget = qobject_cast<GroupWidget*>(drag->target());
+            emit transferRequested(oldGroupWidget, newGroupWidget);
+            */
+
+        }
+        setAcceptDrops(true);
+
+    }
 
 }
