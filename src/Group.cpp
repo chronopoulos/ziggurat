@@ -65,6 +65,14 @@ void Group::addScont(SequenceContainer *scont) {
 
 }
 
+void Group::addScontAt(SequenceContainer *scont, int insertIndex) {
+
+    sconts.insert(sconts.begin() + insertIndex, scont);
+
+    DELTA = true;
+
+}
+
 void Group::removeScont(SequenceContainer *scont) {
 
     scontIter = std::find(sconts.begin(), sconts.end(), scont);

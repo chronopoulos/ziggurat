@@ -12,6 +12,7 @@ class Group : public QObject
     public:
         Group(void);
         void addScont(SequenceContainer*);
+        void addScontAt(SequenceContainer*, int);
         void removeScont(SequenceContainer*);
 
         static int Type_Free;

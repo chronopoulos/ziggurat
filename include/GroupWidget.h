@@ -19,6 +19,7 @@ class GroupWidget : public QFrame
     public:
         GroupWidget(void);
         void addThumbnail(Thumbnail*);
+        void addThumbnailAt(Thumbnail*, int);
 
     public slots:
         void removeThumbnail(Thumbnail*);
@@ -38,7 +39,8 @@ class GroupWidget : public QFrame
     signals:
         void newSequenceRequested(int, QString);
         void deleteRequested(void);
-        void transferRequested(Thumbnail*);
+        void transferRequested(Thumbnail*, int);
+        void reorderRequested(Thumbnail*, int, int);
 
 };
 

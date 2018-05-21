@@ -66,7 +66,8 @@ Thumbnail::Thumbnail(int nsteps) : QFrame() {
 
     setMinimumWidth(300);
     setMinimumHeight(70);
-    setMaximumHeight(120);
+    //setMaximumHeight(120);
+    setMaximumHeight(70);
 
 }
 

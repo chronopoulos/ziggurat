@@ -32,7 +32,7 @@ class Session : public QObject
         void resetAll(void);
         void deleteScont(SequenceContainer*);
         void deleteGcont(GroupContainer*);
-        void handleTransfer(Thumbnail*, GroupContainer*);
+        void handleTransfer(Thumbnail*, GroupContainer*, int);
 
     signals:
         void groupWidgetCreated(GroupWidget*);

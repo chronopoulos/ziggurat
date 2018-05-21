@@ -39,6 +39,21 @@ void GroupWidget::addThumbnail(Thumbnail *thumb) {
 
 }
 
+void GroupWidget::addThumbnailAt(Thumbnail *thumb, int insertIndex) {
+
+    if (nullState) {
+
+        layout->removeWidget(emptySetIcon);
+        emptySetIcon->setParent(NULL);
+        layout->setAlignment(Qt::AlignTop);
+        nullState = false;
+
+    }
+
+    layout->insertWidget(insertIndex, thumb);
+
+}
+
 void GroupWidget::removeThumbnail(Thumbnail *thumb) {
 
     if (layout->indexOf(thumb) >= 0) {
@@ -82,20 +97,45 @@ void GroupWidget::contextMenuEvent(QContextMenuEvent*) {
 void GroupWidget::dragEnterEvent(QDragEnterEvent *e) {
 
     if (e->mimeData()->hasFormat("text/plain")) {
-
         if (e->mimeData()->text() == "thumb") {
             e->accept();
         }
-
     }
 
 }
 
 void GroupWidget::dropEvent(QDropEvent *e) {
 
-    Thumbnail *thumb = qobject_cast<Thumbnail*>(e->source());
+    // determine if this is a transfer or re-order
+    Thumbnail *srcThumb = qobject_cast<Thumbnail*>(e->source());
+    int oldIndex = layout->indexOf(srcThumb);
+    bool transfer = (oldIndex < 0);
 
-    emit transferRequested(thumb);
+    // find the insertIndex
+    int ydrop = e->pos().y();
+    int insertIndex = 0;
+    Thumbnail *tmpThumb;
+    if (!nullState) {
+
+        for (int i=0; i<layout->count(); i++) {
+            tmpThumb = qobject_cast<Thumbnail*>(layout->itemAt(i)->widget());
+            if (ydrop > tmpThumb->geometry().center().y()) {
+                insertIndex = i + 1;
+            }
+        }
+
+    }
+
+    // two different procedures depending on whether it's a transfer or reorder
+    if (transfer) {
+
+        emit transferRequested(srcThumb, insertIndex);
+
+    } else {
+
+        emit reorderRequested(srcThumb, oldIndex, insertIndex);
+
+    }
 
     e->acceptProposedAction();
 

@@ -10,6 +10,7 @@ class GroupContainer : public QObject
         GroupContainer(const QJsonObject&);
         ~GroupContainer(void);
         void addScont(SequenceContainer*);
+        void addScontAt(SequenceContainer*, int);
         void removeScont(SequenceContainer*);
 
         Group *group;
@@ -22,10 +23,11 @@ class GroupContainer : public QObject
     signals:
         void newSequenceRequested(int, QString);
         void deleteRequested(GroupContainer*);
-        void transferRequested(Thumbnail*, GroupContainer*);
+        void transferRequested(Thumbnail*, GroupContainer*, int);
 
     public slots:
         void routeDelete(void);
-        void routeTransfer(Thumbnail*);
+        void routeTransfer(Thumbnail*, int);
+        void handleReorder(Thumbnail*, int, int);
 
 };

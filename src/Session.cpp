@@ -31,8 +31,8 @@ void Session::addGcont(GroupContainer *gcont) {
             this, SLOT(createSequenceInGroup(int, QString)));
     connect(gcont, SIGNAL(deleteRequested(GroupContainer*)),
             this, SLOT(deleteGcont(GroupContainer*)));
-    connect(gcont, SIGNAL(transferRequested(Thumbnail*, GroupContainer*)),
-            this, SLOT(handleTransfer(Thumbnail*, GroupContainer*)));
+    connect(gcont, SIGNAL(transferRequested(Thumbnail*, GroupContainer*, int)),
+            this, SLOT(handleTransfer(Thumbnail*, GroupContainer*, int)));
 
     DELTA = true;
 
@@ -103,7 +103,7 @@ void Session::deleteScont(SequenceContainer *scont) {
 
 }
 
-void Session::handleTransfer(Thumbnail *thumb, GroupContainer *newGcont) {
+void Session::handleTransfer(Thumbnail *thumb, GroupContainer *newGcont, int insertIndex) {
 
     // find the scont
     SequenceContainer *scont = nullptr;
@@ -133,7 +133,8 @@ void Session::handleTransfer(Thumbnail *thumb, GroupContainer *newGcont) {
     // do the transfer
     if (scont && oldGcont) {
         oldGcont->removeScont(scont);
-        newGcont->addScont(scont);
+        newGcont->addScontAt(scont, insertIndex);
+        //newGcont->addScont(scont);
     }
 
 }
