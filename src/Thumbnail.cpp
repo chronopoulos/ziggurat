@@ -66,8 +66,12 @@ Thumbnail::Thumbnail(int nsteps) : QFrame() {
 
     setMinimumWidth(300);
     setMinimumHeight(70);
-    //setMaximumHeight(120);
     setMaximumHeight(70);
+
+    opacityEffect = new QGraphicsOpacityEffect(this);
+    opacityEffect->setOpacity(0.5);
+    opacityEffect->setEnabled(false);
+    setGraphicsEffect(opacityEffect);
 
 }
 
@@ -183,7 +187,9 @@ void Thumbnail::mouseMoveEvent(QMouseEvent *e) {
         drag->setPixmap(pm);
         drag->setHotSpot(e->pos());
 
+        opacityEffect->setEnabled(true);
         drag->exec(Qt::MoveAction);
+        opacityEffect->setEnabled(false);
 
     }
 

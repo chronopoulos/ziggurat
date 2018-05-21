@@ -10,6 +10,7 @@
 #include <QMenu>
 #include <QAction>
 #include <QJsonObject>
+#include <QGraphicsOpacityEffect>
 
 #include "Led.h"
 
@@ -34,6 +35,7 @@ class Thumbnail : public QFrame
         std::vector<Led*> leds;
         Led *playheadLed;
         QString m_name;
+        QGraphicsOpacityEffect *opacityEffect;
 
     protected:
         void mousePressEvent(QMouseEvent*);
