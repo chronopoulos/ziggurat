@@ -29,7 +29,7 @@ void GroupWidget::addThumbnail(Thumbnail *thumb) {
     if (nullState) {
 
         layout->removeWidget(emptySetIcon);
-        emptySetIcon->setParent(NULL);
+        emptySetIcon->setVisible(false);
         layout->setAlignment(Qt::AlignTop);
         nullState = false;
 
@@ -44,7 +44,7 @@ void GroupWidget::addThumbnailAt(Thumbnail *thumb, int insertIndex) {
     if (nullState) {
 
         layout->removeWidget(emptySetIcon);
-        emptySetIcon->setParent(NULL);
+        emptySetIcon->setVisible(false);
         layout->setAlignment(Qt::AlignTop);
         nullState = false;
 
@@ -71,6 +71,7 @@ void GroupWidget::setNullState(void) {
 
     layout->setAlignment(Qt::AlignCenter);
     layout->addWidget(emptySetIcon);
+    emptySetIcon->setVisible(true);
     nullState = true;
 
 }
