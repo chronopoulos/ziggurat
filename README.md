@@ -5,10 +5,24 @@ a standalone MIDI step sequencer
 
 ## Build Instructions
 
+First, install dependencies:
+```
+sudo apt-get install qt5-default libasound2-dev libjack-jackd2-dev
+```
+
+Then, clone the source code and initialize the submodule:
 ```
 git clone https://github.com/chronopoulos/ziggurat
 cd ziggurat
 git submodule init && git submodule update
+```
+
+NOTE: If your version of libjack-jackd2-dev is older than 1.9.11, then you
+should comment out the line containing -DJACK_HAS_PORT_RENAME in ziggurat.pro
+
+Finally, compile and run:
+
+```
 qmake
 make
 ./bin/ziggurat
