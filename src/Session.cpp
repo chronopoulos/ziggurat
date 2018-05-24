@@ -7,6 +7,8 @@
 
 #include <QDebug>
 
+// globals
+Thumbnail *THUMB_CLIPBOARD = nullptr;
 extern Delta DELTA;
 
 Session::Session(void) {
@@ -37,6 +39,8 @@ void Session::addGcont(GroupContainer *gcont) {
             this, SLOT(deleteGcont(GroupContainer*)));
     connect(gcont, SIGNAL(transferRequested(Thumbnail*, GroupContainer*, int)),
             this, SLOT(handleTransfer(Thumbnail*, GroupContainer*, int)));
+    connect(gcont, SIGNAL(pasteRequested(GroupContainer*)),
+            this, SLOT(handlePaste(GroupContainer*)));
 
     DELTA.setState(true);
 
@@ -47,10 +51,14 @@ void Session::createSequenceInGroup(int nsteps, QString name) {
     GroupContainer *gcont = qobject_cast<GroupContainer*>(sender());
     SequenceContainer *scont = new SequenceContainer(nsteps, name);
 
+    addScontToGcont(scont, gcont);
+
+}
+
+void Session::addScontToGcont(SequenceContainer *scont, GroupContainer *gcont) {
+
     sconts.push_back(scont);
-
     gcont->addScont(scont);
-
     makeScontConnections(scont);
 
     // if this is the only sequence in the session, select it
@@ -112,12 +120,10 @@ void Session::handleTransfer(Thumbnail *thumb, GroupContainer *newGcont, int ins
     // find the scont
     SequenceContainer *scont = nullptr;
     for (scontIter = sconts.begin(); scontIter != sconts.end(); scontIter++) {
-
         if ((*scontIter)->thumb == thumb) {
             scont = *scontIter;
             break;
         }
-
     }
 
     // find the old gcont
@@ -139,6 +145,33 @@ void Session::handleTransfer(Thumbnail *thumb, GroupContainer *newGcont, int ins
 
         oldGcont->removeScont(scont);
         newGcont->addScontAt(scont, insertIndex);
+
+    }
+
+}
+
+void Session::handlePaste(GroupContainer *gcont) {
+
+    if (THUMB_CLIPBOARD) {
+
+        // find the scont
+        SequenceContainer *scont = nullptr;
+        for (scontIter = sconts.begin(); scontIter != sconts.end(); scontIter++) {
+            if ((*scontIter)->thumb == THUMB_CLIPBOARD) {
+                scont = *scontIter;
+                break;
+            }
+        }
+
+        if (scont) {
+
+            // copy it, and add it
+            SequenceContainer *newScont = new SequenceContainer(scont);
+
+            addScontToGcont(newScont, gcont);
+
+        }
+
 
     }
 

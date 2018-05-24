@@ -20,7 +20,9 @@ class Session : public QObject
 
     private:
         void makeScontConnections(SequenceContainer*);
+        void addScontToGcont(SequenceContainer*, GroupContainer*);
         void addGcont(GroupContainer*);
+
         std::vector<SequenceContainer*> sconts;
         std::vector<SequenceContainer*>::iterator scontIter;
         std::vector<GroupContainer*> gconts;
@@ -37,6 +39,7 @@ class Session : public QObject
         void deleteScont(SequenceContainer*);
         void deleteGcont(GroupContainer*);
         void handleTransfer(Thumbnail*, GroupContainer*, int);
+        void handlePaste(GroupContainer*);
 
     signals:
         void groupWidgetCreated(GroupWidget*);

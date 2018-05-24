@@ -6,6 +6,8 @@
 #include "Thumbnail.h"
 #include "Trigger.h"
 
+extern Thumbnail *THUMB_CLIPBOARD;
+
 Thumbnail::Thumbnail(int nsteps) : QFrame() {
 
     this->nsteps = nsteps;
@@ -95,6 +97,24 @@ Thumbnail::Thumbnail(const QJsonObject &seqJSO) : Thumbnail(seqJSO["nsteps"].toI
 
 }
 
+// pseudo-copy constructor
+Thumbnail::Thumbnail(Sequence *seq) : Thumbnail(seq->nsteps()) {
+
+    setName(seq->name());
+    setMute(seq->mute());
+
+    for (int i = 0; i < nsteps; i++) {
+
+        if (seq->trig(i).type() == Trigger::Type_Null) {
+            setActivation(i, false);
+        } else {
+            setActivation(i, true);
+        }
+
+    }
+
+}
+
 void Thumbnail::setName(QString name) {
 
     m_name = name;
@@ -126,11 +146,20 @@ void Thumbnail::mousePressEvent(QMouseEvent *e) {
 
 void Thumbnail::contextMenuEvent(QContextMenuEvent*) {
 
-    QMenu managerMenu;
-    managerMenu.addAction("Delete");
-    QAction *action = managerMenu.exec(QCursor::pos());
-    if (action && (action->text().contains("Delete"))) {
+    QMenu menu;
+
+    QAction *deleteAction = menu.addAction("Delete");
+    QAction *copyAction = menu.addAction("Copy");
+
+    QAction *action = menu.exec(QCursor::pos());
+    if (action == deleteAction) {
+
         emit deleteRequested();
+
+    } else if (action == copyAction) {
+
+        THUMB_CLIPBOARD = this;
+
     }
 
 }

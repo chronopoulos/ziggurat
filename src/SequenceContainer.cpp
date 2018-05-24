@@ -15,6 +15,7 @@ SequenceContainer::SequenceContainer(int nsteps, QString name) {
 
 }
 
+// JSON constructor
 SequenceContainer::SequenceContainer(const QJsonObject &seqJSO) {
 
     seq = new Sequence(seqJSO);
@@ -24,6 +25,21 @@ SequenceContainer::SequenceContainer(const QJsonObject &seqJSO) {
 
     makeConnections();
     seq->reset();
+
+}
+
+
+// pseudo-copy constructor
+SequenceContainer::SequenceContainer(SequenceContainer *scont) {
+
+    seq = new Sequence(scont->seq);
+    thumb = new Thumbnail(scont->seq);
+    page = new ConfigPage(scont->seq);
+    row = new ButtonRow(scont->seq);
+
+    makeConnections();
+    seq->reset();
+
 }
 
 SequenceContainer::~SequenceContainer(void) {

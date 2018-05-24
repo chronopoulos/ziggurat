@@ -41,6 +41,7 @@ class GroupWidget : public QFrame
         void deleteRequested(void);
         void transferRequested(Thumbnail*, int);
         void reorderRequested(Thumbnail*, int, int);
+        void pasteRequested(void);
 
 };
 

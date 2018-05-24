@@ -7,6 +7,7 @@
 #include <QJsonObject>
 
 #include "Button.h"
+#include "Sequence.h"
 
 class ButtonRow : public QWidget
 {
@@ -15,6 +16,7 @@ class ButtonRow : public QWidget
     public:
         ButtonRow(int);
         ButtonRow(const QJsonObject&);
+        ButtonRow(Sequence*);
         void setName(QString);
 
     private:

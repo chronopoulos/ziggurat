@@ -5,6 +5,7 @@
 #include <QJsonObject>
 
 #include "ClickLabel.h"
+#include "Sequence.h"
 
 class ConfigPage : public QWidget
 {
@@ -13,8 +14,8 @@ class ConfigPage : public QWidget
     public:
         ConfigPage(int);
         ConfigPage(const QJsonObject&);
+        ConfigPage(Sequence*);
         void setName(QString);
-
 
     private:
 

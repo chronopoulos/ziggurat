@@ -13,6 +13,7 @@
 #include <QGraphicsOpacityEffect>
 
 #include "Led.h"
+#include "Sequence.h"
 
 class Thumbnail : public QFrame
 {
@@ -22,6 +23,7 @@ class Thumbnail : public QFrame
     public:
         Thumbnail(int);
         Thumbnail(const QJsonObject&);
+        Thumbnail(Sequence*);
         int nsteps;
         bool isSelected;
         void select(void);

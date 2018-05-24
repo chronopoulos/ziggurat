@@ -3,6 +3,8 @@
 #include <QLabel>
 #include <QJsonArray>
 
+#include <QDebug>
+
 ButtonRow::ButtonRow(int nsteps) : QWidget() {
 
     m_nsteps = nsteps;
@@ -79,6 +81,23 @@ ButtonRow::ButtonRow(const QJsonObject &seqJSO) : ButtonRow(seqJSO["nsteps"].toI
         if (i == seqJSO["subloopStart"].toInt()) {
             indicators[i]->setLBracket(true);
         } else if (i == seqJSO["subloopStop"].toInt()) {
+            indicators[i]->setRBracket(true);
+        }
+
+    }
+
+}
+
+// pseudo-copy constructor
+ButtonRow::ButtonRow(Sequence *seq) : ButtonRow(seq->nsteps()) {
+
+    for (int i = 0; i < m_nsteps; i++) {
+
+        buttons[i]->setTrig(seq->trig(i));
+
+        if (i == seq->subloopStart()) {
+            indicators[i]->setLBracket(true);
+        } else if (i == seq->subloopStop()) {
             indicators[i]->setRBracket(true);
         }
 

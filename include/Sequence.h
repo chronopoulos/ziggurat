@@ -16,6 +16,7 @@ class Sequence : public QObject
     public:
         Sequence(int);
         Sequence(const QJsonObject&);
+        Sequence(Sequence*);
         ~Sequence(void);
         bool isMuted(void);
 
@@ -48,7 +49,11 @@ class Sequence : public QObject
 
 
     public slots:
+
         void tick(void);
+        void reset(void);
+
+        // setters
         void setTrig(int, Trigger*);
         void setMute(bool);
         void setQueue(bool);
@@ -59,7 +64,18 @@ class Sequence : public QObject
         void setTranspose(int);
         void setMidiChan(int);
         void setDirection(QString);
-        void reset(void);
+
+        // getters
+        int nsteps(void) {return m_nsteps;}
+        QString name(void) {return m_name;}
+        int div(void) {return m_div;}
+        bool mute(void) {return m_mute;}
+        int transpose(void) {return m_transpose;}
+        int midiChan(void) {return m_midiChan;}
+        int direction(void) {return m_direction;}
+        int subloopStart(void) {return m_subloopStart;}
+        int subloopStop(void) {return m_subloopStop;}
+        Trigger trig(int i) {return trigs[i];}
 
     signals:
         void playheadUpdated(int);

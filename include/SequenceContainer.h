@@ -17,6 +17,7 @@ class SequenceContainer : public QObject
         SequenceContainer(int, QString);
         ~SequenceContainer(void);
         SequenceContainer(const QJsonObject&);
+        SequenceContainer(SequenceContainer*);
 
         Sequence *seq;
         Thumbnail *thumb;

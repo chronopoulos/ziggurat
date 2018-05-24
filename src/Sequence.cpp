@@ -70,6 +70,35 @@ Sequence::Sequence(const QJsonObject &seqJSO) {
 
 }
 
+// pseudo-copy constructor
+Sequence::Sequence(Sequence *seq) {
+
+    // sequence parameters
+    m_nsteps = seq->nsteps();
+    m_name = seq->name();
+    m_div = seq->div();
+    m_mute = seq->mute();
+    m_transpose = seq->transpose();
+    m_midiChan = seq->midiChan();
+    m_direction = seq->direction();
+    m_subloopStart = seq->subloopStart();
+    m_subloopStop = seq->subloopStop();
+
+    // dynamic parameters, default initialization
+    playhead = 0;
+    m_queue = false;
+    idiv = 0;
+    m_bounceForward = true;
+
+    // trigs
+    for (int i = 0; i < m_nsteps; i++) {
+        trigs.push_back(seq->trig(i));
+    }
+
+    configureMidi();
+
+}
+
 void Sequence::configureMidi(void) {
 
     try {

@@ -24,10 +24,12 @@ class GroupContainer : public QObject
         void newSequenceRequested(int, QString);
         void deleteRequested(GroupContainer*);
         void transferRequested(Thumbnail*, GroupContainer*, int);
+        void pasteRequested(GroupContainer*);
 
     public slots:
         void routeDelete(void);
         void routeTransfer(Thumbnail*, int);
+        void routePaste(void);
         void handleReorder(Thumbnail*, int, int);
 
 };

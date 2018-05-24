@@ -78,19 +78,28 @@ void GroupWidget::setNullState(void) {
 
 void GroupWidget::contextMenuEvent(QContextMenuEvent*) {
 
-    QMenu managerMenu;
-    managerMenu.addAction("Add Sequence");
-    managerMenu.addAction("Delete Group");
-    QAction *action = managerMenu.exec(QCursor::pos());
-    if (action) {
-        if (action->text().contains("Add Sequence")) {
-            NewSequenceDialog dlg;
-            if (dlg.exec() == QDialog::Accepted) {
-                emit newSequenceRequested(dlg.length(), dlg.name());
-            }
-        } else if (action->text().contains("Delete Group")) {
-            emit deleteRequested();
+    QMenu menu;
+
+    QAction *addSeqAction = menu.addAction("Add Sequence");
+    QAction *pasteAction = menu.addAction("Paste");
+    QAction *deleteAction = menu.addAction("Delete Group");
+
+    QAction *action = menu.exec(QCursor::pos());
+    if (action == addSeqAction) {
+
+        NewSequenceDialog dlg;
+        if (dlg.exec() == QDialog::Accepted) {
+            emit newSequenceRequested(dlg.length(), dlg.name());
         }
+
+    } else if (action == pasteAction) {
+
+        emit pasteRequested();
+
+    } else if (action == deleteAction) {
+
+        emit deleteRequested();
+
     }
 
 }

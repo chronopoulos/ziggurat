@@ -20,6 +20,9 @@ GroupContainer::GroupContainer(void) {
     connect(groupWidget, SIGNAL(reorderRequested(Thumbnail*, int, int)),
             this, SLOT(handleReorder(Thumbnail*, int, int)));
 
+    connect(groupWidget, SIGNAL(pasteRequested(void)),
+            this, SLOT(routePaste(void)));
+
 }
 
 GroupContainer::GroupContainer(const QJsonObject &groupJSO) : GroupContainer() {
@@ -73,6 +76,12 @@ void GroupContainer::routeDelete(void) {
 void GroupContainer::routeTransfer(Thumbnail *thumb, int insertIndex) {
 
     emit transferRequested(thumb, this, insertIndex);
+
+}
+
+void GroupContainer::routePaste(void) {
+
+    emit pasteRequested(this);
 
 }
 
