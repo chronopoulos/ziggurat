@@ -30,4 +30,7 @@ class MainWindow : public QWidget
         void keyPressEvent(QKeyEvent*);
         void closeEvent(QCloseEvent*);
 
+    public slots:
+        void handleSessionFile(QString);
+
 };

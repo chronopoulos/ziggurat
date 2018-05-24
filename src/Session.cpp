@@ -191,10 +191,19 @@ void Session::resetAll(void) {
 
 bool Session::save(void) {
 
-    QString filename = QFileDialog::getSaveFileName(Q_NULLPTR, "Save Session", QDir::homePath());
+    QString filename;
 
-    if (filename.isNull()) {
-        return false;
+    if (sessionFile.isNull()) {
+
+        filename = QFileDialog::getSaveFileName(Q_NULLPTR, "Save Session", QDir::homePath());
+        if (filename.isNull()) {
+            return false;
+        }
+
+    } else {
+
+        filename = sessionFile;
+
     }
 
     // open file
@@ -220,6 +229,9 @@ bool Session::save(void) {
     // write to file
     QJsonDocument saveDoc(sessionObject);
     saveFile.write(saveDoc.toJson());
+
+    sessionFile = filename;
+    emit sessionFileChanged(sessionFile);
 
     // reset flag
     DELTA = false;
@@ -312,6 +324,9 @@ void Session::load(const QString &filename) {
         scontIter = sconts.begin();
         (*scontIter)->select();  
     }
+
+    sessionFile = filename;
+    emit sessionFileChanged(sessionFile);
 
     DELTA = false;
 

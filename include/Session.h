@@ -23,6 +23,7 @@ class Session : public QObject
         std::vector<GroupContainer*> gconts;
         std::vector<GroupContainer*>::iterator gcontIter;
         Thumbnail *selectedThumbnail;
+        QString sessionFile;
 
     public slots:
         void createGroup(void);
@@ -39,6 +40,7 @@ class Session : public QObject
         void groupWidgetDeleted(GroupWidget*);
         void pageSelected(ConfigPage*);
         void rowSelected(ButtonRow*);
+        void sessionFileChanged(QString);
        
 };
 

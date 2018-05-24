@@ -32,6 +32,7 @@ MainWindow::MainWindow(const QString &filename) : QWidget() {
     connect(session, SIGNAL(groupWidgetDeleted(GroupWidget*)), groupManager, SLOT(removeGroupWidget(GroupWidget*)));
     connect(session, SIGNAL(pageSelected(ConfigPage*)), config, SLOT(setPage(ConfigPage*)));
     connect(session, SIGNAL(rowSelected(ButtonRow*)), rowEditor, SLOT(setRow(ButtonRow*)));
+    connect(session, SIGNAL(sessionFileChanged(QString)), this, SLOT(handleSessionFile(QString)));
 
     layout->addWidget(groupManager, 0,0, 5,6);
     layout->addWidget(transport, 5,0, 1,1);
@@ -39,7 +40,7 @@ MainWindow::MainWindow(const QString &filename) : QWidget() {
     layout->addWidget(rowEditor, 6,0, 1,6);
 
     this->setLayout(layout);
-    this->setWindowTitle("z i g g u r a t");
+    this->setWindowTitle("ziggurat");
     this->setWindowIcon(QIcon(":/img/ziggurat_icon.png"));
 
     state = STATE_STOPPED;
@@ -125,5 +126,12 @@ void MainWindow::closeEvent(QCloseEvent *e) {
         e->accept();
 
     }
+
+}
+
+void MainWindow::handleSessionFile(QString sessionFile) {
+
+    QString sessionName = QFileInfo(sessionFile).fileName();
+    this->setWindowTitle(QString("ziggurat: %1").arg(sessionName));
 
 }

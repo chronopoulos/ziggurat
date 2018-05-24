@@ -15,6 +15,7 @@
 
 #include <QDebug>
 
+// globals
 QString MIDI_BACKEND;
 bool DELTA = false;
 
