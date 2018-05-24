@@ -11,6 +11,8 @@ class Session : public QObject
     public:
         Session(void);
         bool save(void);
+        bool save(const QString&);
+        bool saveAs(void);
         void load(void);
         void load(const QString&);
         void selectNothing(void);
@@ -24,6 +26,7 @@ class Session : public QObject
         std::vector<GroupContainer*> gconts;
         std::vector<GroupContainer*>::iterator gcontIter;
         Thumbnail *selectedThumbnail;
+        bool uninitialized;
 
     public slots:
         void createGroup(void);
@@ -40,7 +43,6 @@ class Session : public QObject
         void groupWidgetDeleted(GroupWidget*);
         void pageSelected(ConfigPage*);
         void rowSelected(ButtonRow*);
-        void sessionFileChanged(QString);
        
 };
 

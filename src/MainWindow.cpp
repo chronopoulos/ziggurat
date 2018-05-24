@@ -34,7 +34,6 @@ MainWindow::MainWindow(const QString &filename) : QWidget() {
     connect(session, SIGNAL(pageSelected(ConfigPage*)), config, SLOT(setPage(ConfigPage*)));
     connect(session, SIGNAL(rowSelected(ButtonRow*)), rowEditor, SLOT(setRow(ButtonRow*)));
 
-    connect(session, SIGNAL(sessionFileChanged(QString)), this, SLOT(handleSessionFile(QString)));
     connect(&DELTA, SIGNAL(stateChanged(bool)), this, SLOT(handleDelta(bool)));
 
     layout->addWidget(groupManager, 0,0, 5,6);
@@ -86,8 +85,11 @@ void MainWindow::keyPressEvent(QKeyEvent* k) {
                 togglePlayState();
                 break;
             case Qt::Key_S:
-                if (QApplication::keyboardModifiers() & Qt::ControlModifier) {
+                if (QApplication::keyboardModifiers() == Qt::ControlModifier) {
                     session->save();
+                } else if (QApplication::keyboardModifiers() == 
+                            (Qt::ControlModifier | Qt::ShiftModifier)) {
+                    session->saveAs();
                 }
                 break;
             case Qt::Key_O:
@@ -129,13 +131,6 @@ void MainWindow::closeEvent(QCloseEvent *e) {
         e->accept();
 
     }
-
-}
-
-void MainWindow::handleSessionFile(QString sessionFile) {
-
-    QString sessionName = QFileInfo(sessionFile).fileName();
-    setWindowTitle(QString("ziggurat: %1").arg(sessionName));
 
 }
 

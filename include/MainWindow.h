@@ -31,7 +31,6 @@ class MainWindow : public QWidget
         void closeEvent(QCloseEvent*);
 
     public slots:
-        void handleSessionFile(QString);
         void handleDelta(bool);
 
 };

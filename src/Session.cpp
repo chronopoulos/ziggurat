@@ -14,6 +14,9 @@ Session::Session(void) {
     selectedThumbnail = nullptr;
     selectNothing();
 
+    sessionFile = QDir::homePath().append("/untitled.zig");
+    uninitialized = true;
+    
 }
 
 void Session::createGroup(void) {
@@ -133,9 +136,10 @@ void Session::handleTransfer(Thumbnail *thumb, GroupContainer *newGcont, int ins
 
     // do the transfer
     if (scont && oldGcont) {
+
         oldGcont->removeScont(scont);
         newGcont->addScontAt(scont, insertIndex);
-        //newGcont->addScont(scont);
+
     }
 
 }
@@ -192,28 +196,23 @@ void Session::resetAll(void) {
 
 bool Session::save(void) {
 
-    QString filename;
-
-    if (sessionFile.isNull()) {
-
-        filename = QFileDialog::getSaveFileName(Q_NULLPTR, "Save Session", QDir::homePath());
-        if (filename.isNull()) {
-            return false;
-        }
-
+    if (uninitialized) {
+        return saveAs();
     } else {
-
-        filename = sessionFile;
-
+        return save(sessionFile);
     }
+
+}
+
+bool Session::save(const QString &filename) {
 
     // open file
     QFile saveFile(filename);
     if (!saveFile.open(QIODevice::WriteOnly)) {
+
         qWarning("Couldn't open save file.");
-        return false;
-    } else {
-        qDebug() << "saving to: " << filename;
+        return false; // TODO present warning dialog
+
     }
 
     QJsonObject sessionObject;
@@ -232,12 +231,23 @@ bool Session::save(void) {
     saveFile.write(saveDoc.toJson());
 
     sessionFile = filename;
-    emit sessionFileChanged(sessionFile);
 
-    // reset flag
+    // reset flags
     DELTA.setState(false);
+    uninitialized = false;
 
     return true;
+
+}
+
+bool Session::saveAs(void) {
+
+    QString filename = QFileDialog::getSaveFileName(Q_NULLPTR, "Save Session", sessionFile);
+    if (filename.isNull()) {
+        return false;
+    }
+
+    return save(filename);
 
 }
 
@@ -275,10 +285,10 @@ void Session::load(const QString &filename) {
     // open file
     QFile loadFile(filename);
     if (!loadFile.open(QIODevice::ReadOnly)) {
-        qWarning("Couldn't open load file.");
+
+        qWarning("Couldn't open load file."); // TODO present warning dialog
         return;
-    } else {
-        qDebug() << "loading: " << filename;
+
     }
 
     // check if format is correct
@@ -286,8 +296,11 @@ void Session::load(const QString &filename) {
     QJsonDocument loadDoc(QJsonDocument::fromJson(loadData));
     QJsonObject json(loadDoc.object());
     if (!json.contains("groups") || !json["groups"].isArray()) {
+
+        // TODO present warning dialog
         qDebug() << "Load file " << filename << "has invalid format";
         return;
+
     }
 
 
@@ -327,8 +340,8 @@ void Session::load(const QString &filename) {
     }
 
     sessionFile = filename;
-    emit sessionFileChanged(sessionFile);
 
     DELTA.setState(false);
+    uninitialized = false;
 
 }
