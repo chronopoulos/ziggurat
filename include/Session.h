@@ -14,6 +14,7 @@ class Session : public QObject
         void load(void);
         void load(const QString&);
         void selectNothing(void);
+        QString sessionFile;
 
     private:
         void makeScontConnections(SequenceContainer*);
@@ -23,7 +24,6 @@ class Session : public QObject
         std::vector<GroupContainer*> gconts;
         std::vector<GroupContainer*>::iterator gcontIter;
         Thumbnail *selectedThumbnail;
-        QString sessionFile;
 
     public slots:
         void createGroup(void);

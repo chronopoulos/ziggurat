@@ -2,9 +2,10 @@
 #include <QJsonArray>
 
 #include "Sequence.h"
+#include "Delta.h"
 
 extern QString MIDI_BACKEND;
-extern bool DELTA;
+extern Delta DELTA;
 
 int Sequence::Forward = 0;
 int Sequence::Backward = 1;
@@ -100,7 +101,7 @@ void Sequence::setName(QString name) {
     m_name = name;
     midiout->setPortName(m_name.toStdString());
 
-    DELTA = true;
+    DELTA.setState(true);
 
 }
 
@@ -108,7 +109,7 @@ void Sequence::setMute(bool mute) {
 
     m_mute = mute;
 
-    DELTA = true;
+    DELTA.setState(true);
 
 }
 
@@ -131,7 +132,7 @@ void Sequence::setTrig(int step, Trigger *trig) {
 
     trigs[step] = *trig;
 
-    DELTA = true;
+    DELTA.setState(true);
 
 }
 
@@ -230,7 +231,7 @@ void Sequence::setSubloop_start(int step) {
 
     m_subloopStart = step;
 
-    DELTA = true;
+    DELTA.setState(true);
 
 }
 
@@ -238,7 +239,7 @@ void Sequence::setSubloop_stop(int step) {
 
     m_subloopStop = step;
 
-    DELTA = true;
+    DELTA.setState(true);
 
 }
 
@@ -246,7 +247,7 @@ void Sequence::setClockDiv(int div) {
 
     m_div = div;
 
-    DELTA = true;
+    DELTA.setState(true);
 
 }
 
@@ -254,7 +255,7 @@ void Sequence::setTranspose(int transpose) {
 
     m_transpose = transpose;
 
-    DELTA = true;
+    DELTA.setState(true);
 
 }
 
@@ -262,7 +263,7 @@ void Sequence::setMidiChan(int chan) {
 
     m_midiChan = chan;
 
-    DELTA = true;
+    DELTA.setState(true);
 
 }
 
@@ -276,7 +277,7 @@ void Sequence::setDirection(QString direction) {
         m_direction = Sequence::Bounce;
     }
 
-    DELTA = true;
+    DELTA.setState(true);
 
 }
 

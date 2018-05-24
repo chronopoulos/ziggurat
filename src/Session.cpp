@@ -3,10 +3,11 @@
 #include <QFileDialog>
 #include "Session.h"
 #include "Dialogs.h"
+#include "Delta.h"
 
 #include <QDebug>
 
-extern bool DELTA;
+extern Delta DELTA;
 
 Session::Session(void) {
 
@@ -34,7 +35,7 @@ void Session::addGcont(GroupContainer *gcont) {
     connect(gcont, SIGNAL(transferRequested(Thumbnail*, GroupContainer*, int)),
             this, SLOT(handleTransfer(Thumbnail*, GroupContainer*, int)));
 
-    DELTA = true;
+    DELTA.setState(true);
 
 }
 
@@ -52,7 +53,7 @@ void Session::createSequenceInGroup(int nsteps, QString name) {
     // if this is the only sequence in the session, select it
     if (sconts.size() == 1) scont->select();
 
-    DELTA = true;
+    DELTA.setState(true);
 
 }
 
@@ -99,7 +100,7 @@ void Session::deleteScont(SequenceContainer *scont) {
 
     delete scont;
 
-    DELTA = true;
+    DELTA.setState(true);
 
 }
 
@@ -160,7 +161,7 @@ void Session::deleteGcont(GroupContainer *gcont) {
 
     delete gcont;
 
-    DELTA = true;
+    DELTA.setState(true);
 
 }
 
@@ -234,7 +235,7 @@ bool Session::save(void) {
     emit sessionFileChanged(sessionFile);
 
     // reset flag
-    DELTA = false;
+    DELTA.setState(false);
 
     return true;
 
@@ -243,7 +244,7 @@ bool Session::save(void) {
 void Session::load(void) {
 
     // if there are changes to be saved, ask to save them
-    if (DELTA) {
+    if (DELTA.state()) {
 
         MaybeSaveDialog dlg;
         switch (dlg.exec()) {
@@ -328,6 +329,6 @@ void Session::load(const QString &filename) {
     sessionFile = filename;
     emit sessionFileChanged(sessionFile);
 
-    DELTA = false;
+    DELTA.setState(false);
 
 }

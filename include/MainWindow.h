@@ -32,5 +32,6 @@ class MainWindow : public QWidget
 
     public slots:
         void handleSessionFile(QString);
+        void handleDelta(bool);
 
 };

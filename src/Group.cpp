@@ -1,10 +1,11 @@
 #include <QJsonArray>
 
 #include "Group.h"
+#include "Delta.h"
 
 #include <QDebug>
 
-extern bool DELTA;
+extern Delta DELTA;
 
 int Group::Type_Free = 0;
 int Group::Type_Scene = 1;
@@ -53,7 +54,7 @@ void Group::setType(int type) {
         }
     }
 
-    DELTA = true;
+    DELTA.setState(true);
 
 }
 
@@ -61,7 +62,7 @@ void Group::addScont(SequenceContainer *scont) {
 
     sconts.push_back(scont);
 
-    DELTA = true;
+    DELTA.setState(true);
 
 }
 
@@ -69,7 +70,7 @@ void Group::addScontAt(SequenceContainer *scont, int insertIndex) {
 
     sconts.insert(sconts.begin() + insertIndex, scont);
 
-    DELTA = true;
+    DELTA.setState(true);
 
 }
 
@@ -80,7 +81,7 @@ void Group::removeScont(SequenceContainer *scont) {
         sconts.erase(scontIter);
     }
 
-    DELTA = true;
+    DELTA.setState(true);
 
 }
 

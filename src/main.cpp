@@ -12,12 +12,13 @@
 #include <QString>
 
 #include "MainWindow.h"
+#include "Delta.h"
 
 #include <QDebug>
 
 // globals
 QString MIDI_BACKEND;
-bool DELTA = false;
+Delta DELTA;
 
 int main(int argc, char *argv[]) {
 

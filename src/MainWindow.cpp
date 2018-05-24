@@ -6,12 +6,13 @@
 
 #include "MainWindow.h"
 #include "Dialogs.h"
+#include "Delta.h"
 
 #define STATE_STOPPED 0
 #define STATE_PLAYING 1
 #define STATE_PAUSED 2
 
-extern bool DELTA;
+extern Delta DELTA;
 
 MainWindow::MainWindow(const QString &filename) : QWidget() {
 
@@ -32,7 +33,9 @@ MainWindow::MainWindow(const QString &filename) : QWidget() {
     connect(session, SIGNAL(groupWidgetDeleted(GroupWidget*)), groupManager, SLOT(removeGroupWidget(GroupWidget*)));
     connect(session, SIGNAL(pageSelected(ConfigPage*)), config, SLOT(setPage(ConfigPage*)));
     connect(session, SIGNAL(rowSelected(ButtonRow*)), rowEditor, SLOT(setRow(ButtonRow*)));
+
     connect(session, SIGNAL(sessionFileChanged(QString)), this, SLOT(handleSessionFile(QString)));
+    connect(&DELTA, SIGNAL(stateChanged(bool)), this, SLOT(handleDelta(bool)));
 
     layout->addWidget(groupManager, 0,0, 5,6);
     layout->addWidget(transport, 5,0, 1,1);
@@ -58,7 +61,7 @@ MainWindow::MainWindow(const QString &filename) : QWidget() {
 
     }
 
-    DELTA = false;
+    DELTA.setState(false);
 
     resize(700,700);
 
@@ -102,7 +105,7 @@ void MainWindow::keyPressEvent(QKeyEvent* k) {
 
 void MainWindow::closeEvent(QCloseEvent *e) {
 
-    if (DELTA) { // if there are changes, then ask to save
+    if (DELTA.state()) { // if there are changes, then ask to save
 
         MaybeSaveDialog dlg;
         switch (dlg.exec()) {
@@ -132,6 +135,30 @@ void MainWindow::closeEvent(QCloseEvent *e) {
 void MainWindow::handleSessionFile(QString sessionFile) {
 
     QString sessionName = QFileInfo(sessionFile).fileName();
-    this->setWindowTitle(QString("ziggurat: %1").arg(sessionName));
+    setWindowTitle(QString("ziggurat: %1").arg(sessionName));
+
+}
+
+void MainWindow::handleDelta(bool delta) {
+
+    QString sessionName = QFileInfo(session->sessionFile).fileName();
+
+    if (delta) {
+
+        setWindowTitle(QString("%1*  -  ziggurat").arg(sessionName));
+
+    } else {
+
+        if (session->sessionFile.isNull()) {
+
+            setWindowTitle(QString("z i g g u r a t"));
+
+        } else {
+
+            setWindowTitle(QString("%1  -  ziggurat").arg(sessionName));
+
+        }
+
+    }
 
 }

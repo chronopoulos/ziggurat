@@ -38,7 +38,6 @@ QMAKE_CXXFLAGS += -std=gnu++0x
 # Input
 SOURCES += main.cpp
 SOURCES += MainWindow.cpp
-#SOURCES += ManagerWidget.cpp
 SOURCES += Sequence.cpp
 SOURCES += Thumbnail.cpp
 SOURCES += Led.cpp
@@ -57,10 +56,10 @@ SOURCES += GroupWidget.cpp
 SOURCES += GroupManager.cpp
 SOURCES += Session.cpp
 SOURCES += GroupContainer.cpp
+SOURCES += Delta.cpp
 SOURCES += RtMidi.cpp
 
 HEADERS += MainWindow.h
-#HEADERS += ManagerWidget.h
 HEADERS += Sequence.h
 HEADERS += Thumbnail.h
 HEADERS += Led.h
@@ -79,6 +78,7 @@ HEADERS += GroupWidget.h
 HEADERS += GroupManager.h
 HEADERS += Session.h
 HEADERS += GroupContainer.h
+HEADERS += Delta.h
 HEADERS += RtMidi.h
 
 RESOURCES = ziggurat.qrc
