@@ -7,7 +7,7 @@ a standalone MIDI step sequencer
 
 First, install dependencies:
 ```
-sudo apt-get install qt5-default libasound2-dev libjack-jackd2-dev
+sudo apt-get install qt5-default libasound2-dev libjack-jackd2-dev g++
 ```
 
 Then, clone the source code and initialize the submodule:
