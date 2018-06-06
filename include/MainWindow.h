@@ -16,6 +16,7 @@ class MainWindow : public QWidget
     public:
         MainWindow(const QString&);
         void togglePlayState(void);
+        void setScope(int);
 
     private:
         int state;

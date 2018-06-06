@@ -18,7 +18,7 @@ Session::Session(void) {
 
     sessionFile = QDir::homePath().append("/untitled.zig");
     uninitialized = true;
-    
+
 }
 
 void Session::createGroup(void) {

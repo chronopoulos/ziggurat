@@ -9,13 +9,18 @@ class Configurator : public QFrame
 
     public:
         Configurator(void);
+        void setScoped(bool);
 
     private:
         QVBoxLayout *layout;
         ConfigPage *currentPage;
         ConfigPage *defaultPage;
+        bool m_scoped;
 
     public slots:
         void setPage(ConfigPage*);
+
+    protected:
+        void paintEvent(QPaintEvent*);
 
 };

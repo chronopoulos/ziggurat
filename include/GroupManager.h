@@ -9,6 +9,7 @@ class GroupManager : public QFrame
 
     public:
         GroupManager(void);
+        void setScoped(bool);
 
     public slots:
         void addGroupWidget(GroupWidget*);
@@ -16,9 +17,11 @@ class GroupManager : public QFrame
 
     private:
         QHBoxLayout *layout;
+        bool m_scoped;
 
     protected:
         void contextMenuEvent(QContextMenuEvent*);
+        void paintEvent(QPaintEvent*);
 
     signals:
         void newGroupRequested(void);
