@@ -2,6 +2,7 @@
 
 #include <QLabel>
 #include <QJsonArray>
+#include <QApplication>
 
 #include <QDebug>
 
@@ -153,6 +154,28 @@ void ButtonRow::phocusEvent(QKeyEvent *e) {
         advancePhocus(-1);
     } else if (e->key() == Qt::Key_T) {
         buttons[phocusIndex]->toggle();
+    } else if (e->key() == Qt::Key_Up) {
+
+        if (QApplication::keyboardModifiers() == Qt::ShiftModifier) {
+            buttons[phocusIndex]->adjustEditParameter(4);
+        } else {
+            buttons[phocusIndex]->adjustEditParameter(1);
+        }
+
+    } else if (e->key() == Qt::Key_Down) {
+
+        if (QApplication::keyboardModifiers() == Qt::ShiftModifier) {
+            buttons[phocusIndex]->adjustEditParameter(-4);
+        } else {
+            buttons[phocusIndex]->adjustEditParameter(-1);
+        }
+
+    } else if (e->key() == Qt::Key_Tab) {
+
+        int editIndex = editParameterCombo->currentIndex();
+        editIndex = (editIndex + 1) % 2;
+        editParameterCombo->setCurrentIndex(editIndex);
+
     }
 
 }

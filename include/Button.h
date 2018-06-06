@@ -22,6 +22,7 @@ class Button : public QFrame
         static int Edit_NoteVelocity;
 
         void setPhocus(bool);
+        void adjustEditParameter(int);
 
     private:
         bool m_isActive;
@@ -31,7 +32,7 @@ class Button : public QFrame
 
         // to avoid repeated declaration
         int noteValue, noteVelocity;
-        int wheelIncrement;
+        int wheelIncrement, wheelSign;
         QString editText;
 
         bool m_phocus;
