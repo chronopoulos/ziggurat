@@ -27,6 +27,8 @@ class MainWindow : public QWidget
         Configurator *config;
         RowEditor *rowEditor;
 
+        void routePhocus(QKeyEvent*);
+
     protected:
         void keyPressEvent(QKeyEvent*);
         void closeEvent(QCloseEvent*);

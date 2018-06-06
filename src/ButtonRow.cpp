@@ -34,11 +34,17 @@ ButtonRow::ButtonRow(int nsteps) : QWidget() {
 
         QSpacerItem *spacer = new QSpacerItem(0,10);
 
+        phocusIndex = -1;
+
         Button *tmpButton;
         Indicator *tmpIndicator;
         for (int i=0; i < m_nsteps; i++) {
 
             tmpButton = new Button(i);
+            if (i==0) {
+                tmpButton->setPhocus(true);
+                phocusIndex = i;
+            }
             buttons.push_back(tmpButton);
             connect(tmpButton, SIGNAL(trigSet(int, Trigger*)), this, SIGNAL(trigSet(int, Trigger*)));
             middleLayout->addWidget(tmpButton);
@@ -137,5 +143,29 @@ void ButtonRow::setEditParameter(int index) {
         (*buttonIter)->setEditParameter(index);
     }
     
+}
+
+void ButtonRow::phocusEvent(QKeyEvent *e) {
+
+    if (e->key() == Qt::Key_Right) {
+        advancePhocus(1);
+    } else if (e->key() == Qt::Key_Left) {
+        advancePhocus(-1);
+    } else if (e->key() == Qt::Key_T) {
+        buttons[phocusIndex]->toggle();
+    }
+
+}
+
+void ButtonRow::advancePhocus(int increment) {
+
+    if (phocusIndex >= 0) {
+
+        buttons[phocusIndex]->setPhocus(false);
+        phocusIndex = (phocusIndex + increment) % m_nsteps;
+        if (phocusIndex < 0) phocusIndex = m_nsteps + phocusIndex; // ugh why doesn't % work like math
+        buttons[phocusIndex]->setPhocus(true);
+
+    }
 
 }

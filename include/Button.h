@@ -1,24 +1,27 @@
 #ifndef BUTTONCELL_H
 #define BUTTONCELL_H
 
-#include <QWidget>
+#include <QFrame>
 #include <QVBoxLayout>
 #include <QPaintEvent>
 #include <QPainter>
 
 #include "Trigger.h"
 
-class Button : public QWidget
+class Button : public QFrame
 {
     Q_OBJECT
 
     public:
         Button(int);
         void setTrig(Trigger);
+        void toggle(void);
         void setEditParameter(int);
 
         static int Edit_NoteValue;
         static int Edit_NoteVelocity;
+
+        void setPhocus(bool);
 
     private:
         bool m_isActive;
@@ -30,6 +33,8 @@ class Button : public QWidget
         int noteValue, noteVelocity;
         int wheelIncrement;
         QString editText;
+
+        bool m_phocus;
 
     protected:
         void mousePressEvent(QMouseEvent*);

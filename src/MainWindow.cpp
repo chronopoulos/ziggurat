@@ -86,11 +86,11 @@ void MainWindow::togglePlayState(void) {
 
 }
 
-void MainWindow::keyPressEvent(QKeyEvent* k) {
+void MainWindow::keyPressEvent(QKeyEvent *e) {
 
-    if (!k->isAutoRepeat()) {
+    if (!e->isAutoRepeat()) {
 
-        if (k->key() == Qt::Key_Space) {
+        if (e->key() == Qt::Key_Space) {
 
                 togglePlayState();
                 return;
@@ -99,7 +99,7 @@ void MainWindow::keyPressEvent(QKeyEvent* k) {
 
         if (QApplication::keyboardModifiers() & Qt::ControlModifier) {
 
-            if (k->key() == Qt::Key_S) {
+            if (e->key() == Qt::Key_S) {
 
                 if (QApplication::keyboardModifiers() & Qt::ShiftModifier) {
                     session->saveAs();
@@ -109,30 +109,57 @@ void MainWindow::keyPressEvent(QKeyEvent* k) {
 
                 return;
 
-            } else if (k->key() == Qt::Key_O) {
+            } else if (e->key() == Qt::Key_O) {
 
                 session->load();
                 return;
 
-            } else if (k->key() == Qt::Key_Left) {
+            } else if (e->key() == Qt::Key_Left) {
 
                 setScope(SCOPE_NULL);
+                return;
 
-            } else if (k->key() == Qt::Key_Up) {
+            } else if (e->key() == Qt::Key_Up) {
 
                 setScope(SCOPE_MANAGER);
+                return;
 
-            } else if (k->key() == Qt::Key_Down) {
+            } else if (e->key() == Qt::Key_Down) {
 
                 setScope(SCOPE_EDITOR);
+                return;
 
-            } else if (k->key() == Qt::Key_Right) {
+            } else if (e->key() == Qt::Key_Right) {
 
                 setScope(SCOPE_CONFIG);
+                return;
 
             }
 
         }
+
+        routePhocus(e);
+
+    }
+
+}
+
+void MainWindow::routePhocus(QKeyEvent *e) {
+
+    if (SCOPE == SCOPE_NULL) {
+
+
+    } else if (SCOPE == SCOPE_MANAGER) {
+
+        //session->phocusEvent(e);
+
+    } else if (SCOPE == SCOPE_EDITOR) {
+
+        rowEditor->currentRow->phocusEvent(e);
+
+    } else if (SCOPE == SCOPE_CONFIG) {
+
+        //config->phocusEvent(e);
 
     }
 

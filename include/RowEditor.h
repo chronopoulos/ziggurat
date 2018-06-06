@@ -10,10 +10,11 @@ class RowEditor : public QFrame
     public:
         RowEditor(void);
         void setScoped(bool);
+        ButtonRow *currentRow;
 
     private:
         QVBoxLayout *mainLayout;
-        ButtonRow *currentRow, *defaultRow;
+        ButtonRow *defaultRow;
         bool m_scoped;
 
     public slots:
