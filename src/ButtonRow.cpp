@@ -152,8 +152,6 @@ void ButtonRow::phocusEvent(QKeyEvent *e) {
         advancePhocus(1);
     } else if (e->key() == Qt::Key_Left) {
         advancePhocus(-1);
-    } else if (e->key() == Qt::Key_T) {
-        buttons[phocusIndex]->toggle();
     } else if (e->key() == Qt::Key_Up) {
 
         if (QApplication::keyboardModifiers() == Qt::ShiftModifier) {
@@ -170,13 +168,20 @@ void ButtonRow::phocusEvent(QKeyEvent *e) {
             buttons[phocusIndex]->adjustEditParameter(-1);
         }
 
-    } else if (e->key() == Qt::Key_Tab) {
+    } else if (!e->isAutoRepeat()) {
 
-        int editIndex = editParameterCombo->currentIndex();
-        editIndex = (editIndex + 1) % 2;
-        editParameterCombo->setCurrentIndex(editIndex);
+        if (e->key() == Qt::Key_T) {
+            buttons[phocusIndex]->toggle();
+        } else if (e->key() == Qt::Key_Tab) {
+
+            int editIndex = editParameterCombo->currentIndex();
+            editIndex = (editIndex + 1) % 2;
+            editParameterCombo->setCurrentIndex(editIndex);
+
+        }
 
     }
+
 
 }
 

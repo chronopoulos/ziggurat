@@ -138,9 +138,10 @@ void MainWindow::keyPressEvent(QKeyEvent *e) {
 
         }
 
-        routePhocus(e);
 
     }
+
+    routePhocus(e); // phocus events have the possibility of auto-repeat
 
 }
 
