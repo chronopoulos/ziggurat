@@ -18,6 +18,8 @@ class Session : public QObject
         void selectNothing(void);
         QString sessionFile;
 
+        void phocusEvent(QKeyEvent*);
+
     private:
         void makeScontConnections(SequenceContainer*);
         void addScontToGcont(SequenceContainer*, GroupContainer*);
@@ -29,6 +31,10 @@ class Session : public QObject
         std::vector<GroupContainer*>::iterator gcontIter;
         Thumbnail *selectedThumbnail;
         bool uninitialized;
+
+        void advanceScontPhocus(int);
+        void advanceGcontPhocus(int);
+        int getCurrentPhocus(int*, int*);
 
     public slots:
         void createGroup(void);

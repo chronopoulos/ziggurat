@@ -21,6 +21,106 @@ Session::Session(void) {
 
 }
 
+void Session::phocusEvent(QKeyEvent *e) {
+
+    if (e->key() == Qt::Key_Right) {
+        advanceGcontPhocus(1);
+    } else if (e->key() == Qt::Key_Left) {
+        advanceGcontPhocus(-1);
+    } else if (e->key() == Qt::Key_Up) {
+        advanceScontPhocus(-1);
+    } else if (e->key() == Qt::Key_Down) {
+        advanceScontPhocus(1);
+    } else if (!e->isAutoRepeat()) {
+
+    }
+
+}
+
+void Session::advanceScontPhocus(int increment) {
+    
+    int scontPos, gcontPos;
+    if (getCurrentPhocus(&gcontPos, &scontPos) >= 0) {
+
+        int nsconts = gconts[gcontPos]->group->sconts.size();
+
+        scontPos += increment;
+        if (scontPos >= nsconts) scontPos = 0;
+        if (scontPos < 0) scontPos = nsconts - 1;
+
+        gconts[gcontPos]->group->sconts[scontPos]->select();
+
+    }
+
+}
+
+void Session::advanceGcontPhocus(int increment) {
+
+    int scontPos, gcontPos;
+    if (getCurrentPhocus(&gcontPos, &scontPos) >= 0) {
+
+        gcontPos += increment;
+        if (gcontPos >= (int)gconts.size()) gcontPos = 0;
+        if (gcontPos < 0) gcontPos = (int)(gconts.size() - 1);
+
+        GroupContainer *gcont = gconts[gcontPos];
+        int gcontSize = (int) (gcont->group->sconts.size());
+        
+        if (gcontSize == 0) {
+            qDebug() << "TODO: empty group phocus";
+            return;
+        }
+
+        if (scontPos >= gcontSize) {
+            scontPos = gcontSize - 1;
+        }
+
+        gcont->group->sconts[scontPos]->select();
+
+    } else {
+
+        qDebug() << "couldn't find phocus";
+
+    }
+
+}
+
+int Session::getCurrentPhocus(int *gcontPosition, int *scontPosition) {
+
+    if (!selectedThumbnail) return -1;
+
+    // find the phocused scont
+    SequenceContainer *phocusedScont;
+    for (scontIter = sconts.begin(); scontIter != sconts.end(); scontIter++) {
+        if ((*scontIter)->thumb == selectedThumbnail) {
+            phocusedScont = *scontIter;
+            break;
+        }
+    }
+
+    if (scontIter == sconts.end()) return -1;
+
+    // find the phocused gcont
+    for (gcontIter = gconts.begin(); gcontIter != gconts.end(); gcontIter++) {
+
+        scontIter = std::find((*gcontIter)->group->sconts.begin(),
+                                (*gcontIter)->group->sconts.end(), phocusedScont);
+
+        if (scontIter != (*gcontIter)->group->sconts.end()) {
+            // find the positions (indices)
+            *scontPosition = scontIter - (*gcontIter)->group->sconts.begin();
+            *gcontPosition = gcontIter - gconts.begin();
+            break;
+        }
+
+    }
+
+    if (scontIter == sconts.end()) return -1;
+
+    return 0;
+
+}
+
 void Session::createGroup(void) {
 
     GroupContainer *gcont = new GroupContainer();

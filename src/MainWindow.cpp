@@ -152,7 +152,7 @@ void MainWindow::routePhocus(QKeyEvent *e) {
 
     } else if (SCOPE == SCOPE_MANAGER) {
 
-        //session->phocusEvent(e);
+        session->phocusEvent(e);
 
     } else if (SCOPE == SCOPE_EDITOR) {
 

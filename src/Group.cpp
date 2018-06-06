@@ -85,6 +85,23 @@ void Group::removeScont(SequenceContainer *scont) {
 
 }
 
+SequenceContainer* Group::getNextScont(SequenceContainer *scont, int increment) {
+
+    scontIter = std::find(sconts.begin(), sconts.end(), scont);
+
+    if (scontIter != sconts.end()) {
+        if ((scontIter == sconts.begin()) && (increment < 0)) { // better way?
+            return sconts.back();
+        } else {
+            scontIter = std::next(scontIter, increment);
+            if (scontIter == sconts.end()) scontIter = sconts.begin();
+            return *scontIter;
+        }
+    }
+
+    return nullptr;
+}
+
 void Group::handleMuteChange(bool mute) {
 
     SequenceContainer *scont = qobject_cast<SequenceContainer*>(sender());

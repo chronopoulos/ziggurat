@@ -24,6 +24,8 @@ class Group : public QObject
 
         std::vector<SequenceContainer*> sconts;
 
+        SequenceContainer* getNextScont(SequenceContainer*, int);
+
     private:
         int m_type;
         std::vector<SequenceContainer*>::iterator scontIter;
