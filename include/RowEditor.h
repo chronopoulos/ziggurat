@@ -10,6 +10,7 @@ class RowEditor : public QFrame
     public:
         RowEditor(void);
         void setScoped(bool);
+        void phocusEvent(QKeyEvent*);
         ButtonRow *currentRow;
 
     private:

@@ -10,6 +10,7 @@ class Configurator : public QFrame
     public:
         Configurator(void);
         void setScoped(bool);
+        void phocusEvent(QKeyEvent*);
 
     private:
         QVBoxLayout *layout;

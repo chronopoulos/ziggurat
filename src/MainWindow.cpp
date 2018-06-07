@@ -156,11 +156,11 @@ void MainWindow::routePhocus(QKeyEvent *e) {
 
     } else if (SCOPE == SCOPE_EDITOR) {
 
-        rowEditor->currentRow->phocusEvent(e);
+        rowEditor->phocusEvent(e);
 
     } else if (SCOPE == SCOPE_CONFIG) {
 
-        //config->phocusEvent(e);
+        config->phocusEvent(e);
 
     }
 

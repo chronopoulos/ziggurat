@@ -15,6 +15,7 @@ class ConfigPage : public QWidget
         ConfigPage(int);
         ConfigPage(const QJsonObject&);
         ConfigPage(Sequence*);
+        void phocusEvent(QKeyEvent*);
         void setName(QString);
 
     private:

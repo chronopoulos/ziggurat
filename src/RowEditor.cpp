@@ -1,5 +1,7 @@
 #include "RowEditor.h"
 
+#include <QDebug>
+
 RowEditor::RowEditor(void) {
 
     mainLayout = new QVBoxLayout();
@@ -32,6 +34,12 @@ void RowEditor::setScoped(bool scoped) {
 
     m_scoped = scoped;
     update();
+
+}
+
+void RowEditor::phocusEvent(QKeyEvent *e) {
+
+    if (currentRow != defaultRow) currentRow->phocusEvent(e);
 
 }
 

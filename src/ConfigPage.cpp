@@ -91,6 +91,10 @@ ConfigPage::ConfigPage(Sequence *seq) : ConfigPage(seq->nsteps()) {
 
 }
 
+void ConfigPage::phocusEvent(QKeyEvent *) {
+
+}
+
 void ConfigPage::setName(QString name) {
 
     nameLabel->setValue(name);

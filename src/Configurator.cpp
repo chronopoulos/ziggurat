@@ -40,6 +40,12 @@ void Configurator::setScoped(bool scoped) {
 
 }
 
+void Configurator::phocusEvent(QKeyEvent *e) {
+
+    if (currentPage != defaultPage) currentPage->phocusEvent(e);
+
+}
+
 void Configurator::setPage(ConfigPage *newPage) {
 
     // case of newPage == nullptr
