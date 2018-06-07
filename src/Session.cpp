@@ -33,6 +33,12 @@ void Session::phocusEvent(QKeyEvent *e) {
         advanceScontPhocus(1);
     } else if (!e->isAutoRepeat()) {
 
+        if (e->key() == Qt::Key_M) {
+            getPhocusScont()->toggleMute();
+        } else if (e->key() == Qt::Key_Q) {
+            getPhocusScont()->toggleQueue();
+        }
+
     }
 
 }
@@ -40,7 +46,7 @@ void Session::phocusEvent(QKeyEvent *e) {
 void Session::advanceScontPhocus(int increment) {
     
     int scontPos, gcontPos;
-    if (getCurrentPhocus(&gcontPos, &scontPos) >= 0) {
+    if (getPhocusCoordinates(&gcontPos, &scontPos) >= 0) {
 
         int nsconts = gconts[gcontPos]->group->sconts.size();
 
@@ -57,7 +63,7 @@ void Session::advanceScontPhocus(int increment) {
 void Session::advanceGcontPhocus(int increment) {
 
     int scontPos, gcontPos;
-    if (getCurrentPhocus(&gcontPos, &scontPos) >= 0) {
+    if (getPhocusCoordinates(&gcontPos, &scontPos) >= 0) {
 
         gcontPos += increment;
         if (gcontPos >= (int)gconts.size()) gcontPos = 0;
@@ -85,20 +91,10 @@ void Session::advanceGcontPhocus(int increment) {
 
 }
 
-int Session::getCurrentPhocus(int *gcontPosition, int *scontPosition) {
+int Session::getPhocusCoordinates(int *gcontPosition, int *scontPosition) {
 
-    if (!selectedThumbnail) return -1;
-
-    // find the phocused scont
-    SequenceContainer *phocusedScont;
-    for (scontIter = sconts.begin(); scontIter != sconts.end(); scontIter++) {
-        if ((*scontIter)->thumb == selectedThumbnail) {
-            phocusedScont = *scontIter;
-            break;
-        }
-    }
-
-    if (scontIter == sconts.end()) return -1;
+    SequenceContainer *phocusedScont = getPhocusScont();
+    if (!phocusedScont) return -1;
 
     // find the phocused gcont
     for (gcontIter = gconts.begin(); gcontIter != gconts.end(); gcontIter++) {
@@ -118,6 +114,18 @@ int Session::getCurrentPhocus(int *gcontPosition, int *scontPosition) {
     if (scontIter == sconts.end()) return -1;
 
     return 0;
+
+}
+
+SequenceContainer* Session::getPhocusScont(void) {
+
+    for (scontIter = sconts.begin(); scontIter != sconts.end(); scontIter++) {
+        if ((*scontIter)->thumb == selectedThumbnail) {
+            return *scontIter;
+        }
+    }
+
+    return nullptr;
 
 }
 

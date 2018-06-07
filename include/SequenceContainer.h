@@ -27,6 +27,9 @@ class SequenceContainer : public QObject
         bool selected(void);
 
         void setMute(bool);
+        void setQueue(bool);
+        void toggleMute(void);
+        void toggleQueue(void);
 
     private:
         void makeConnections(void);

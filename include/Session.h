@@ -34,7 +34,8 @@ class Session : public QObject
 
         void advanceScontPhocus(int);
         void advanceGcontPhocus(int);
-        int getCurrentPhocus(int*, int*);
+        int getPhocusCoordinates(int*, int*);
+        SequenceContainer* getPhocusScont(void);
 
     public slots:
         void createGroup(void);
