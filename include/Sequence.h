@@ -19,6 +19,7 @@ class Sequence : public QObject
         Sequence(Sequence*);
         ~Sequence(void);
         bool isMuted(void);
+        bool isQueued(void);
 
         static int Forward;
         static int Backward;

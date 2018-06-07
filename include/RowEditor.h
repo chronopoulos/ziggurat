@@ -9,12 +9,19 @@ class RowEditor : public QFrame
 
     public:
         RowEditor(void);
+        void setScoped(bool);
+        void phocusEvent(QKeyEvent*);
+        ButtonRow *currentRow;
 
     private:
         QVBoxLayout *mainLayout;
-        ButtonRow *currentRow, *defaultRow;
+        ButtonRow *defaultRow;
+        bool m_scoped;
 
     public slots:
         void setRow(ButtonRow*);
+
+    protected:
+        void paintEvent(QPaintEvent*);
 
 };

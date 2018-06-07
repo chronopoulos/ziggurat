@@ -16,6 +16,7 @@ class MainWindow : public QWidget
     public:
         MainWindow(const QString&);
         void togglePlayState(void);
+        void setScope(int);
 
     private:
         int state;
@@ -25,6 +26,8 @@ class MainWindow : public QWidget
         TransportWidget *transport;
         Configurator *config;
         RowEditor *rowEditor;
+
+        void routePhocus(QKeyEvent*);
 
     protected:
         void keyPressEvent(QKeyEvent*);

@@ -2,6 +2,7 @@
 
 #include <QLabel>
 #include <QJsonArray>
+#include <QApplication>
 
 #include <QDebug>
 
@@ -34,11 +35,17 @@ ButtonRow::ButtonRow(int nsteps) : QWidget() {
 
         QSpacerItem *spacer = new QSpacerItem(0,10);
 
+        phocusIndex = -1;
+
         Button *tmpButton;
         Indicator *tmpIndicator;
         for (int i=0; i < m_nsteps; i++) {
 
             tmpButton = new Button(i);
+            if (i==0) {
+                tmpButton->setPhocus(true);
+                phocusIndex = i;
+            }
             buttons.push_back(tmpButton);
             connect(tmpButton, SIGNAL(trigSet(int, Trigger*)), this, SIGNAL(trigSet(int, Trigger*)));
             middleLayout->addWidget(tmpButton);
@@ -137,5 +144,56 @@ void ButtonRow::setEditParameter(int index) {
         (*buttonIter)->setEditParameter(index);
     }
     
+}
+
+void ButtonRow::phocusEvent(QKeyEvent *e) {
+
+    if (e->key() == Qt::Key_Right) {
+        advancePhocus(1);
+    } else if (e->key() == Qt::Key_Left) {
+        advancePhocus(-1);
+    } else if (e->key() == Qt::Key_Up) {
+
+        if (QApplication::keyboardModifiers() == Qt::ShiftModifier) {
+            buttons[phocusIndex]->adjustEditParameter(4);
+        } else {
+            buttons[phocusIndex]->adjustEditParameter(1);
+        }
+
+    } else if (e->key() == Qt::Key_Down) {
+
+        if (QApplication::keyboardModifiers() == Qt::ShiftModifier) {
+            buttons[phocusIndex]->adjustEditParameter(-4);
+        } else {
+            buttons[phocusIndex]->adjustEditParameter(-1);
+        }
+
+    } else if (!e->isAutoRepeat()) {
+
+        if (e->key() == Qt::Key_T) {
+            buttons[phocusIndex]->toggle();
+        } else if (e->key() == Qt::Key_Tab) {
+
+            int editIndex = editParameterCombo->currentIndex();
+            editIndex = (editIndex + 1) % 2;
+            editParameterCombo->setCurrentIndex(editIndex);
+
+        }
+
+    }
+
+
+}
+
+void ButtonRow::advancePhocus(int increment) {
+
+    if (phocusIndex >= 0) {
+
+        buttons[phocusIndex]->setPhocus(false);
+        phocusIndex = (phocusIndex + increment) % m_nsteps;
+        if (phocusIndex < 0) phocusIndex = m_nsteps + phocusIndex; // ugh why doesn't % work like math
+        buttons[phocusIndex]->setPhocus(true);
+
+    }
 
 }

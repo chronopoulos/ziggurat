@@ -129,3 +129,22 @@ void SequenceContainer::setMute(bool mute) {
     seq->setMute(mute);
 
 }
+
+void SequenceContainer::setQueue(bool queue) {
+
+    thumb->setQueue(queue);
+    seq->setQueue(queue);
+
+}
+
+void SequenceContainer::toggleMute(void) {
+
+    setMute(!seq->isMuted());
+
+}
+
+void SequenceContainer::toggleQueue(void) {
+
+    setQueue(!seq->isQueued());
+
+}

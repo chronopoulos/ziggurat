@@ -10,7 +10,27 @@ GroupManager::GroupManager(void) {
     setLayout(layout);
 
     setFrameStyle(QFrame::Box | QFrame::Plain);
-    setLineWidth(1);
+
+    setScoped(false);
+
+}
+
+void GroupManager::paintEvent(QPaintEvent *e) {
+
+    if (m_scoped) {
+        setLineWidth(2);
+    } else {
+        setLineWidth(1);
+    }
+
+    QFrame::paintEvent(e);
+
+}
+
+void GroupManager::setScoped(bool scoped) {
+
+    m_scoped = scoped;
+    update();
 
 }
 

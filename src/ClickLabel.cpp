@@ -1,6 +1,8 @@
 #include "ClickLabel.h"
 ////
 
+extern int SCOPE;
+
 const int ClickLabel::Type_Int = 0;
 const int ClickLabel::Type_QString = 1;
 const int ClickLabel::Type_Double = 2;
@@ -26,6 +28,26 @@ ClickLabel::ClickLabel(QString baseText, int type, QString title, QString label)
     m_title = title;
     m_label = label;
 
+    setPhocus(false);
+
+}
+
+void ClickLabel::setPhocus(bool phocus) {
+
+    m_phocus = phocus;
+    update();
+
+}
+
+void ClickLabel::paintEvent(QPaintEvent *e){
+
+    if (m_phocus && (SCOPE == 3)) {
+        setStyleSheet("QLabel { background-color : gray; color : black; }");
+    } else {
+        setStyleSheet("QLabel { background-color : black; color : white; }");
+    }
+
+    QLabel::paintEvent(e);
 }
 
 void ClickLabel::setMin(int min) {
@@ -83,6 +105,12 @@ void ClickLabel::setValue(double val) {
 }
 
 void ClickLabel::mousePressEvent(QMouseEvent*) {
+
+    runDialog();
+
+}
+
+void ClickLabel::runDialog(void) {
 
     if (!m_hardwired) {
 

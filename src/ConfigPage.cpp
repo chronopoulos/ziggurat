@@ -2,7 +2,6 @@
 
 #include "ConfigPage.h"
 
-
 ConfigPage::ConfigPage(int nsteps) : m_nsteps(nsteps) {
 
     layout = new QGridLayout;
@@ -58,6 +57,17 @@ ConfigPage::ConfigPage(int nsteps) : m_nsteps(nsteps) {
         layout->addWidget(midiChanLabel, 1,1, 1,1);
         layout->addWidget(directionLabel, 2,1, 1,1);
 
+        labelMap[(struct coord){.row=0, .col=0}] = nameLabel;
+        labelMap[(struct coord){.row=0, .col=1}] = lengthLabel;
+        labelMap[(struct coord){.row=1, .col=0}] = transposeLabel;
+        labelMap[(struct coord){.row=1, .col=1}] = midiChanLabel;
+        labelMap[(struct coord){.row=2, .col=0}] = clockDivLabel;
+        labelMap[(struct coord){.row=2, .col=1}] = directionLabel;
+
+        nameLabel->setPhocus(true);
+        m_phocusCoords.row = 0;
+        m_phocusCoords.col = 0;
+
     } else {
 
         QLabel *defaultLabel = new QLabel("No Sequence Selected");
@@ -91,8 +101,53 @@ ConfigPage::ConfigPage(Sequence *seq) : ConfigPage(seq->nsteps()) {
 
 }
 
+void ConfigPage::phocusEvent(QKeyEvent *e) {
+
+    if (e->key() == Qt::Key_Right) {
+        advancePhocusCol(1);
+    } else if (e->key() == Qt::Key_Left) {
+        advancePhocusCol(-1);
+    } else if (e->key() == Qt::Key_Up) {
+        advancePhocusRow(-1);
+    } else if (e->key() == Qt::Key_Down) {
+        advancePhocusRow(1);
+    } else if (!e->isAutoRepeat()) {
+
+        if (e->key() == Qt::Key_Return) {
+            labelMap[m_phocusCoords]->runDialog();
+        }
+
+    }
+
+}
+
+void ConfigPage::advancePhocusRow(int increment) {
+
+    labelMap[m_phocusCoords]->setPhocus(false);
+
+    m_phocusCoords.row += increment;
+    if (m_phocusCoords.row > 2) m_phocusCoords.row = 2;
+    if (m_phocusCoords.row < 0) m_phocusCoords.row = 0;
+
+    labelMap[m_phocusCoords]->setPhocus(true);
+
+}
+
+void ConfigPage::advancePhocusCol(int increment) {
+
+    labelMap[m_phocusCoords]->setPhocus(false);
+
+    m_phocusCoords.col += increment;
+    if (m_phocusCoords.col > 1) m_phocusCoords.col = 1;
+    if (m_phocusCoords.col < 0) m_phocusCoords.col = 0;
+
+    labelMap[m_phocusCoords]->setPhocus(true);
+
+}
+
 void ConfigPage::setName(QString name) {
 
     nameLabel->setValue(name);
 
 }
+

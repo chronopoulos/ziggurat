@@ -18,6 +18,7 @@ class ButtonRow : public QWidget
         ButtonRow(const QJsonObject&);
         ButtonRow(Sequence*);
         void setName(QString);
+        void phocusEvent(QKeyEvent*);
 
     private:
         int m_nsteps;
@@ -29,6 +30,9 @@ class ButtonRow : public QWidget
         Indicator *playheadIndicator;
         Indicator *lBracketIndicator;
         Indicator *rBracketIndicator;
+
+        int phocusIndex;
+        void advancePhocus(int);
 
     public slots:
         void updatePlayhead(int);

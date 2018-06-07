@@ -7,6 +7,8 @@
 int Button::Edit_NoteValue = 0;
 int Button::Edit_NoteVelocity = 1;
 
+extern int SCOPE;
+
 Button::Button(int step) {
 
     m_step = step;
@@ -23,11 +25,28 @@ Button::Button(int step) {
 
     m_editParameter = Button::Edit_NoteValue;
 
+    setFrameStyle(QFrame::Box | QFrame::Plain);
+
+    setPhocus(false);
+
+}
+
+void Button::setPhocus(bool phocus) {
+
+    m_phocus = phocus;
+    update();
+
 }
 
 void Button::mousePressEvent(QMouseEvent *e) {
 
-    if (e->buttons() == Qt::LeftButton) m_isActive = !m_isActive;
+    if (e->buttons() == Qt::LeftButton) toggle();
+
+}
+
+void Button::toggle(void) {
+
+    m_isActive = !m_isActive;
 
     if (m_isActive) {
         m_trig.setType(Trigger::Type_Note);
@@ -42,36 +61,47 @@ void Button::mousePressEvent(QMouseEvent *e) {
 
 void Button::wheelEvent(QWheelEvent *e) {
 
-    if (m_isActive) {
+    if (QApplication::keyboardModifiers() == Qt::ShiftModifier) {
+        wheelIncrement = 4;
+    } else {
+        wheelIncrement = 1;
+    }
 
-        if (QApplication::keyboardModifiers() & Qt::ShiftModifier) {
-            wheelIncrement = 4;
-        } else {
-            wheelIncrement = 1;
-        }
+    if (e->angleDelta().y() > 0) {
+        wheelSign = 1;
+    } else if (e->angleDelta().y() < 0) {
+        wheelSign = -1;
+    } else {
+        wheelSign = 0; // this should never happen
+    }
+
+    adjustEditParameter(wheelSign * wheelIncrement);
+
+}
+
+void Button::adjustEditParameter(int increment) {
+
+    if (m_isActive) {
 
         if (m_editParameter == Button::Edit_NoteValue) {
 
             noteValue = m_trig.noteValue();
-            if (e->angleDelta().y() > 0) {
-                noteValue += wheelIncrement;
-                if (noteValue > 127) noteValue = 127;
-            } else if (e->angleDelta().y() < 0) {
-                noteValue -= wheelIncrement;
-                if (noteValue < 0) noteValue = 0;
-            }
+
+            noteValue += increment;
+            if (noteValue > 127) noteValue = 127;
+            if (noteValue < 0) noteValue = 0;
+
             m_trig.setNoteValue(noteValue);
 
         } else if (m_editParameter == Button::Edit_NoteVelocity) {
 
             noteVelocity = m_trig.noteVelocity();
-            if (e->angleDelta().y() > 0) {
-                noteVelocity += wheelIncrement;
-                if (noteVelocity > 127) noteVelocity = 127;
-            } else if (e->angleDelta().y() < 0) {
-                noteVelocity -= wheelIncrement;
-                if (noteVelocity < 0) noteVelocity = 0;
-            }
+
+            noteVelocity += increment;
+            if (noteVelocity > 127) noteVelocity = 127;
+            if (noteVelocity < 0) noteVelocity = 0;
+
+
             m_trig.setNoteVelocity(noteVelocity);
 
         }
@@ -105,7 +135,7 @@ void Button::setEditParameter(int index) {
 
 }
 
-void Button::paintEvent(QPaintEvent*) {
+void Button::paintEvent(QPaintEvent *e) {
 
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
@@ -134,6 +164,14 @@ void Button::paintEvent(QPaintEvent*) {
         painter.drawRect(0.3*w, 0.1*h, 0.4*w, 0.2*h);
 
     }
+
+    if (m_phocus && (SCOPE == 2)) {
+        setLineWidth(3);
+    } else {
+        setLineWidth(1);
+    }
+
+    QFrame::paintEvent(e);
 
 }
 

@@ -324,6 +324,12 @@ bool Sequence::isMuted(void) {
 
 }
 
+bool Sequence::isQueued(void) {
+
+    return m_queue;
+
+}
+
 void Sequence::write(QJsonObject &seqJsonObject) {
 
     /* don't save playhead, m_queue, idiv, or m_bounceForward,

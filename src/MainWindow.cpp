@@ -12,6 +12,13 @@
 #define STATE_PLAYING 1
 #define STATE_PAUSED 2
 
+// TODO make a global enum
+int SCOPE;
+#define SCOPE_NULL 0
+#define SCOPE_MANAGER 1
+#define SCOPE_EDITOR  2
+#define SCOPE_CONFIG 3
+
 extern Delta DELTA;
 
 MainWindow::MainWindow(const QString &filename) : QWidget() {
@@ -60,6 +67,8 @@ MainWindow::MainWindow(const QString &filename) : QWidget() {
 
     }
 
+    setScope(SCOPE_MANAGER);
+
     DELTA.setState(false);
 
     resize(700,700);
@@ -77,30 +86,114 @@ void MainWindow::togglePlayState(void) {
 
 }
 
-void MainWindow::keyPressEvent(QKeyEvent* k) {
+void MainWindow::keyPressEvent(QKeyEvent *e) {
 
-    if (!k->isAutoRepeat()) {
-        switch (k->key()) {
-            case Qt::Key_Space:
+    if (!e->isAutoRepeat()) {
+
+        if (e->key() == Qt::Key_Space) {
+
                 togglePlayState();
-                break;
-            case Qt::Key_S:
-                if (QApplication::keyboardModifiers() == Qt::ControlModifier) {
-                    session->save();
-                } else if (QApplication::keyboardModifiers() == 
-                            (Qt::ControlModifier | Qt::ShiftModifier)) {
-                    session->saveAs();
-                }
-                break;
-            case Qt::Key_O:
-                if (QApplication::keyboardModifiers() & Qt::ControlModifier) {
-                    session->load();
-                }
-                break;
-            case Qt::Key_Escape:
-                session->selectNothing();
-                break;
+                return;
+
         }
+
+        if (QApplication::keyboardModifiers() & Qt::ControlModifier) {
+
+            if (e->key() == Qt::Key_S) {
+
+                if (QApplication::keyboardModifiers() & Qt::ShiftModifier) {
+                    session->saveAs();
+                } else {
+                    session->save();
+                }
+
+                return;
+
+            } else if (e->key() == Qt::Key_O) {
+
+                session->load();
+                return;
+
+            } else if (e->key() == Qt::Key_Left) {
+
+                setScope(SCOPE_NULL);
+                return;
+
+            } else if (e->key() == Qt::Key_Up) {
+
+                setScope(SCOPE_MANAGER);
+                return;
+
+            } else if (e->key() == Qt::Key_Down) {
+
+                setScope(SCOPE_EDITOR);
+                return;
+
+            } else if (e->key() == Qt::Key_Right) {
+
+                setScope(SCOPE_CONFIG);
+                return;
+
+            }
+
+        }
+
+
+    }
+
+    routePhocus(e); // phocus events have the possibility of auto-repeat
+
+}
+
+void MainWindow::routePhocus(QKeyEvent *e) {
+
+    if (SCOPE == SCOPE_NULL) {
+
+
+    } else if (SCOPE == SCOPE_MANAGER) {
+
+        session->phocusEvent(e);
+
+    } else if (SCOPE == SCOPE_EDITOR) {
+
+        rowEditor->phocusEvent(e);
+
+    } else if (SCOPE == SCOPE_CONFIG) {
+
+        config->phocusEvent(e);
+
+    }
+
+}
+
+void MainWindow::setScope(int scope) {
+
+    SCOPE = scope;
+
+    if (SCOPE == SCOPE_NULL) {
+
+        groupManager->setScoped(false);
+        rowEditor->setScoped(false);
+        config->setScoped(false);
+
+    } else if (SCOPE == SCOPE_MANAGER) {
+
+        groupManager->setScoped(true);
+        rowEditor->setScoped(false);
+        config->setScoped(false);
+
+    } else if (SCOPE == SCOPE_EDITOR) {
+
+        groupManager->setScoped(false);
+        rowEditor->setScoped(true);
+        config->setScoped(false);
+
+    } else if (SCOPE == SCOPE_CONFIG) {
+
+        groupManager->setScoped(false);
+        rowEditor->setScoped(false);
+        config->setScoped(true);
+
     }
 
 }

@@ -15,6 +15,35 @@ Configurator::Configurator(void) {
     currentPage = defaultPage;
     layout->addWidget(currentPage);
 
+    setFrameStyle(QFrame::Box | QFrame::Plain);
+
+    setScoped(false);
+
+}
+
+void Configurator::paintEvent(QPaintEvent *e) {
+
+    if (m_scoped) {
+        setLineWidth(2);
+    } else {
+        setLineWidth(1);
+    }
+
+    QFrame::paintEvent(e);
+
+}
+
+void Configurator::setScoped(bool scoped) {
+
+    m_scoped = scoped;
+    update();
+
+}
+
+void Configurator::phocusEvent(QKeyEvent *e) {
+
+    if (currentPage != defaultPage) currentPage->phocusEvent(e);
+
 }
 
 void Configurator::setPage(ConfigPage *newPage) {
@@ -31,7 +60,6 @@ void Configurator::setPage(ConfigPage *newPage) {
         currentPage->show();
 
     }
-
 
 }
 

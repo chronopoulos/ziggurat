@@ -1,5 +1,7 @@
 #include "RowEditor.h"
 
+#include <QDebug>
+
 RowEditor::RowEditor(void) {
 
     mainLayout = new QVBoxLayout();
@@ -11,7 +13,33 @@ RowEditor::RowEditor(void) {
     mainLayout->addWidget(currentRow);
 
     setFrameStyle(QFrame::Box | QFrame::Plain);
-    setLineWidth(1);
+
+    setScoped(false);
+
+}
+
+void RowEditor::paintEvent(QPaintEvent *e) {
+
+    if (m_scoped) {
+        setLineWidth(2);
+    } else {
+        setLineWidth(1);
+    }
+
+    QFrame::paintEvent(e);
+
+}
+
+void RowEditor::setScoped(bool scoped) {
+
+    m_scoped = scoped;
+    update();
+
+}
+
+void RowEditor::phocusEvent(QKeyEvent *e) {
+
+    if (currentRow != defaultRow) currentRow->phocusEvent(e);
 
 }
 
