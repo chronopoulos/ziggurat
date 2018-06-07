@@ -7,6 +7,21 @@
 #include "ClickLabel.h"
 #include "Sequence.h"
 
+struct coord
+{
+    int row;
+    int col;
+
+    bool  operator==(const coord &o) const {
+        return (row == o.row) && (col == o.col);
+    }
+
+    bool operator<(const coord &o) const {
+        return (row < o.row) || ((row == o.row) && (col < o.col));
+    }
+
+};
+
 class ConfigPage : public QWidget
 {
     Q_OBJECT
@@ -16,6 +31,8 @@ class ConfigPage : public QWidget
         ConfigPage(const QJsonObject&);
         ConfigPage(Sequence*);
         void phocusEvent(QKeyEvent*);
+        void advancePhocusRow(int);
+        void advancePhocusCol(int);
         void setName(QString);
 
     private:
@@ -31,6 +48,9 @@ class ConfigPage : public QWidget
         ClickLabel *directionLabel;
 
         QLabel *defaultLabel;
+
+        coord m_phocusCoords;
+        std::map <coord, ClickLabel*> labelMap;
 
     signals:
         void nameChanged(QString);

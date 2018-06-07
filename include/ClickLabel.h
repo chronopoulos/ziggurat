@@ -24,6 +24,7 @@ class ClickLabel: public QLabel
         void setValue(double);
         void setHardwired(bool);
         void setItems(const QStringList&);
+        void setPhocus(bool);
 
         int m_type;
         QString m_title;
@@ -48,8 +49,11 @@ class ClickLabel: public QLabel
 
         bool m_hardwired;
 
+        bool m_phocus;
+
     protected:
         void mousePressEvent(QMouseEvent*);
+        void paintEvent(QPaintEvent*);
 
     signals:
         void valueChanged(int);
