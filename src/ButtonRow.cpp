@@ -182,7 +182,6 @@ void ButtonRow::phocusEvent(QKeyEvent *e) {
 
     }
 
-
 }
 
 void ButtonRow::advancePhocus(int increment) {
@@ -190,8 +189,9 @@ void ButtonRow::advancePhocus(int increment) {
     if (phocusIndex >= 0) {
 
         buttons[phocusIndex]->setPhocus(false);
-        phocusIndex = (phocusIndex + increment) % m_nsteps;
-        if (phocusIndex < 0) phocusIndex = m_nsteps + phocusIndex; // ugh why doesn't % work like math
+        phocusIndex = phocusIndex + increment;
+        if (phocusIndex >= m_nsteps) phocusIndex = m_nsteps - 1;
+        if (phocusIndex < 0) phocusIndex = 0;
         buttons[phocusIndex]->setPhocus(true);
 
     }

@@ -53,8 +53,8 @@ void Session::advanceScontPhocus(int increment) {
         int nsconts = gconts[gcontPos]->group->sconts.size();
 
         scontPos += increment;
-        if (scontPos >= nsconts) scontPos = 0;
-        if (scontPos < 0) scontPos = nsconts - 1;
+        if (scontPos >= nsconts) scontPos = nsconts - 1;
+        if (scontPos < 0) scontPos = 0;
 
         gconts[gcontPos]->group->sconts[scontPos]->select();
 
@@ -68,8 +68,8 @@ void Session::advanceGcontPhocus(int increment) {
     if (getPhocusCoordinates(&gcontPos, &scontPos) >= 0) {
 
         gcontPos += increment;
-        if (gcontPos >= (int)gconts.size()) gcontPos = 0;
-        if (gcontPos < 0) gcontPos = (int)(gconts.size() - 1);
+        if (gcontPos >= (int)gconts.size()) gcontPos = (int)(gconts.size() -1);
+        if (gcontPos < 0) gcontPos = 0;
 
         GroupContainer *gcont = gconts[gcontPos];
         int gcontSize = (int) (gcont->group->sconts.size());
