@@ -26,6 +26,11 @@ int main(int argc, char *argv[]) {
     app.setApplicationName("ziggurat");
     app.setApplicationVersion("0.0.1");
 
+    QFont font("Monospace");
+    font.setBold(true);
+    font.setPointSize(10);
+    app.setFont(font);
+
     QCommandLineParser parser;
     parser.setApplicationDescription("Test helper");
     parser.addHelpOption();
