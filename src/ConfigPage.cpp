@@ -113,7 +113,8 @@ void ConfigPage::phocusEvent(QKeyEvent *e) {
         advancePhocusRow(1);
     } else if (!e->isAutoRepeat()) {
 
-        if (e->key() == Qt::Key_M) {
+        if (e->key() == Qt::Key_Return) {
+            labelMap[m_phocusCoords]->runDialog();
         }
 
     }

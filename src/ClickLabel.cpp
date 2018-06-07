@@ -106,6 +106,12 @@ void ClickLabel::setValue(double val) {
 
 void ClickLabel::mousePressEvent(QMouseEvent*) {
 
+    runDialog();
+
+}
+
+void ClickLabel::runDialog(void) {
+
     if (!m_hardwired) {
 
         bool ok = false;

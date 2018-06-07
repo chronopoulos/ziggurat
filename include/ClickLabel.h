@@ -26,6 +26,8 @@ class ClickLabel: public QLabel
         void setItems(const QStringList&);
         void setPhocus(bool);
 
+        void runDialog(void);
+
         int m_type;
         QString m_title;
         QString m_label;
