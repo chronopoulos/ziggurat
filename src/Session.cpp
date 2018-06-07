@@ -34,9 +34,11 @@ void Session::phocusEvent(QKeyEvent *e) {
     } else if (!e->isAutoRepeat()) {
 
         if (e->key() == Qt::Key_M) {
-            getPhocusScont()->toggleMute();
+            if (selectedThumbnail) getPhocusScont()->toggleMute();
         } else if (e->key() == Qt::Key_Q) {
-            getPhocusScont()->toggleQueue();
+            if (selectedThumbnail) getPhocusScont()->toggleQueue();
+        } else if (e->key() == Qt::Key_Delete) {
+            if (selectedThumbnail) deleteScont(getPhocusScont());
         }
 
     }
