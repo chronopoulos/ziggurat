@@ -72,7 +72,6 @@ ConfigPage::ConfigPage(int nsteps) : m_nsteps(nsteps) {
 
         QLabel *defaultLabel = new QLabel("No Sequence Selected");
         defaultLabel->setAlignment(Qt::AlignCenter);
-        defaultLabel->setFont(QFont("Helvetica", 14));
         layout->addWidget(defaultLabel);
 
     }
