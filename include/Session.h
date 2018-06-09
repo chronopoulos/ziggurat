@@ -23,6 +23,7 @@ class Session : public QObject
     private:
         void makeScontConnections(SequenceContainer*);
         void addScontToGcont(SequenceContainer*, GroupContainer*);
+        void addScontToPhocusGroup(void);
         void addGcont(GroupContainer*);
 
         std::vector<SequenceContainer*> sconts;

@@ -39,6 +39,15 @@ void Session::phocusEvent(QKeyEvent *e) {
             if (selectedThumbnail) getPhocusScont()->toggleQueue();
         } else if (e->key() == Qt::Key_Delete) {
             if (selectedThumbnail) deleteScont(getPhocusScont());
+        } else if (e->key() == Qt::Key_N) {
+
+            if (selectedThumbnail) {
+                addScontToPhocusGroup();
+            } else if (!gconts.empty()) {
+                SequenceContainer *scont = new SequenceContainer(16, "My Sequence");
+                addScontToGcont(scont, gconts[0]);
+            }
+
         }
 
     }
@@ -175,6 +184,18 @@ void Session::addScontToGcont(SequenceContainer *scont, GroupContainer *gcont) {
     if (sconts.size() == 1) scont->select();
 
     DELTA.setState(true);
+
+}
+
+void Session::addScontToPhocusGroup(void) {
+
+    int scontPos, gcontPos;
+    if (getPhocusCoordinates(&gcontPos, &scontPos) >= 0) {
+
+        SequenceContainer *scont = new SequenceContainer(16, "My Sequence");
+        addScontToGcont(scont, gconts[gcontPos]);
+
+    }
 
 }
 
