@@ -13,11 +13,6 @@ Button::Button(int step) {
 
     m_step = step;
 
-    QPalette palette = QPalette();
-    palette.setColor(QPalette::Background, QColor(100, 100, 100));
-    setAutoFillBackground(true);
-    setPalette(palette);
-
     setMinimumSize(50,50);
     setMaximumSize(50,50);
 
@@ -165,11 +160,16 @@ void Button::paintEvent(QPaintEvent *e) {
 
     }
 
+    QPalette pal = palette();
     if (m_phocus && (SCOPE == 2)) {
         setLineWidth(3);
+        pal.setColor(QPalette::Background, Qt::gray);
     } else {
         setLineWidth(1);
+        pal.setColor(QPalette::Background, QColor(100, 100, 100));
     }
+    setAutoFillBackground(true);
+    setPalette(pal);
 
     QFrame::paintEvent(e);
 
