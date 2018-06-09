@@ -15,7 +15,6 @@ ClickLabel::ClickLabel(QString baseText, int type, QString title, QString label)
     setText(m_baseText);
 
     // TODO: prevent stylesheet from propagating to children
-    setStyleSheet("QLabel { background-color : black; color : white; }");
     setAlignment(Qt::AlignCenter);
 
     m_hardwired = false;
@@ -41,13 +40,19 @@ void ClickLabel::setPhocus(bool phocus) {
 
 void ClickLabel::paintEvent(QPaintEvent *e){
 
+    QPalette pal = palette();
     if (m_phocus && (SCOPE == 3)) {
-        setStyleSheet("QLabel { background-color : gray; color : black; }");
+        pal.setColor(QPalette::Background, Qt::gray);
+        pal.setColor(QPalette::WindowText, Qt::black);
     } else {
-        setStyleSheet("QLabel { background-color : black; color : white; }");
+        pal.setColor(QPalette::Background, Qt::black);
+        pal.setColor(QPalette::WindowText, Qt::white);
     }
+    setAutoFillBackground(true);
+    setPalette(pal);
 
     QLabel::paintEvent(e);
+
 }
 
 void ClickLabel::setMin(int min) {
