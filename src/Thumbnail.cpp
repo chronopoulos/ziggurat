@@ -126,6 +126,7 @@ void Thumbnail::select(void) {
 
     isSelected = true;
     setLineWidth(4);
+    setPalette(palette_light);
 
 }
 
@@ -133,6 +134,7 @@ void Thumbnail::deselect(void) {
 
     isSelected = false;
     setLineWidth(1);
+    setPalette(palette_dark);
 
 }
 
