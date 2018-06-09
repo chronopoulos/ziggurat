@@ -2,6 +2,8 @@
 
 #include <QDebug>
 
+#define DEFAULT_TEMPO 100
+
 int TransportWidget::Stopped = 0;
 int TransportWidget::Paused = 1;
 int TransportWidget::Playing = 2;
@@ -57,7 +59,7 @@ TransportWidget::TransportWidget(void) {
 
     // init
 
-    tempoLabel->setValue(double(120));
+    tempoLabel->setValue(double(DEFAULT_TEMPO));
     stopButton->setChecked(true);
     state = TransportWidget::Stopped;
 
