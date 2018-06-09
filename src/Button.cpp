@@ -185,7 +185,9 @@ Indicator::Indicator(int step) {
     m_hasRBracket= false;
 
     setMinimumHeight(30);
-    setMaximumHeight(30);
+
+    setMinimumWidth(50);
+    setMaximumWidth(50);
 
 }
 
