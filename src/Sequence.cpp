@@ -32,7 +32,7 @@ Sequence::Sequence(int nsteps) {
     m_subloopStart = 0;
     m_subloopStop = m_nsteps - 1;
 
-    // fill will null-type Trigs
+    // fill with null-type Trigs
     for (int i=0; i < m_nsteps; i++) {
         trigs.push_back(Trigger());
     }
